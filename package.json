@@ -8,5 +8,8 @@
   ],
   "scripts": {
     "dev:mobile": "yarn workspace mobile start"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
   }
 }
