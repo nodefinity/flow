@@ -1,44 +1,60 @@
+import TabBar from '@/components/ui/TabBar';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from '@flow/core';
 import { Tabs } from 'expo-router';
-import { Platform } from 'react-native';
+import { type ComponentProps } from 'react';
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+type IconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+interface TabConfig {
+  name: string;
+  locale: string;
+  icon: IconName;
+  activeIcon: IconName;
+}
+
+const TAB_CONFIG: TabConfig[] = [
+  {
+    name: 'index',
+    locale: 'home',
+    icon: 'home-outline',
+    activeIcon: 'home'
+  },
+  {
+    name: 'setting',
+    locale: 'setting',
+    icon: 'cog-outline',
+    activeIcon: 'cog'
+  }
+];
+
+const renderTabItem = (config: TabConfig) => {
+  const { t } = useTranslation();
 
   return (
+    <Tabs.Screen
+      key={config.name}
+      name={config.name}
+      options={{
+        title: t(`${config.locale}.title`),
+        tabBarIcon: ({ focused, color, size }) => {
+          return <MaterialCommunityIcons size={size} name={focused ? config.activeIcon : config.icon} color={color} />;
+        }
+      }}
+    />
+  );
+};
+
+export default function TabLayout() {
+  return (
     <Tabs
+      tabBar={(props) => <TabBar {...props} />}
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
+        tabBarHideOnKeyboard: true,
+        headerShown: false
+      }}
+    >
+      {TAB_CONFIG.map(renderTabItem)}
     </Tabs>
   );
 }

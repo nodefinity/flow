@@ -4,18 +4,15 @@
  */
 
 import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useAppSetting } from '@flow/core';
+import { MD3Colors } from 'react-native-paper/lib/typescript/types';
 
-export function useThemeColor(
-  props: { light?: string; dark?: string },
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark
-) {
-  const theme = useColorScheme() ?? 'light';
-  const colorFromProps = props[theme];
+export function useThemeColor(): MD3Colors;
+export function useThemeColor<K extends keyof MD3Colors>(colorType: K): MD3Colors[K];
+export function useThemeColor(colorType?: keyof MD3Colors) {
+  const { effectiveColorScheme, currentColor } = useAppSetting();
 
-  if (colorFromProps) {
-    return colorFromProps;
-  } else {
-    return Colors[theme][colorName];
-  }
+  return colorType
+    ? Colors[effectiveColorScheme!][currentColor][colorType]
+    : Colors[effectiveColorScheme!][currentColor];
 }

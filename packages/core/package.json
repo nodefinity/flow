@@ -1,5 +1,10 @@
 {
   "name": "@flow/core",
   "version": "0.0.1",
-  "main": "index.js"
+  "main": "index.js",
+  "dependencies": {
+    "i18next": "^25.2.0",
+    "react-i18next": "^15.5.2",
+    "zustand": "^5.0.5"
+  }
 }
