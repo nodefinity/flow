@@ -14,7 +14,6 @@ export function AppTheme() {
   
   const { isSettingLoading, effectiveColorScheme, currentColor } = useAppSetting();
 
-
   if (isSettingLoading) {
     return null;
   }
