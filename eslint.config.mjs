@@ -11,6 +11,7 @@ export default antfu(
       'style/semi': ['error', 'never'],
       'react-hooks/exhaustive-deps': 'off',
       'ts/no-use-before-define': 'off',
+      'no-console': 'off',
     },
   },
 )

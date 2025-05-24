@@ -28,6 +28,7 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
   light: {
     default: {
       ...MD3LightTheme.colors,
+      primary: '#FF8216',
     },
     orange: {
       primary: 'rgb(176, 46, 0)',
@@ -495,6 +496,7 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
   dark: {
     default: {
       ...MD3DarkTheme.colors,
+      primary: '#FF8216',
     },
     orange: {
       primary: 'rgb(255, 183, 134)',
