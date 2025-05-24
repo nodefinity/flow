@@ -7,7 +7,7 @@ export default {
     newReleases: 'New Releases',
     recommended: 'Recommended for You',
     favorites: 'Favorites',
-    playlists: 'Playlists'
+    playlists: 'Playlists',
   },
   actions: {
     play: 'Play',
@@ -15,10 +15,10 @@ export default {
     addToQueue: 'Add to Queue',
     addToPlaylist: 'Add to Playlist',
     like: 'Like',
-    download: 'Download'
+    download: 'Download',
   },
   emptyState: {
     noMusic: 'No music found',
-    startExploring: 'Start exploring to find music you love'
-  }
-};
+    startExploring: 'Start exploring to find music you love',
+  },
+}

@@ -14,8 +14,8 @@ export default {
       blue: 'Blue',
       purple: 'Purple',
       green: 'Green',
-      red: 'Red'
-    }
+      red: 'Red',
+    },
   },
   playback: {
     title: 'Playback',
@@ -25,23 +25,23 @@ export default {
       low: 'Low',
       medium: 'Medium',
       high: 'High',
-      description: 'Higher quality uses more data'
+      description: 'Higher quality uses more data',
     },
     download: {
       title: 'Download Quality',
       standard: 'Standard',
       high: 'High',
-      description: 'Higher quality uses more storage'
+      description: 'Higher quality uses more storage',
     },
     equalizer: 'Equalizer',
     gapless: 'Gapless Playback',
-    normalization: 'Volume Normalization'
+    normalization: 'Volume Normalization',
   },
   language: {
     title: 'Language',
     auto: 'Auto (System)',
     english: 'English',
-    chinese: 'Chinese'
+    chinese: 'Chinese',
   },
   about: {
     title: 'About',
@@ -49,6 +49,6 @@ export default {
     terms: 'Terms of Service',
     privacy: 'Privacy Policy',
     license: 'License',
-    contact: 'Contact Us'
-  }
-};
+    contact: 'Contact Us',
+  },
+}

@@ -2,25 +2,25 @@
  * https://callstack.github.io/react-native-paper/docs/guides/theming
  */
 
-import { Colors } from '@/constants/Colors';
-import { MD3DarkTheme, MD3LightTheme, configureFonts } from 'react-native-paper';
+import { configureFonts, MD3DarkTheme, MD3LightTheme } from 'react-native-paper'
+import { Colors } from '@/constants/Colors'
 
 const fonts = configureFonts({
   config: {
     fontFamily: 'Urbanist',
   },
   isV3: true,
-});
+})
 
 const BaseLightTheme = {
   ...MD3LightTheme,
-  fonts
-};
+  fonts,
+}
 
 const BaseDarkTheme = {
   ...MD3DarkTheme,
-  fonts
-};
+  fonts,
+}
 
 const Themes = {
   light: {
@@ -29,79 +29,79 @@ const Themes = {
       ...BaseLightTheme,
       colors: {
         ...BaseLightTheme.colors,
-        ...Colors.light.orange
-      }
+        ...Colors.light.orange,
+      },
     },
     red: {
       ...BaseLightTheme,
       colors: {
         ...BaseLightTheme.colors,
-        ...Colors.light.red
-      }
+        ...Colors.light.red,
+      },
     },
     violet: {
       ...BaseLightTheme,
       colors: {
         ...BaseLightTheme.colors,
-        ...Colors.light.violet
-      }
+        ...Colors.light.violet,
+      },
     },
     indigo: {
       ...BaseLightTheme,
       colors: {
         ...BaseLightTheme.colors,
-        ...Colors.light.indigo
-      }
+        ...Colors.light.indigo,
+      },
     },
     blue: {
       ...BaseLightTheme,
       colors: {
         ...BaseLightTheme.colors,
-        ...Colors.light.blue
-      }
+        ...Colors.light.blue,
+      },
     },
     teal: {
       ...BaseLightTheme,
       colors: {
         ...BaseLightTheme.colors,
-        ...Colors.light.teal
-      }
+        ...Colors.light.teal,
+      },
     },
     cyan: {
       ...BaseLightTheme,
       colors: {
         ...BaseLightTheme.colors,
-        ...Colors.light.cyan
-      }
+        ...Colors.light.cyan,
+      },
     },
     green: {
       ...BaseLightTheme,
       colors: {
         ...BaseLightTheme.colors,
-        ...Colors.light.green
-      }
+        ...Colors.light.green,
+      },
     },
     lime: {
       ...BaseLightTheme,
       colors: {
         ...BaseLightTheme.colors,
-        ...Colors.light.lime
-      }
+        ...Colors.light.lime,
+      },
     },
     olive: {
       ...BaseLightTheme,
       colors: {
         ...BaseLightTheme.colors,
-        ...Colors.light.olive
-      }
+        ...Colors.light.olive,
+      },
     },
     brown: {
       ...BaseLightTheme,
       colors: {
         ...BaseLightTheme.colors,
-        ...Colors.light.brown
-      }
-    }
+        ...Colors.light.brown,
+      },
+    },
   },
   dark: {
     default: BaseDarkTheme,
@@ -109,80 +109,80 @@ const Themes = {
       ...BaseDarkTheme,
       colors: {
         ...BaseDarkTheme.colors,
-        ...Colors.dark.red
-      }
+        ...Colors.dark.red,
+      },
     },
     orange: {
       ...BaseDarkTheme,
       colors: {
         ...BaseDarkTheme.colors,
-        ...Colors.dark.orange
-      }
+        ...Colors.dark.orange,
+      },
     },
     violet: {
       ...BaseDarkTheme,
       colors: {
         ...BaseDarkTheme.colors,
-        ...Colors.dark.violet
-      }
+        ...Colors.dark.violet,
+      },
     },
     indigo: {
       ...BaseDarkTheme,
       colors: {
         ...BaseDarkTheme.colors,
-        ...Colors.dark.indigo
-      }
+        ...Colors.dark.indigo,
+      },
     },
     blue: {
       ...BaseDarkTheme,
       colors: {
         ...BaseDarkTheme.colors,
-        ...Colors.dark.blue
-      }
+        ...Colors.dark.blue,
+      },
     },
     teal: {
       ...BaseDarkTheme,
       colors: {
         ...BaseDarkTheme.colors,
-        ...Colors.dark.teal
-      }
+        ...Colors.dark.teal,
+      },
     },
     cyan: {
       ...BaseDarkTheme,
       colors: {
         ...BaseDarkTheme.colors,
-        ...Colors.dark.cyan
-      }
+        ...Colors.dark.cyan,
+      },
     },
     green: {
       ...BaseDarkTheme,
       colors: {
         ...BaseDarkTheme.colors,
-        ...Colors.dark.green
-      }
+        ...Colors.dark.green,
+      },
     },
     lime: {
       ...BaseDarkTheme,
       colors: {
         ...BaseDarkTheme.colors,
-        ...Colors.dark.lime
-      }
+        ...Colors.dark.lime,
+      },
     },
     olive: {
       ...BaseDarkTheme,
       colors: {
         ...BaseDarkTheme.colors,
-        ...Colors.dark.olive
-      }
+        ...Colors.dark.olive,
+      },
     },
     brown: {
       ...BaseDarkTheme,
       colors: {
         ...BaseDarkTheme.colors,
-        ...Colors.dark.brown
-      }
-    }
-  }
-};
+        ...Colors.dark.brown,
+      },
+    },
+  },
+}
 
-export default Themes;
+export default Themes

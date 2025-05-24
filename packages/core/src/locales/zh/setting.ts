@@ -14,8 +14,8 @@ export default {
       blue: '蓝色',
       purple: '紫色',
       green: '绿色',
-      red: '红色'
-    }
+      red: '红色',
+    },
   },
   playback: {
     title: '播放',
@@ -25,23 +25,23 @@ export default {
       low: '低',
       medium: '中',
       high: '高',
-      description: '更高音质将消耗更多数据'
+      description: '更高音质将消耗更多数据',
     },
     download: {
       title: '下载音质',
       standard: '标准',
       high: '高品质',
-      description: '更高音质将占用更多存储空间'
+      description: '更高音质将占用更多存储空间',
     },
     equalizer: '均衡器',
     gapless: '无缝播放',
-    normalization: '音量标准化'
+    normalization: '音量标准化',
   },
   language: {
     title: '语言',
     auto: '自动（跟随系统）',
     english: '英文',
-    chinese: '中文'
+    chinese: '中文',
   },
   about: {
     title: '关于',
@@ -49,6 +49,6 @@ export default {
     terms: '服务条款',
     privacy: '隐私政策',
     license: '许可协议',
-    contact: '联系我们'
-  }
-};
+    contact: '联系我们',
+  },
+}

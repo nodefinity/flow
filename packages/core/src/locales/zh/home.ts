@@ -7,7 +7,7 @@ export default {
     newReleases: '新歌发布',
     recommended: '个性推荐',
     favorites: '我的收藏',
-    playlists: '歌单'
+    playlists: '歌单',
   },
   actions: {
     play: '播放',
@@ -15,10 +15,10 @@ export default {
     addToQueue: '添加到队列',
     addToPlaylist: '添加到歌单',
     like: '收藏',
-    download: '下载'
+    download: '下载',
   },
   emptyState: {
     noMusic: '没有找到音乐',
-    startExploring: '开始探索发现你喜爱的音乐'
-  }
-};
+    startExploring: '开始探索发现你喜爱的音乐',
+  },
+}

@@ -1,6 +1,5 @@
-export * from './constants';
-export * from './hooks';
-export * from './locales/i18n';
-export * from './stores';
-export * from './types';
-
+export * from './constants'
+export * from './hooks'
+export * from './locales/i18n'
+export * from './stores'
+export * from './types'

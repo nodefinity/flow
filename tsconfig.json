@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
     "target": "es2020",
+    "jsx": "preserve",
+    "rootDir": ".",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "strict": true,
-    "jsx": "preserve",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "rootDir": ".",
     "paths": {
       "@flow/*": ["./packages/*/src"]
-    }
+    },
+    "resolveJsonModule": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
   "include": [
     "packages/*/src"

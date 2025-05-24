@@ -3,8 +3,8 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-import { MD3DarkTheme, MD3LightTheme } from 'react-native-paper';
-import { MD3Colors } from 'react-native-paper/lib/typescript/types';
+import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
+import { MD3DarkTheme, MD3LightTheme } from 'react-native-paper'
 
 export type ColorName =
   | 'default'
@@ -18,16 +18,16 @@ export type ColorName =
   | 'green'
   | 'lime'
   | 'olive'
-  | 'brown';
+  | 'brown'
 
 type ColorScheme = {
   [K in ColorName]: MD3Colors;
-};
+}
 
 export const Colors: Record<'light' | 'dark', ColorScheme> = {
   light: {
     default: {
-      ...MD3LightTheme.colors
+      ...MD3LightTheme.colors,
     },
     orange: {
       primary: 'rgb(176, 46, 0)',
@@ -65,11 +65,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(249, 235, 235)',
         level3: 'rgb(246, 229, 227)',
         level4: 'rgb(246, 226, 224)',
-        level5: 'rgb(244, 222, 219)'
+        level5: 'rgb(244, 222, 219)',
       },
       surfaceDisabled: 'rgba(32, 26, 24, 0.12)',
       onSurfaceDisabled: 'rgba(32, 26, 24, 0.38)',
-      backdrop: 'rgba(59, 45, 41, 0.4)'
+      backdrop: 'rgba(59, 45, 41, 0.4)',
     },
     red: {
       primary: 'rgb(185, 12, 85)',
@@ -107,11 +107,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(249, 232, 241)',
         level3: 'rgb(247, 225, 236)',
         level4: 'rgb(247, 222, 235)',
-        level5: 'rgb(245, 218, 231)'
+        level5: 'rgb(245, 218, 231)',
       },
       surfaceDisabled: 'rgba(32, 26, 27, 0.12)',
       onSurfaceDisabled: 'rgba(32, 26, 27, 0.38)',
-      backdrop: 'rgba(58, 45, 47, 0.4)'
+      backdrop: 'rgba(58, 45, 47, 0.4)',
     },
     violet: {
       primary: 'rgb(140, 51, 179)',
@@ -149,11 +149,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(246, 235, 249)',
         level3: 'rgb(242, 229, 247)',
         level4: 'rgb(241, 227, 246)',
-        level5: 'rgb(239, 223, 244)'
+        level5: 'rgb(239, 223, 244)',
       },
       surfaceDisabled: 'rgba(30, 27, 30, 0.12)',
       onSurfaceDisabled: 'rgba(30, 27, 30, 0.38)',
-      backdrop: 'rgba(53, 46, 54, 0.4)'
+      backdrop: 'rgba(53, 46, 54, 0.4)',
     },
     indigo: {
       primary: 'rgb(104, 71, 192)',
@@ -191,11 +191,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(243, 237, 250)',
         level3: 'rgb(238, 231, 248)',
         level4: 'rgb(237, 229, 247)',
-        level5: 'rgb(234, 226, 246)'
+        level5: 'rgb(234, 226, 246)',
       },
       surfaceDisabled: 'rgba(28, 27, 30, 0.12)',
       onSurfaceDisabled: 'rgba(28, 27, 30, 0.38)',
-      backdrop: 'rgba(50, 47, 56, 0.4)'
+      backdrop: 'rgba(50, 47, 56, 0.4)',
     },
     blue: {
       primary: 'rgb(0, 99, 154)',
@@ -233,11 +233,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(232, 240, 247)',
         level3: 'rgb(224, 235, 244)',
         level4: 'rgb(222, 234, 243)',
-        level5: 'rgb(217, 231, 241)'
+        level5: 'rgb(217, 231, 241)',
       },
       surfaceDisabled: 'rgba(26, 28, 30, 0.12)',
       onSurfaceDisabled: 'rgba(26, 28, 30, 0.38)',
-      backdrop: 'rgba(44, 49, 55, 0.4)'
+      backdrop: 'rgba(44, 49, 55, 0.4)',
     },
     teal: {
       primary: 'rgb(0, 104, 116)',
@@ -275,11 +275,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(230, 241, 242)',
         level3: 'rgb(223, 237, 238)',
         level4: 'rgb(220, 235, 237)',
-        level5: 'rgb(215, 232, 234)'
+        level5: 'rgb(215, 232, 234)',
       },
       surfaceDisabled: 'rgba(25, 28, 29, 0.12)',
       onSurfaceDisabled: 'rgba(25, 28, 29, 0.38)',
-      backdrop: 'rgba(41, 50, 52, 0.4)'
+      backdrop: 'rgba(41, 50, 52, 0.4)',
     },
     cyan: {
       primary: 'rgb(0, 107, 94)',
@@ -317,11 +317,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(230, 241, 238)',
         level3: 'rgb(223, 237, 234)',
         level4: 'rgb(220, 236, 232)',
-        level5: 'rgb(215, 233, 229)'
+        level5: 'rgb(215, 233, 229)',
       },
       surfaceDisabled: 'rgba(25, 28, 27, 0.12)',
       onSurfaceDisabled: 'rgba(25, 28, 27, 0.38)',
-      backdrop: 'rgba(41, 50, 48, 0.4)'
+      backdrop: 'rgba(41, 50, 48, 0.4)',
     },
     green: {
       primary: 'rgb(16, 109, 32)',
@@ -359,11 +359,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(233, 242, 229)',
         level3: 'rgb(226, 237, 223)',
         level4: 'rgb(224, 236, 220)',
-        level5: 'rgb(219, 233, 216)'
+        level5: 'rgb(219, 233, 216)',
       },
       surfaceDisabled: 'rgba(26, 28, 25, 0.12)',
       onSurfaceDisabled: 'rgba(26, 28, 25, 0.38)',
-      backdrop: 'rgba(44, 50, 42, 0.4)'
+      backdrop: 'rgba(44, 50, 42, 0.4)',
     },
     lime: {
       primary: 'rgb(56, 107, 1)',
@@ -401,11 +401,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(237, 241, 226)',
         level3: 'rgb(231, 237, 218)',
         level4: 'rgb(229, 236, 216)',
-        level5: 'rgb(225, 233, 211)'
+        level5: 'rgb(225, 233, 211)',
       },
       surfaceDisabled: 'rgba(26, 28, 24, 0.12)',
       onSurfaceDisabled: 'rgba(26, 28, 24, 0.38)',
-      backdrop: 'rgba(45, 50, 40, 0.4)'
+      backdrop: 'rgba(45, 50, 40, 0.4)',
     },
     olive: {
       primary: 'rgb(95, 98, 0)',
@@ -443,11 +443,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(242, 239, 235)',
         level3: 'rgb(237, 234, 227)',
         level4: 'rgb(236, 233, 224)',
-        level5: 'rgb(233, 230, 219)'
+        level5: 'rgb(233, 230, 219)',
       },
       surfaceDisabled: 'rgba(28, 28, 23, 0.12)',
       onSurfaceDisabled: 'rgba(28, 28, 23, 0.38)',
-      backdrop: 'rgba(49, 49, 37, 0.4)'
+      backdrop: 'rgba(49, 49, 37, 0.4)',
     },
     brown: {
       primary: 'rgb(155, 68, 39)',
@@ -485,16 +485,16 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(247, 236, 238)',
         level3: 'rgb(244, 231, 231)',
         level4: 'rgb(243, 229, 229)',
-        level5: 'rgb(241, 225, 225)'
+        level5: 'rgb(241, 225, 225)',
       },
       surfaceDisabled: 'rgba(32, 26, 24, 0.12)',
       onSurfaceDisabled: 'rgba(32, 26, 24, 0.38)',
-      backdrop: 'rgba(59, 45, 41, 0.4)'
-    }
+      backdrop: 'rgba(59, 45, 41, 0.4)',
+    },
   },
   dark: {
     default: {
-      ...MD3DarkTheme.colors
+      ...MD3DarkTheme.colors,
     },
     orange: {
       primary: 'rgb(255, 183, 134)',
@@ -532,11 +532,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(50, 39, 32)',
         level3: 'rgb(57, 43, 35)',
         level4: 'rgb(59, 45, 36)',
-        level5: 'rgb(63, 48, 39)'
+        level5: 'rgb(63, 48, 39)',
       },
       surfaceDisabled: 'rgba(236, 224, 218, 0.12)',
       onSurfaceDisabled: 'rgba(236, 224, 218, 0.38)',
-      backdrop: 'rgba(58, 46, 38, 0.4)'
+      backdrop: 'rgba(58, 46, 38, 0.4)',
     },
     red: {
       primary: 'rgb(255, 177, 194)',
@@ -574,11 +574,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(50, 38, 40)',
         level3: 'rgb(57, 43, 45)',
         level4: 'rgb(59, 44, 47)',
-        level5: 'rgb(63, 47, 50)'
+        level5: 'rgb(63, 47, 50)',
       },
       surfaceDisabled: 'rgba(236, 224, 224, 0.12)',
       onSurfaceDisabled: 'rgba(236, 224, 224, 0.38)',
-      backdrop: 'rgba(58, 45, 47, 0.4)'
+      backdrop: 'rgba(58, 45, 47, 0.4)',
     },
     violet: {
       primary: 'rgb(235, 178, 255)',
@@ -616,11 +616,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(46, 39, 48)',
         level3: 'rgb(53, 44, 55)',
         level4: 'rgb(55, 45, 57)',
-        level5: 'rgb(59, 48, 62)'
+        level5: 'rgb(59, 48, 62)',
       },
       surfaceDisabled: 'rgba(232, 224, 229, 0.12)',
       onSurfaceDisabled: 'rgba(232, 224, 229, 0.38)',
-      backdrop: 'rgba(53, 46, 54, 0.4)'
+      backdrop: 'rgba(53, 46, 54, 0.4)',
     },
     indigo: {
       primary: 'rgb(206, 189, 255)',
@@ -658,11 +658,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(42, 40, 48)',
         level3: 'rgb(48, 45, 55)',
         level4: 'rgb(49, 46, 57)',
-        level5: 'rgb(53, 50, 62)'
+        level5: 'rgb(53, 50, 62)',
       },
       surfaceDisabled: 'rgba(230, 225, 230, 0.12)',
       onSurfaceDisabled: 'rgba(230, 225, 230, 0.38)',
-      backdrop: 'rgba(50, 47, 56, 0.4)'
+      backdrop: 'rgba(50, 47, 56, 0.4)',
     },
     blue: {
       primary: 'rgb(150, 204, 255)',
@@ -700,11 +700,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(36, 42, 48)',
         level3: 'rgb(40, 47, 55)',
         level4: 'rgb(41, 49, 57)',
-        level5: 'rgb(43, 53, 62)'
+        level5: 'rgb(43, 53, 62)',
       },
       surfaceDisabled: 'rgba(226, 226, 229, 0.12)',
       onSurfaceDisabled: 'rgba(226, 226, 229, 0.38)',
-      backdrop: 'rgba(44, 49, 55, 0.4)'
+      backdrop: 'rgba(44, 49, 55, 0.4)',
     },
     teal: {
       primary: 'rgb(79, 216, 235)',
@@ -742,11 +742,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(29, 43, 46)',
         level3: 'rgb(31, 49, 52)',
         level4: 'rgb(32, 51, 54)',
-        level5: 'rgb(33, 54, 58)'
+        level5: 'rgb(33, 54, 58)',
       },
       surfaceDisabled: 'rgba(225, 227, 227, 0.12)',
       onSurfaceDisabled: 'rgba(225, 227, 227, 0.38)',
-      backdrop: 'rgba(41, 50, 52, 0.4)'
+      backdrop: 'rgba(41, 50, 52, 0.4)',
     },
     cyan: {
       primary: 'rgb(85, 219, 198)',
@@ -784,11 +784,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(30, 43, 41)',
         level3: 'rgb(32, 49, 46)',
         level4: 'rgb(32, 51, 48)',
-        level5: 'rgb(33, 55, 51)'
+        level5: 'rgb(33, 55, 51)',
       },
       surfaceDisabled: 'rgba(224, 227, 225, 0.12)',
       onSurfaceDisabled: 'rgba(224, 227, 225, 0.38)',
-      backdrop: 'rgba(41, 50, 48, 0.4)'
+      backdrop: 'rgba(41, 50, 48, 0.4)',
     },
     green: {
       primary: 'rgb(130, 219, 126)',
@@ -826,11 +826,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(34, 43, 33)',
         level3: 'rgb(37, 49, 36)',
         level4: 'rgb(39, 51, 37)',
-        level5: 'rgb(41, 55, 39)'
+        level5: 'rgb(41, 55, 39)',
       },
       surfaceDisabled: 'rgba(226, 227, 221, 0.12)',
       onSurfaceDisabled: 'rgba(226, 227, 221, 0.38)',
-      backdrop: 'rgba(44, 50, 42, 0.4)'
+      backdrop: 'rgba(44, 50, 42, 0.4)',
     },
     lime: {
       primary: 'rgb(156, 215, 105)',
@@ -868,11 +868,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(36, 43, 31)',
         level3: 'rgb(40, 49, 33)',
         level4: 'rgb(42, 50, 34)',
-        level5: 'rgb(44, 54, 35)'
+        level5: 'rgb(44, 54, 35)',
       },
       surfaceDisabled: 'rgba(227, 227, 220, 0.12)',
       onSurfaceDisabled: 'rgba(227, 227, 220, 0.38)',
-      backdrop: 'rgba(45, 50, 40, 0.4)'
+      backdrop: 'rgba(45, 50, 40, 0.4)',
     },
     olive: {
       primary: 'rgb(200, 206, 68)',
@@ -910,11 +910,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(42, 42, 27)',
         level3: 'rgb(47, 48, 28)',
         level4: 'rgb(49, 49, 28)',
-        level5: 'rgb(52, 53, 29)'
+        level5: 'rgb(52, 53, 29)',
       },
       surfaceDisabled: 'rgba(229, 226, 218, 0.12)',
       onSurfaceDisabled: 'rgba(229, 226, 218, 0.38)',
-      backdrop: 'rgba(49, 49, 37, 0.4)'
+      backdrop: 'rgba(49, 49, 37, 0.4)',
     },
     brown: {
       primary: 'rgb(255, 181, 158)',
@@ -952,11 +952,11 @@ export const Colors: Record<'light' | 'dark', ColorScheme> = {
         level2: 'rgb(50, 38, 35)',
         level3: 'rgb(57, 43, 39)',
         level4: 'rgb(59, 45, 40)',
-        level5: 'rgb(63, 48, 43)'
+        level5: 'rgb(63, 48, 43)',
       },
       surfaceDisabled: 'rgba(237, 224, 220, 0.12)',
       onSurfaceDisabled: 'rgba(237, 224, 220, 0.38)',
-      backdrop: 'rgba(59, 45, 41, 0.4)'
-    }
-  }
-};
+      backdrop: 'rgba(59, 45, 41, 0.4)',
+    },
+  },
+}

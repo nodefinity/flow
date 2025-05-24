@@ -1,6 +1,6 @@
-import { Link, Stack } from 'expo-router';
-import { StyleSheet } from 'react-native';
-import { Surface, Text } from 'react-native-paper';
+import { Link, Stack } from 'expo-router'
+import { StyleSheet } from 'react-native'
+import { Surface, Text } from 'react-native-paper'
 
 export default function NotFoundScreen() {
   return (
@@ -13,7 +13,7 @@ export default function NotFoundScreen() {
         </Link>
       </Surface>
     </>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingVertical: 15,
   },
-});
+})

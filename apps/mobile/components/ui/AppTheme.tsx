@@ -1,33 +1,33 @@
-import { colorSchemeAdapter, mobileStorageAdapter } from '@/adapters';
-import Themes from '@/constants/Themes';
-import { registerColorSchemeAdapter, registerStorageAdapter, useAppSetting } from '@flow/core';
-import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider } from '@react-navigation/native';
-import { Slot } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { adaptNavigationTheme, PaperProvider } from 'react-native-paper';
-import { ThemedView } from './ThemedView';
+import { registerColorSchemeAdapter, registerStorageAdapter, useAppSetting } from '@flow/core'
+import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider } from '@react-navigation/native'
+import { Slot } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
+import { colorSchemeAdapter, mobileStorageAdapter } from '@/adapters'
+import Themes from '@/constants/Themes'
+import { ThemedView } from './ThemedView'
 
 export function AppTheme() {
-  registerStorageAdapter(mobileStorageAdapter);
-  registerColorSchemeAdapter(colorSchemeAdapter);
-  
-  const { isSettingLoading, effectiveColorScheme, currentColor } = useAppSetting();
+  registerStorageAdapter(mobileStorageAdapter)
+  registerColorSchemeAdapter(colorSchemeAdapter)
+
+  const { isSettingLoading, effectiveColorScheme, currentColor } = useAppSetting()
 
   if (isSettingLoading) {
-    return null;
+    return null
   }
 
-  const paperTheme = Themes[effectiveColorScheme ?? 'light'][currentColor];
+  const paperTheme = Themes[effectiveColorScheme ?? 'light'][currentColor]
 
   const { DarkTheme, LightTheme } = adaptNavigationTheme({
     reactNavigationDark: NavDarkTheme,
     reactNavigationLight: NavLightTheme,
     materialDark: Themes.dark.default,
-    materialLight: Themes.light.default
-  });
+    materialLight: Themes.light.default,
+  })
 
-  const statusBarStyle = effectiveColorScheme === 'dark' ? 'light' : 'dark';
+  const statusBarStyle = effectiveColorScheme === 'dark' ? 'light' : 'dark'
 
   return (
     <PaperProvider theme={paperTheme}>
@@ -40,5 +40,5 @@ export function AppTheme() {
         </GestureHandlerRootView>
       </ThemeProvider>
     </PaperProvider>
-  );
+  )
 }

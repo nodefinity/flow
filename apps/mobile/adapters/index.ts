@@ -1,3 +1,2 @@
-export * from './colorSchemeAdapter';
-export * from './storageAdapter';
-
+export * from './colorSchemeAdapter'
+export * from './storageAdapter'

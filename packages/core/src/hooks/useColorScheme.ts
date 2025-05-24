@@ -1,23 +1,22 @@
-export type ColorSchemeType = "light" | "dark" | null | undefined;
+export type ColorSchemeType = 'light' | 'dark' | null | undefined
 
 export interface ColorSchemeAdapter {
-  useColorScheme: () => ColorSchemeType;
+  useColorScheme: () => ColorSchemeType
 }
 
-export type ColorSchemeHook = () => ColorSchemeType;
+export type ColorSchemeHook = () => ColorSchemeType
 
 const defaultAdapter: ColorSchemeAdapter = {
-  useColorScheme() {
-    return "light";
-  },
-};
-
-let currentAdapter: ColorSchemeAdapter = defaultAdapter;
-
-export function registerColorSchemeAdapter(adapter: ColorSchemeAdapter): void {
-  currentAdapter = adapter;
+  // eslint-disable-next-line react-hooks-extra/no-unnecessary-use-prefix
+  useColorScheme: () => 'light',
 }
 
-export function useColorScheme(){
-  return currentAdapter.useColorScheme();
+let currentAdapter: ColorSchemeAdapter = defaultAdapter
+
+export function registerColorSchemeAdapter(adapter: ColorSchemeAdapter): void {
+  currentAdapter = adapter
+}
+
+export function useColorScheme() {
+  return currentAdapter.useColorScheme()
 }
