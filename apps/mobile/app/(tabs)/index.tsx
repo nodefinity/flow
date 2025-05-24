@@ -20,6 +20,11 @@ export default function HomeScreen() {
         <Text>Welcome!</Text>
         <HelloWave />
       </ThemedView>
+      <ThemedView style={styles.stepContainer}>
+        <Text style={styles.urbanistText}>Urbanist 字体测试: Welcome 欢迎</Text>
+        <Text style={styles.spaceMonoText}>SpaceMono 字体测试: Welcome 欢迎</Text>
+        <Text style={styles.urbanistItalicText}>UrbanistItalic 字体测试: Welcome 欢迎</Text>
+      </ThemedView>
     </ParallaxScrollView>
   );
 }
@@ -40,5 +45,20 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: 'absolute',
+  },
+  urbanistText: {
+    fontFamily: 'Urbanist',
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  spaceMonoText: {
+    fontFamily: 'SpaceMono',
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  urbanistItalicText: {
+    fontFamily: 'UrbanistItalic',
+    fontSize: 18,
+    marginBottom: 10,
   },
 });

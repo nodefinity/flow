@@ -5,7 +5,12 @@
 import { Colors } from '@/constants/Colors';
 import { MD3DarkTheme, MD3LightTheme, configureFonts } from 'react-native-paper';
 
-const fonts = configureFonts({ config: { fontFamily: 'SpaceMono-Regular' } });
+const fonts = configureFonts({
+  config: {
+    fontFamily: 'Urbanist',
+  },
+  isV3: true,
+});
 
 const BaseLightTheme = {
   ...MD3LightTheme,
