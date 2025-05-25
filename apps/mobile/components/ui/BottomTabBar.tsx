@@ -3,7 +3,7 @@ import { CommonActions } from '@react-navigation/native'
 import { BottomNavigation } from 'react-native-paper'
 import { useThemeColor } from '@/hooks/useThemeColor'
 
-function TabBar(props: BottomTabBarProps) {
+function BottomTabBar(props: BottomTabBarProps) {
   const theme = useThemeColor()
 
   return (
@@ -59,4 +59,4 @@ function TabBar(props: BottomTabBarProps) {
   )
 }
 
-export default TabBar
+export default BottomTabBar
