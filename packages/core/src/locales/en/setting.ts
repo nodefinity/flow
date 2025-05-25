@@ -13,6 +13,7 @@ export default {
       title: 'Language',
       english: 'English',
       chinese: 'Chinese',
+      auto: 'Auto',
     },
     color: {
       title: 'Color',

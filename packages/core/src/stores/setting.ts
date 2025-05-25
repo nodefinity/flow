@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { useColorScheme } from '../hooks/useColorScheme'
+import { useLanguage } from '../hooks/useLanguage'
 import { getStorageAdapter } from '../hooks/useStorageState'
 
 const DEFAULT_SETTING: AppSetting = {
@@ -53,6 +54,7 @@ export function useAppSetting() {
     setInitialized,
   } = useSettingsStore()
   const colorScheme = useColorScheme()
+  const language = useLanguage()
   const { i18n } = useTranslation()
 
   useEffect(() => {
@@ -66,12 +68,12 @@ export function useAppSetting() {
 
   useEffect(() => {
     if (setting?.language) {
-      const targetLang = setting.language === 'auto' ? 'zh' : setting.language
+      const targetLang = setting.language === 'auto' ? language : setting.language
       if (i18n.language !== targetLang) {
         i18n.changeLanguage(targetLang)
       }
     }
-  }, [setting?.language, i18n])
+  }, [setting?.language, i18n, language])
 
   const currentTheme = setting?.theme || 'auto'
   const effectiveColorScheme = currentTheme === 'auto' ? colorScheme : currentTheme

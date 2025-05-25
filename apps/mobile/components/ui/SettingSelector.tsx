@@ -1,8 +1,10 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useTranslation } from '@flow/core'
 import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button, Dialog, List, Portal, RadioButton, Text } from 'react-native-paper'
 import Animated from 'react-native-reanimated'
+import { useDeviceType } from '@/hooks/useDeviceType'
 
 interface SettingSelectorProps {
   title: string
@@ -10,7 +12,6 @@ interface SettingSelectorProps {
   currentValue: string
   options: Array<{ value: string, label: string }>
   onValueChange: (value: string) => void
-  cancelText?: string
 }
 
 export function SettingSelector({
@@ -19,8 +20,9 @@ export function SettingSelector({
   currentValue,
   options,
   onValueChange,
-  cancelText = '取消',
 }: SettingSelectorProps) {
+  const { t } = useTranslation()
+  const deviceType = useDeviceType()
   const [visibleDialog, setVisibleDialog] = useState(false)
 
   const currentOption = options.find(opt => opt.value === currentValue)
@@ -77,7 +79,11 @@ export function SettingSelector({
       />
 
       <Portal>
-        <Dialog visible={visibleDialog} onDismiss={() => setVisibleDialog(false)}>
+        <Dialog
+          visible={visibleDialog}
+          style={deviceType === 'tablet' && styles.dialogTablet}
+          onDismiss={() => setVisibleDialog(false)}
+        >
           <Dialog.Title>{title}</Dialog.Title>
           <Dialog.Content>
             <Dialog.ScrollArea style={styles.radioContainer}>
@@ -93,7 +99,7 @@ export function SettingSelector({
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setVisibleDialog(false)}>
-              {cancelText}
+              {t('common.cancel')}
             </Button>
           </Dialog.Actions>
         </Dialog>
@@ -120,5 +126,10 @@ const styles = StyleSheet.create({
   },
   radioLabel: {
     fontSize: 16,
+  },
+  dialogTablet: {
+    maxWidth: 500,
+    justifyContent: 'center',
+    left: '25%',
   },
 })

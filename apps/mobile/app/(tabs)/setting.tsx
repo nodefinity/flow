@@ -10,6 +10,7 @@ export default function TabTwoScreen() {
   const { setting, updateSetting } = useAppSetting()
 
   const languageOptions = [
+    { value: 'auto', label: t('setting.appearance.language.auto') },
     { value: 'zh', label: t('setting.appearance.language.chinese') },
     { value: 'en', label: t('setting.appearance.language.english') },
   ]
@@ -52,7 +53,6 @@ export default function TabTwoScreen() {
               currentValue={setting.language}
               options={languageOptions}
               onValueChange={handleLanguageChange}
-              cancelText={t('common.cancel')}
             />
 
             <SettingSelector
@@ -61,7 +61,6 @@ export default function TabTwoScreen() {
               currentValue={setting.theme}
               options={themeOptions}
               onValueChange={handleThemeChange}
-              cancelText={t('common.cancel')}
             />
 
             <SettingSelector
@@ -70,7 +69,6 @@ export default function TabTwoScreen() {
               currentValue={setting.color}
               options={colorOptions}
               onValueChange={handleColorChange}
-              cancelText={t('common.cancel')}
             />
           </List.Section>
         </Surface>
