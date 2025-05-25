@@ -1,22 +1,36 @@
 export default {
   title: 'Settings',
+
   appearance: {
     title: 'Appearance',
     theme: {
       title: 'Theme',
-      light: 'Light',
-      dark: 'Dark',
-      auto: 'Auto (System)',
+      light: 'Light Mode',
+      dark: 'Dark Mode',
+      auto: 'Auto',
+    },
+    language: {
+      title: 'Language',
+      english: 'English',
+      chinese: 'Chinese',
     },
     color: {
       title: 'Color',
       default: 'Default',
-      blue: 'Blue',
-      purple: 'Purple',
-      green: 'Green',
+      orange: 'Orange',
       red: 'Red',
+      violet: 'Violet',
+      indigo: 'Indigo',
+      blue: 'Blue',
+      teal: 'Teal',
+      cyan: 'Cyan',
+      green: 'Green',
+      lime: 'Lime',
+      olive: 'Olive',
+      brown: 'Brown',
     },
   },
+
   playback: {
     title: 'Playback',
     quality: {
@@ -36,12 +50,6 @@ export default {
     equalizer: 'Equalizer',
     gapless: 'Gapless Playback',
     normalization: 'Volume Normalization',
-  },
-  language: {
-    title: 'Language',
-    auto: 'Auto (System)',
-    english: 'English',
-    chinese: 'Chinese',
   },
   about: {
     title: 'About',

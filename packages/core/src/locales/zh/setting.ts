@@ -1,22 +1,36 @@
 export default {
   title: '设置',
+
   appearance: {
     title: '外观',
     theme: {
       title: '主题',
-      light: '浅色',
-      dark: '深色',
-      auto: '自动（跟随系统）',
+      light: '浅色模式',
+      dark: '深色模式',
+      auto: '自动',
+    },
+    language: {
+      title: '语言',
+      english: '英文',
+      chinese: '中文',
     },
     color: {
       title: '主题色',
       default: '默认',
-      blue: '蓝色',
-      purple: '紫色',
-      green: '绿色',
+      orange: '橙色',
       red: '红色',
+      violet: '紫色',
+      indigo: '靛蓝色',
+      blue: '蓝色',
+      teal: '青色',
+      cyan: '青色',
+      green: '绿色',
+      lime: '青柠色',
+      olive: '橄榄色',
+      brown: '棕色',
     },
   },
+
   playback: {
     title: '播放',
     quality: {
@@ -36,12 +50,6 @@ export default {
     equalizer: '均衡器',
     gapless: '无缝播放',
     normalization: '音量标准化',
-  },
-  language: {
-    title: '语言',
-    auto: '自动（跟随系统）',
-    english: '英文',
-    chinese: '中文',
   },
   about: {
     title: '关于',

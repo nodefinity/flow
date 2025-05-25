@@ -1,5 +1,5 @@
 export default {
-  title: '首页',
+  title: '曲库',
   sections: {
     recentlyPlayed: '最近播放',
     forYou: '为你推荐',

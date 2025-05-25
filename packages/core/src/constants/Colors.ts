@@ -20,6 +20,21 @@ export type ColorName =
   | 'olive'
   | 'brown'
 
+export const ColorNames: ColorName[] = [
+  'default',
+  'orange',
+  'red',
+  'violet',
+  'indigo',
+  'blue',
+  'teal',
+  'cyan',
+  'green',
+  'lime',
+  'olive',
+  'brown',
+]
+
 type ColorScheme = {
   [K in ColorName]: MD3Colors;
 }

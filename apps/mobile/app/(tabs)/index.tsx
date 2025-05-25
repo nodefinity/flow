@@ -1,15 +1,17 @@
 import { Feather } from '@expo/vector-icons'
 
+import { useTranslation } from '@flow/core'
 import { useMemo, useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Appbar, Text } from 'react-native-paper'
 import { SceneMap } from 'react-native-tab-view'
-import { TabView } from '@/components/ui/TabView'
 
+import { TabView } from '@/components/ui/TabView'
 import { ThemedView } from '@/components/ui/ThemedView'
 import { useThemeColor } from '@/hooks/useThemeColor'
 
 export default function HomeScreen() {
+  const { t } = useTranslation()
   const theme = useThemeColor()
   const [index, setIndex] = useState(0)
 
@@ -46,16 +48,19 @@ export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>
       <Appbar.Header>
-        <Appbar.Content title="Flow" />
+        <Appbar.Content title={t('home.title')} />
         <Appbar.Action icon={SearchIcon} onPress={() => { }} />
       </Appbar.Header>
 
-      <TabView
-        routes={routes}
-        index={index}
-        onIndexChange={setIndex}
-        renderScene={renderScene}
-      />
+      <View style={styles.tabView}>
+        <TabView
+          routes={routes}
+          index={index}
+          onIndexChange={setIndex}
+          renderScene={renderScene}
+          pagerStyle={styles.pager}
+        />
+      </View>
     </ThemedView>
   )
 }
@@ -63,5 +68,12 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  tabView: {
+    flex: 1,
+    marginHorizontal: 16,
+  },
+  pager: {
+    marginTop: 16,
   },
 })

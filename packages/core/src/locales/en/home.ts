@@ -1,5 +1,5 @@
 export default {
-  title: 'Home',
+  title: 'Songs',
   sections: {
     recentlyPlayed: 'Recently Played',
     forYou: 'For You',
