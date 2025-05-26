@@ -3970,11 +3970,6 @@ expo-font@~13.3.1:
   dependencies:
     fontfaceobserver "^2.1.0"
 
-expo-image@~2.1.7:
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/expo-image/-/expo-image-2.1.7.tgz#c64cf29363c87762c9f4b16a016a59ac15998bc2"
-  integrity sha512-p2Gr8fP/YakFHHo4rbpJbRWwKNrZp1GzSD91WEG3ZYAbTVdTjheJ6gUxXgggFaxEbaY+4WeQ0c5j9tZq8+3cEg==
-
 expo-keep-awake@~14.1.4:
   version "14.1.4"
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-14.1.4.tgz#80197728563e0e17523e5a606fbd6fbed9639503"
@@ -4054,13 +4049,6 @@ expo-status-bar@~2.2.3:
   dependencies:
     react-native-edge-to-edge "1.6.0"
     react-native-is-edge-to-edge "^1.1.6"
-
-expo-symbols@~0.4.4:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/expo-symbols/-/expo-symbols-0.4.4.tgz#3aff3c9001eb69bb5a10cc6280bd5bdfb8563296"
-  integrity sha512-ZVTBdm48MUZsO/sRLrxezB37aazynn8pzpsIUwMqI7V5JtBPPb2gU7LRVPITRc0CqOA+OL01/PqFE3ifBUIP4A==
-  dependencies:
-    sf-symbols-typescript "^2.0.0"
 
 expo-system-ui@~5.0.7:
   version "5.0.7"
@@ -7008,11 +6996,6 @@ setprototypeof@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.2.0.tgz#66c9a24a73f9fc28cbe66b09fed3d33dcaf1b424"
   integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
-
-sf-symbols-typescript@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/sf-symbols-typescript/-/sf-symbols-typescript-2.1.0.tgz#50a2d7b36edd6809606f0b0a36322fc1fdd7cfde"
-  integrity sha512-ezT7gu/SHTPIOEEoG6TF+O0m5eewl0ZDAO4AtdBi5HjsrUI6JdCG17+Q8+aKp0heM06wZKApRCn5olNbs0Wb/A==
 
 shaka-player@^4.14.14:
   version "4.14.14"
