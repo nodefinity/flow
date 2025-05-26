@@ -1,9 +1,12 @@
 import type { ColorName, Language, Theme } from '@flow/core'
+import type { Track } from '@/constants/PlayList'
 import { ColorNames, useAppSetting, useTranslation } from '@flow/core'
 import { ScrollView, StyleSheet } from 'react-native'
 import { Appbar, List, Surface } from 'react-native-paper'
+import { MusicScanButton } from '@/components/ui/MusicScanButton'
 import { SettingSelector } from '@/components/ui/SettingSelector'
 import { ThemedView } from '@/components/ui/ThemedView'
+import { addLocalTracks } from '@/utils/musicStorage'
 
 export default function TabTwoScreen() {
   const { t } = useTranslation()
@@ -36,6 +39,19 @@ export default function TabTwoScreen() {
 
   const handleColorChange = (value: string) => {
     updateSetting({ color: value as ColorName })
+  }
+
+  const handleMusicLoaded = async (tracks: Track[]) => {
+    console.log(`音乐扫描完成，找到 ${tracks.length} 首歌曲:`, tracks.map(t => t.title))
+
+    // 将扫描到的音乐保存到本地存储
+    try {
+      await addLocalTracks(tracks)
+      console.log('音乐已保存到本地存储')
+    }
+    catch (error) {
+      console.error('保存音乐失败:', error)
+    }
   }
 
   return (
@@ -72,6 +88,36 @@ export default function TabTwoScreen() {
             />
           </List.Section>
         </Surface>
+
+        <Surface style={styles.surface} mode="flat">
+          <List.Section title={t('setting.playback.title')} style={styles.listSection}>
+            <MusicScanButton
+              title={t('setting.playback.scanMusic')}
+              description={t('setting.playback.scanMusicDescription')}
+              icon="music-box-multiple"
+              type="scan"
+              onMusicLoaded={handleMusicLoaded}
+            />
+
+            <MusicScanButton
+              title={t('setting.playback.pickFiles')}
+              description={t('setting.playback.pickFilesDescription')}
+              icon="file-music"
+              type="pick"
+              onMusicLoaded={handleMusicLoaded}
+            />
+
+            <List.Item
+              title={t('setting.playback.equalizer')}
+              left={props => <List.Icon {...props} icon="equalizer" />}
+              right={props => <List.Icon {...props} icon="chevron-right" />}
+              onPress={() => {
+                // TODO: 实现均衡器功能
+                console.log('打开均衡器')
+              }}
+            />
+          </List.Section>
+        </Surface>
       </ScrollView>
     </ThemedView>
   )
@@ -89,6 +135,7 @@ const styles = StyleSheet.create({
   },
   surface: {
     marginHorizontal: 16,
+    marginVertical: 8,
     borderRadius: 16,
   },
 })

@@ -51,6 +51,10 @@ export default {
     equalizer: 'Equalizer',
     gapless: 'Gapless Playback',
     normalization: 'Volume Normalization',
+    scanMusic: 'Scan Local Music',
+    scanMusicDescription: 'Scan audio files on device',
+    pickFiles: 'Pick Audio Files',
+    pickFilesDescription: 'Select audio files from file system',
   },
   about: {
     title: 'About',

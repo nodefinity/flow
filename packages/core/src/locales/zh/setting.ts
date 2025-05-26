@@ -51,6 +51,10 @@ export default {
     equalizer: '均衡器',
     gapless: '无缝播放',
     normalization: '音量标准化',
+    scanMusic: '扫描本地音乐',
+    scanMusicDescription: '扫描设备中的音频文件',
+    pickFiles: '选择音频文件',
+    pickFilesDescription: '从文件系统选择音频文件',
   },
   about: {
     title: '关于',
