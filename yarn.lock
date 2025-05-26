@@ -3352,11 +3352,6 @@ electron-to-chromium@^1.5.149:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.155.tgz#809dd0ae9ae1db87c358e0c0c17c09a2ffc432d1"
   integrity sha512-ps5KcGGmwL8VaeJlvlDlu4fORQpv3+GIcF5I3f9tUKUlJ/wsysh6HU8P5L1XWRYeXfA0oJd4PyM8ds8zTFf6Ng==
 
-eme-encryption-scheme-polyfill@^2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/eme-encryption-scheme-polyfill/-/eme-encryption-scheme-polyfill-2.2.3.tgz#420608d56b995dfc440cfefba3cc06faaf02a95d"
-  integrity sha512-N0nlJZVaBqGWzvvFb6ZAxvTVeZ4v9cXCzrSFE0zCbNbviiygWI0gDJiRc4o5SqFrPVYBSQr5z5SzKjIvvxL+Vw==
-
 emoji-regex@^10.3.0:
   version "10.4.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-10.4.0.tgz#03553afea80b3975749cfcb36f776ca268e413d4"
@@ -6552,6 +6547,13 @@ react-is@^19.1.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-19.1.0.tgz#805bce321546b7e14c084989c77022351bbdd11b"
   integrity sha512-Oe56aUPnkHyyDxxkvqtd7KkdQP5uIUfHxd5XTb3wE9d/kRnZLmKbDB0GWk919tdQ+mxxPtG6EAs6RMT6i1qtHg==
 
+react-native-audio-pro@^9.9.1:
+  version "9.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-audio-pro/-/react-native-audio-pro-9.9.1.tgz#d1aef3335fcaad8a165f668265308c52f57313dc"
+  integrity sha512-UcIXHUe6WrKaKuVYe0THna+amj4q0eZL1PsFa41Z82n4Ix8unteMUGawRrxlx9OLiZ8SG3YAR9DV1dzzGa9u+Q==
+  dependencies:
+    zustand "^5.0.3"
+
 react-native-drawer-layout@^4.1.8:
   version "4.1.8"
   resolved "https://registry.yarnpkg.com/react-native-drawer-layout/-/react-native-drawer-layout-4.1.8.tgz#a832b81a00c413f6f9040487378ba54580c18797"
@@ -6629,11 +6631,6 @@ react-native-tab-view@^4.1.0:
   integrity sha512-A6pse3u7343aTw8OKxCyC90XG7ytnLBBn2QOxVByQ3TqPTi+X/bUW+B28GBpgNPODl4jscAsXW4qmAJqXDjJ+g==
   dependencies:
     use-latest-callback "^0.2.3"
-
-react-native-track-player@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-track-player/-/react-native-track-player-4.1.1.tgz#96f8688f270c5a01bc597b6331843b191402502b"
-  integrity sha512-E5N/eK/+HtAVJUAzXpm1cWz8ROheV9jb0TI6h2bM+333U+DWibTTnT2T1122FkCoXLXIYavtm2FR2if+5jH8cA==
 
 react-native-web@~0.20.0:
   version "0.20.0"
@@ -6996,13 +6993,6 @@ setprototypeof@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.2.0.tgz#66c9a24a73f9fc28cbe66b09fed3d33dcaf1b424"
   integrity sha512-E5LDX7Wrp85Kil5bhZv46j8jOeboKq5JMmYM3gVGdGH8xFpPWXUMsNrlODCrkoxMEeNi/XZIwuRvY4XNwYMJpw==
-
-shaka-player@^4.14.14:
-  version "4.14.14"
-  resolved "https://registry.yarnpkg.com/shaka-player/-/shaka-player-4.14.14.tgz#7ec835aac82260c4ed71ec791236410010fcc970"
-  integrity sha512-044dtpv0iv2oeK2WGU7+u+deuoNYfEvkfRfMYeuxjGAa95avdjK0qKdKql99NSeh5MIO0XbwUOrTdUfFOngGUQ==
-  dependencies:
-    eme-encryption-scheme-polyfill "^2.2.3"
 
 shallowequal@^1.1.0:
   version "1.1.0"
@@ -7932,7 +7922,7 @@ yocto-queue@^1.0.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-1.2.1.tgz#36d7c4739f775b3cbc28e6136e21aa057adec418"
   integrity sha512-AyeEbWOu/TAXdxlV9wmGcR0+yh2j3vYPGOECcIj2S7MkrLyC7ne+oye2BKTItt0ii2PHk4cDy+95+LshzbXnGg==
 
-zustand@^5.0.5:
+zustand@^5.0.3, zustand@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/zustand/-/zustand-5.0.5.tgz#3e236f6a953142d975336d179bc735d97db17e84"
   integrity sha512-mILtRfKW9xM47hqxGIxCv12gXusoY/xTSHBYApXozR0HmQv299whhBeeAcRy+KrPPybzosvJBCOmVjq6x12fCg==
