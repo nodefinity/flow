@@ -1,10 +1,11 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useTranslation } from '@flow/core'
+import { DeviceType } from 'expo-device'
 import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button, Dialog, List, Portal, RadioButton, Text } from 'react-native-paper'
 import Animated from 'react-native-reanimated'
-import { useDeviceType } from '@/hooks/useDeviceType'
+import { getDeviceType } from '@/utils/getDeviceType'
 
 interface SettingSelectorProps {
   title: string
@@ -22,7 +23,7 @@ export function SettingSelector({
   onValueChange,
 }: SettingSelectorProps) {
   const { t } = useTranslation()
-  const deviceType = useDeviceType()
+  const deviceType = getDeviceType()
   const [visibleDialog, setVisibleDialog] = useState(false)
 
   const currentOption = options.find(opt => opt.value === currentValue)
@@ -81,7 +82,7 @@ export function SettingSelector({
       <Portal>
         <Dialog
           visible={visibleDialog}
-          style={deviceType === 'tablet' && styles.dialogTablet}
+          style={deviceType === DeviceType.TABLET && styles.dialogTablet}
           onDismiss={() => setVisibleDialog(false)}
         >
           <Dialog.Title>{title}</Dialog.Title>

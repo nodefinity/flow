@@ -1,11 +1,12 @@
 import type { NavigationConfig } from '@flow/core'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { NAVIGATION_CONFIG, useTranslation } from '@flow/core'
+import { DeviceType } from 'expo-device'
 import { Tabs } from 'expo-router'
 import { StyleSheet, View } from 'react-native'
 import BottomTabBar from '@/components/ui/BottomTabBar'
 import DrawerTabBar from '@/components/ui/DrawerTabBar'
-import { useDeviceType } from '@/hooks/useDeviceType'
+import { getDeviceType } from '@/utils/getDeviceType'
 
 function RenderTabItem(config: NavigationConfig) {
   const { t } = useTranslation()
@@ -25,20 +26,20 @@ function RenderTabItem(config: NavigationConfig) {
 }
 
 export default function TabLayout() {
-  const deviceType = useDeviceType()
+  const deviceType = getDeviceType()
 
   return (
     <View style={styles.container}>
       <Tabs
         tabBar={props =>
-          deviceType === 'tablet'
-            ? <DrawerTabBar {...props} config={NAVIGATION_CONFIG} />
+          deviceType === DeviceType.TABLET
+            ? <DrawerTabBar {...props} />
             : <BottomTabBar {...props} />}
         screenOptions={{
           tabBarHideOnKeyboard: true,
           headerShown: false,
           animation: 'shift',
-          ...(deviceType === 'tablet' && {
+          ...(deviceType === DeviceType.TABLET && {
             sceneStyle: { marginLeft: 92 },
           }),
         }}

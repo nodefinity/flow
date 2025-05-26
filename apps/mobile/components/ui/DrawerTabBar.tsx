@@ -1,15 +1,10 @@
-import type { NavigationConfig } from '@flow/core'
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { CommonActions } from '@react-navigation/native'
 import { StyleSheet, View } from 'react-native'
 import { Drawer } from 'react-native-paper'
 import { useThemeColor } from '@/hooks/useThemeColor'
 
-interface DrawerTabBarProps extends BottomTabBarProps {
-  config: NavigationConfig[]
-}
-
-export default function DrawerTabBar({ state, descriptors, navigation, config }: DrawerTabBarProps) {
+export default function DrawerTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const theme = useThemeColor()
 
   return (
@@ -47,12 +42,27 @@ export default function DrawerTabBar({ state, descriptors, navigation, config }:
           return route.name
         }
 
+        const getIcons = () => {
+          if (options.tabBarIcon) {
+            const iconElement = options.tabBarIcon({ focused: true, color: '', size: 24 })
+            const unfocusedIconElement = options.tabBarIcon({ focused: false, color: '', size: 24 })
+
+            return {
+              focusedIcon: (iconElement as any)?.props?.name,
+              unfocusedIcon: (unfocusedIconElement as any)?.props?.name,
+            }
+          }
+          return { focusedIcon: undefined, unfocusedIcon: undefined }
+        }
+
+        const { focusedIcon, unfocusedIcon } = getIcons()
+
         return (
           <View key={route.key} style={styles.itemContainer}>
             <Drawer.CollapsedItem
               label={getTitle()}
-              focusedIcon={config.find(item => item.name === route.name)?.focusedIcon}
-              unfocusedIcon={config.find(item => item.name === route.name)?.unfocusedIcon}
+              focusedIcon={focusedIcon}
+              unfocusedIcon={unfocusedIcon}
               active={isFocused}
               onPress={onPress}
             />
