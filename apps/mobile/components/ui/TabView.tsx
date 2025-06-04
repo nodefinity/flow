@@ -1,8 +1,9 @@
 import type { FC } from 'react'
-import type { TabViewProps as RNTabViewProps } from 'react-native-tab-view'
+import type { TabViewProps as RNTabViewProps, TabDescriptor } from 'react-native-tab-view'
 
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { TabView as RNTabView, TabBar } from 'react-native-tab-view'
 import { useThemeColor } from '@/hooks/useThemeColor'
 
@@ -27,6 +28,7 @@ export const TabView: FC<TabViewProps> = ({
   ...rest
 }) => {
   const theme = useThemeColor()
+  const paperTheme = useTheme()
 
   const handleIndexChange = useCallback(
     (newIndex: number) => {
@@ -34,6 +36,23 @@ export const TabView: FC<TabViewProps> = ({
     },
     [onIndexChange],
   )
+
+  const tabOptions = useMemo(() => {
+    const options: Record<string, TabDescriptor<TabRoute>> = {}
+
+    routes.forEach((route) => {
+      options[route.key] = {
+        labelStyle: {
+          fontFamily: paperTheme.fonts.labelLarge.fontFamily || 'Urbanist',
+          fontSize: paperTheme.fonts.labelLarge.fontSize || 14,
+          fontWeight: paperTheme.fonts.labelLarge.fontWeight || '500',
+          letterSpacing: paperTheme.fonts.labelLarge.letterSpacing || 0,
+        },
+      }
+    })
+
+    return options
+  }, [routes, paperTheme.fonts.labelLarge])
 
   const renderTabBar = (props: any) => {
     return (
@@ -45,6 +64,7 @@ export const TabView: FC<TabViewProps> = ({
         tabStyle={{ width: 'auto' }}
         indicatorStyle={{ backgroundColor: theme.primary }}
         style={{ backgroundColor: theme.surface }}
+        options={tabOptions}
       />
     )
   }
