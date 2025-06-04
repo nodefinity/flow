@@ -57,7 +57,7 @@ export default function TabTwoScreen() {
   return (
     <ThemedView style={styles.container}>
       <Appbar.Header>
-        <Appbar.Content title={t('setting.title')} />
+        <Appbar.Content title={t('navigation.setting')} />
       </Appbar.Header>
 
       <ScrollView style={styles.scrollView}>
@@ -106,16 +106,6 @@ export default function TabTwoScreen() {
               type="pick"
               onMusicLoaded={handleMusicLoaded}
             />
-
-            <List.Item
-              title={t('setting.playback.equalizer')}
-              left={props => <List.Icon {...props} icon="equalizer" />}
-              right={props => <List.Icon {...props} icon="chevron-right" />}
-              onPress={() => {
-                // TODO: 实现均衡器功能
-                console.log('打开均衡器')
-              }}
-            />
           </List.Section>
         </Surface>
       </ScrollView>
@@ -132,6 +122,7 @@ const styles = StyleSheet.create({
   },
   listSection: {
     marginVertical: 0,
+    paddingHorizontal: 0,
   },
   surface: {
     marginHorizontal: 16,

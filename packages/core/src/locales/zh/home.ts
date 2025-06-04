@@ -1,5 +1,6 @@
 export default {
-  title: '曲库',
+  title: 'Flow',
+
   sections: {
     recentlyPlayed: '最近播放',
     forYou: '为你推荐',
@@ -9,6 +10,7 @@ export default {
     favorites: '我的收藏',
     playlists: '歌单',
   },
+
   actions: {
     play: '播放',
     shuffle: '随机播放',
@@ -17,6 +19,7 @@ export default {
     like: '收藏',
     download: '下载',
   },
+
   emptyState: {
     noMusic: '没有找到音乐',
     startExploring: '开始探索发现你喜爱的音乐',

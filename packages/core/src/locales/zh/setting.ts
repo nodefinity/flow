@@ -1,6 +1,4 @@
 export default {
-  title: '设置',
-
   appearance: {
     title: '外观',
     theme: {
@@ -56,6 +54,7 @@ export default {
     pickFiles: '选择音频文件',
     pickFilesDescription: '从文件系统选择音频文件',
   },
+
   about: {
     title: '关于',
     version: '版本',

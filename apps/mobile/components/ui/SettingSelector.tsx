@@ -1,9 +1,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { useTranslation } from '@flow/core'
 import { DeviceType } from 'expo-device'
 import { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Button, Dialog, List, Portal, RadioButton, Text } from 'react-native-paper'
+import { Dialog, List, Portal, RadioButton, Text } from 'react-native-paper'
 import Animated from 'react-native-reanimated'
 import { getDeviceType } from '@/utils/getDeviceType'
 
@@ -22,7 +21,6 @@ export function SettingSelector({
   options,
   onValueChange,
 }: SettingSelectorProps) {
-  const { t } = useTranslation()
   const deviceType = getDeviceType()
   const [visibleDialog, setVisibleDialog] = useState(false)
 
@@ -85,8 +83,7 @@ export function SettingSelector({
           style={deviceType === DeviceType.TABLET && styles.dialogTablet}
           onDismiss={() => setVisibleDialog(false)}
         >
-          <Dialog.Title>{title}</Dialog.Title>
-          <Dialog.Content>
+          <Dialog.Content style={styles.dialogContent} testID="setting-selector-dialog-content">
             <Dialog.ScrollArea style={styles.radioContainer}>
               <Animated.ScrollView style={{ maxHeight: 300 }} showsVerticalScrollIndicator={false}>
                 <RadioButton.Group
@@ -98,11 +95,6 @@ export function SettingSelector({
               </Animated.ScrollView>
             </Dialog.ScrollArea>
           </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setVisibleDialog(false)}>
-              {t('common.cancel')}
-            </Button>
-          </Dialog.Actions>
         </Dialog>
       </Portal>
     </>
@@ -122,8 +114,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   radioContainer: {
+    paddingHorizontal: 0,
     borderTopWidth: 0,
     borderBottomWidth: 0,
+    borderRadius: 0,
+    marginBottom: 0,
   },
   radioLabel: {
     fontSize: 16,
@@ -132,5 +127,8 @@ const styles = StyleSheet.create({
     maxWidth: 500,
     justifyContent: 'center',
     left: '25%',
+  },
+  dialogContent: {
+    paddingHorizontal: 0,
   },
 })

@@ -17,4 +17,4 @@ export default {
   success: 'Success',
   warning: 'Warning',
   info: 'Info',
-} 
+}

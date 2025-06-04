@@ -1,5 +1,6 @@
 export default {
-  title: 'Songs',
+  title: 'Flow',
+
   sections: {
     recentlyPlayed: 'Recently Played',
     forYou: 'For You',
@@ -9,6 +10,7 @@ export default {
     favorites: 'Favorites',
     playlists: 'Playlists',
   },
+
   actions: {
     play: 'Play',
     shuffle: 'Shuffle',
@@ -17,6 +19,7 @@ export default {
     like: 'Like',
     download: 'Download',
   },
+
   emptyState: {
     noMusic: 'No music found',
     startExploring: 'Start exploring to find music you love',

@@ -1,6 +1,4 @@
 export default {
-  title: 'Settings',
-
   appearance: {
     title: 'Appearance',
     theme: {
@@ -56,6 +54,7 @@ export default {
     pickFiles: 'Pick Audio Files',
     pickFilesDescription: 'Select audio files from file system',
   },
+
   about: {
     title: 'About',
     version: 'Version',

@@ -16,7 +16,7 @@ function RenderTabItem(config: NavigationConfig) {
       key={config.name}
       name={config.name}
       options={{
-        title: t(`${config.locale}.title`),
+        title: t(`${config.locale}`),
         tabBarIcon: ({ focused, color, size }) => {
           return <MaterialCommunityIcons size={size} name={focused ? config.focusedIcon : config.unfocusedIcon} color={color} />
         },

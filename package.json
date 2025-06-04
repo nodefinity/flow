@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:mobile": "yarn workspace mobile start",
+    "mobile": "yarn workspace mobile",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "prepare": "husky"
