@@ -1,4 +1,4 @@
-import type { Track } from '@/constants/PlayList'
+import type { Track } from '@flow/core'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LOCAL_TRACKS_KEY = 'localTracks'

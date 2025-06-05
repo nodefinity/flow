@@ -1,14 +1,13 @@
-import type { ColorName, Language, Theme } from '@flow/core'
-import type { Track } from '@/constants/PlayList'
+import type { ColorName, Language, Theme, Track } from '@flow/core'
 import { ColorNames, useAppSetting, useTranslation } from '@flow/core'
 import { ScrollView, StyleSheet } from 'react-native'
 import { Appbar, List, Surface } from 'react-native-paper'
-import { MusicScanButton } from '@/components/ui/MusicScanButton'
 import { SettingSelector } from '@/components/ui/SettingSelector'
 import { ThemedView } from '@/components/ui/ThemedView'
-import { addLocalTracks } from '@/utils/musicStorage'
+import { TrackScanButton } from '@/components/ui/TrackScanButton'
+import { addLocalTracks } from '@/utils/trackStorage'
 
-export default function TabTwoScreen() {
+export default function SettingScreen() {
   const { t } = useTranslation()
   const { setting, updateSetting } = useAppSetting()
 
@@ -41,7 +40,7 @@ export default function TabTwoScreen() {
     updateSetting({ color: value as ColorName })
   }
 
-  const handleMusicLoaded = async (tracks: Track[]) => {
+  const handleTracksLoaded = async (tracks: Track[]) => {
     console.log(`音乐扫描完成，找到 ${tracks.length} 首歌曲:`, tracks.map(t => t.title))
 
     // 将扫描到的音乐保存到本地存储
@@ -91,20 +90,20 @@ export default function TabTwoScreen() {
 
         <Surface style={styles.surface} mode="flat">
           <List.Section title={t('setting.playback.title')} style={styles.listSection}>
-            <MusicScanButton
+            <TrackScanButton
               title={t('setting.playback.scanMusic')}
               description={t('setting.playback.scanMusicDescription')}
               icon="music-box-multiple"
               type="scan"
-              onMusicLoaded={handleMusicLoaded}
+              onTracksLoaded={handleTracksLoaded}
             />
 
-            <MusicScanButton
+            <TrackScanButton
               title={t('setting.playback.pickFiles')}
               description={t('setting.playback.pickFilesDescription')}
               icon="file-music"
               type="pick"
-              onMusicLoaded={handleMusicLoaded}
+              onTracksLoaded={handleTracksLoaded}
             />
           </List.Section>
         </Surface>
@@ -128,5 +127,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginVertical: 8,
     borderRadius: 16,
+    overflow: 'hidden',
   },
 })

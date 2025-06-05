@@ -1,10 +1,10 @@
-import type { Track } from '@/constants/PlayList'
+import type { Track } from '@flow/core'
 import { useState } from 'react'
 import { Alert } from 'react-native'
 import { ActivityIndicator, List } from 'react-native-paper'
-import { getLocalMusicTracks, pickAudioFiles } from '@/utils/localMusicService'
+import { getLocalTracks } from '@/utils/localTrackService'
 
-interface MusicScanButtonProps {
+interface TrackScanButtonProps {
   title: string
   description: string
   icon: string
@@ -12,13 +12,13 @@ interface MusicScanButtonProps {
   onMusicLoaded?: (tracks: Track[]) => void
 }
 
-export function MusicScanButton({
+export function TrackScanButton({
   title,
   description,
   icon,
   type,
   onMusicLoaded,
-}: MusicScanButtonProps) {
+}: TrackScanButtonProps) {
   const [isLoading, setIsLoading] = useState(false)
 
   const handlePress = async () => {
@@ -26,10 +26,11 @@ export function MusicScanButton({
     try {
       let tracks: Track[]
       if (type === 'scan') {
-        tracks = await getLocalMusicTracks()
+        tracks = await getLocalTracks()
       }
       else {
-        tracks = await pickAudioFiles()
+        // TODO: pick audio files
+        tracks = []
       }
 
       if (tracks.length > 0) {
