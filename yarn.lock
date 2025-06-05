@@ -1743,10 +1743,10 @@
     "@emnapi/runtime" "^1.4.3"
     "@tybys/wasm-util" "^0.9.0"
 
-"@nodefinity/react-native-music-library@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@nodefinity/react-native-music-library/-/react-native-music-library-0.2.0.tgz#85ba0da8633007189c4b85404cf25491512808e7"
-  integrity sha512-K4DiS+wbb5h5hNBJ/YlVa+00KIssw/ZbeDcpAnb53lj4B73R/dhocwK4eB+ztCnczlEaXc+7IbSeIlenFraGCQ==
+"@nodefinity/react-native-music-library@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@nodefinity/react-native-music-library/-/react-native-music-library-0.3.0.tgz#5ba30f4995e7994cdba9a6ddd30363a99ea95acf"
+  integrity sha512-UOp9cOzbBm/7AYoqkHzyt0gzuyIes0oxJYdy3AdXNQldLg1ffhAATNvcN7EIATKbOrPGmixwbj6EqowK164Q6g==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
