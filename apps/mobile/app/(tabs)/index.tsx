@@ -43,7 +43,7 @@ export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>
       <Appbar.Header>
-        <Appbar.Content title={t('home.title')} />
+        <Appbar.Content title={t('home.title')} titleStyle={{ fontWeight: '700' }} />
         <Appbar.Action icon={SearchIcon} onPress={() => { }} />
       </Appbar.Header>
 

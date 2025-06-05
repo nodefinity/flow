@@ -56,7 +56,7 @@ export default function SettingScreen() {
   return (
     <ThemedView style={styles.container}>
       <Appbar.Header>
-        <Appbar.Content title={t('navigation.setting')} />
+        <Appbar.Content title={t('navigation.setting')} titleStyle={{ fontWeight: '700' }} />
       </Appbar.Header>
 
       <ScrollView style={styles.scrollView}>

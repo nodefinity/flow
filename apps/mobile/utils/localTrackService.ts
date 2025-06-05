@@ -1,5 +1,3 @@
-import type { Track } from '@flow/core'
-import { getTracksAsync } from '@nodefinity/react-native-music-library'
 import { Platform } from 'react-native'
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions'
 
@@ -24,7 +22,7 @@ function getMusicPermission() {
   }
 }
 
-async function requestMusicPermission(): Promise<boolean> {
+export async function requestMusicPermission(): Promise<boolean> {
   try {
     const permission = getMusicPermission()
 
@@ -39,46 +37,6 @@ async function requestMusicPermission(): Promise<boolean> {
   catch (error) {
     console.error('Request permission error:', error)
     return false
-  }
-}
-
-async function getAllTracks(): Promise<Track[]> {
-  let allTracks: Track[] = []
-  let hasMore = true
-  let cursor
-
-  while (hasMore) {
-    const result = await getTracksAsync({
-      first: 20,
-      after: cursor,
-    })
-
-    allTracks = [...allTracks, ...result.items]
-    hasMore = result.hasNextPage
-    cursor = result.endCursor
-  }
-
-  console.log(`Loaded ${allTracks.length} tracks total`)
-  return allTracks
-}
-
-/**
- * Get local music tracks from device music library
- * @return {Promise<Track[]>}
- */
-export async function getLocalTracks(): Promise<Track[]> {
-  try {
-    const hasPermission = await requestMusicPermission()
-    if (!hasPermission) {
-      console.warn('No permission to access media library')
-      return []
-    }
-
-    return getAllTracks()
-  }
-  catch (error) {
-    console.error('Get local music error:', error)
-    return []
   }
 }
 

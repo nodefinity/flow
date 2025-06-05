@@ -45,7 +45,7 @@ export const TabView: FC<TabViewProps> = ({
         labelStyle: {
           fontFamily: paperTheme.fonts.labelLarge.fontFamily || 'Urbanist',
           fontSize: paperTheme.fonts.labelLarge.fontSize || 14,
-          fontWeight: paperTheme.fonts.labelLarge.fontWeight || '500',
+          fontWeight: '700',
           letterSpacing: paperTheme.fonts.labelLarge.letterSpacing || 0,
         },
       }
