@@ -1,8 +1,8 @@
 import { Feather } from '@expo/vector-icons'
 
 import { TAB_ROUTES, TAB_ROUTES_NAME, useTranslation } from '@flow/core'
-import { useMemo, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { useMemo } from 'react'
+import { StyleSheet } from 'react-native'
 import { Appbar } from 'react-native-paper'
 import { SceneMap } from 'react-native-tab-view'
 
@@ -20,7 +20,6 @@ import { useThemeColor } from '@/hooks/useThemeColor'
 export default function HomeScreen() {
   const { t } = useTranslation()
   const theme = useThemeColor()
-  const [index, setIndex] = useState(0)
 
   const renderScene = SceneMap({
     [TAB_ROUTES_NAME.SuggestedScreen]: SuggestedScreen,
@@ -47,15 +46,7 @@ export default function HomeScreen() {
         <Appbar.Action icon={SearchIcon} onPress={() => { }} />
       </Appbar.Header>
 
-      <View style={styles.tabView}>
-        <TabView
-          routes={routes}
-          index={index}
-          onIndexChange={setIndex}
-          renderScene={renderScene}
-          pagerStyle={styles.pager}
-        />
-      </View>
+      <TabView routes={routes} renderScene={renderScene} />
     </ThemedView>
   )
 }
@@ -63,12 +54,5 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  tabView: {
-    flex: 1,
-    marginHorizontal: 16,
-  },
-  pager: {
-    marginTop: 16,
   },
 })
