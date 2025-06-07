@@ -5,7 +5,7 @@ function getMusicPermission() {
   if (Platform.OS === 'ios') {
     return PERMISSIONS.IOS.MEDIA_LIBRARY
   }
-  else {
+  else if (Platform.OS === 'android') {
     // Android 13 (API 33) and above use granular media permissions
     const androidVersion
       = typeof Platform.Version === 'string'
@@ -20,6 +20,9 @@ function getMusicPermission() {
       return PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
     }
   }
+  else {
+    return null
+  }
 }
 
 export async function requestMusicPermission(): Promise<boolean> {
@@ -28,7 +31,7 @@ export async function requestMusicPermission(): Promise<boolean> {
 
     if (!permission) {
       console.warn('Do not support this platform')
-      return false
+      return true
     }
 
     const result = await request(permission)

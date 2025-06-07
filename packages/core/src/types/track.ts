@@ -7,8 +7,8 @@ export interface Track {
    */
   title: string
 
-  /** Track cover (base64 encoded image or URL) */
-  cover: string
+  /** Track artwork (uri) */
+  artwork: string
 
   /**
    * Artist name

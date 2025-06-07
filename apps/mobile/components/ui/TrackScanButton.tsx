@@ -27,8 +27,8 @@ export function TrackScanButton({
   const [isLoading, setIsLoading] = useState(false)
   const [visible, setVisible] = useState(false)
   const [trackResult, setTrackResult] = useState<IPaginatedResult<Track> | null>(null)
-  const [startTime, setStartTime] = useState<string | null>(null)
-  const [endTime, setEndTime] = useState<string | null>(null)
+  const [startTime, setStartTime] = useState<Date | null>(null)
+  const [endTime, setEndTime] = useState<Date | null>(null)
   const scrollViewRef = useRef<ScrollView>(null)
 
   useEffect(() => {
@@ -41,7 +41,10 @@ export function TrackScanButton({
     }
   }, [endTime])
 
-  const formatTime = (date: Date) => {
+  const formatTime = (date: Date | null) => {
+    if (!date)
+      return ''
+
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
     const day = String(date.getDate()).padStart(2, '0')
@@ -54,8 +57,7 @@ export function TrackScanButton({
   }
 
   const getLocalTracks = async () => {
-    const scanStartTime = formatTime(new Date())
-    setStartTime(scanStartTime)
+    setStartTime(new Date())
     setEndTime(null)
 
     let hasMore = true
@@ -74,18 +76,15 @@ export function TrackScanButton({
         endCursor: result.endCursor,
       }))
 
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         scrollViewRef.current?.scrollToEnd({ animated: true })
-      }, 150)
+      })
 
       hasMore = result.hasNextPage
       cursor = result.endCursor
     }
 
-    const scanEndTime = formatTime(new Date())
-    setEndTime(scanEndTime)
-
-    return trackResult
+    setEndTime(new Date())
   }
 
   const handlePress = async () => {
@@ -95,6 +94,7 @@ export function TrackScanButton({
     const hasPermission = await requestMusicPermission()
     if (!hasPermission) {
       setVisible(false)
+      setIsLoading(false)
       return
     }
 
@@ -155,7 +155,7 @@ export function TrackScanButton({
                     {t('setting.playback.startScan')}
                     :
                     {' '}
-                    {startTime}
+                    {formatTime(startTime)}
                   </Text>
                   <Text variant="labelSmall" style={styles.timeText}>
                     {t('setting.playback.foundTracks', { count: trackResult?.items.length })}
@@ -179,7 +179,7 @@ export function TrackScanButton({
                     {t('setting.playback.endScan')}
                     :
                     {' '}
-                    {endTime}
+                    {formatTime(endTime)}
                   </Text>
                   <Text variant="labelSmall" style={styles.timeText}>
                     {t('setting.playback.foundTracks', { count: trackResult?.items.length })}
@@ -192,6 +192,9 @@ export function TrackScanButton({
           <Dialog.Actions>
             <Button onPress={() => {
               setVisible(false)
+              setTrackResult(null)
+              setStartTime(null)
+              setEndTime(null)
               onTracksLoaded?.(trackResult?.items || [])
             }}
             >
