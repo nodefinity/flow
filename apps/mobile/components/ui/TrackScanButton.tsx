@@ -1,6 +1,6 @@
 import type { Track } from '@flow/core'
 import type { IPaginatedResult } from '@nodefinity/react-native-music-library'
-import { useTranslation } from '@flow/core'
+import { formatTime, useLocalTracks, useTranslation } from '@flow/core'
 import { getTracksAsync } from '@nodefinity/react-native-music-library'
 import { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
@@ -12,7 +12,6 @@ interface TrackScanButtonProps {
   description: string
   icon: string
   type: 'scan' | 'pick'
-  onTracksLoaded?: (tracks: Track[]) => void
 }
 
 export function TrackScanButton({
@@ -20,9 +19,9 @@ export function TrackScanButton({
   description,
   icon,
   type,
-  onTracksLoaded,
 }: TrackScanButtonProps) {
   const { t } = useTranslation()
+  const { addTracks } = useLocalTracks()
 
   const [isLoading, setIsLoading] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -40,21 +39,6 @@ export function TrackScanButton({
       return () => clearTimeout(timer)
     }
   }, [endTime])
-
-  const formatTime = (date: Date | null) => {
-    if (!date)
-      return ''
-
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    const hours = String(date.getHours()).padStart(2, '0')
-    const minutes = String(date.getMinutes()).padStart(2, '0')
-    const seconds = String(date.getSeconds()).padStart(2, '0')
-    const milliseconds = String(date.getMilliseconds()).padStart(3, '0')
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}:${milliseconds}`
-  }
 
   const getLocalTracks = async () => {
     setStartTime(new Date())
@@ -112,6 +96,14 @@ export function TrackScanButton({
     finally {
       setIsLoading(false)
     }
+  }
+
+  const handleConfirm = async () => {
+    addTracks(trackResult?.items || [])
+    setVisible(false)
+    setTrackResult(null)
+    setStartTime(null)
+    setEndTime(null)
   }
 
   return (
@@ -190,14 +182,7 @@ export function TrackScanButton({
           </Dialog.ScrollArea>
 
           <Dialog.Actions>
-            <Button onPress={() => {
-              setVisible(false)
-              setTrackResult(null)
-              setStartTime(null)
-              setEndTime(null)
-              onTracksLoaded?.(trackResult?.items || [])
-            }}
-            >
+            <Button onPress={handleConfirm}>
               {t('common.confirm')}
             </Button>
           </Dialog.Actions>

@@ -1,35 +1,40 @@
 import type { StorageAdapter } from '@flow/core'
-import * as SecureStore from 'expo-secure-store'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const mobileStorageAdapter: StorageAdapter = {
   getItem: async (key: string) => {
     try {
-      return await SecureStore.getItemAsync(key)
+      const value = await AsyncStorage.getItem(key)
+      console.log('AsyncStorage getItem:', { key, value })
+      return value
     }
     catch (error) {
-      console.error('SecureStore getItem failed:', error)
+      console.error('AsyncStorage getItem failed:', error)
       return null
     }
   },
   setItem: async (key: string, value: string | null) => {
     try {
       if (value === null) {
-        await SecureStore.deleteItemAsync(key)
+        await AsyncStorage.removeItem(key)
+        console.log('AsyncStorage removeItem:', { key })
       }
       else {
-        await SecureStore.setItemAsync(key, value)
+        await AsyncStorage.setItem(key, value)
+        console.log('AsyncStorage setItem:', { key, valueLength: value.length })
       }
     }
     catch (error) {
-      console.error('SecureStore setItem failed:', error)
+      console.error('AsyncStorage setItem failed:', error)
     }
   },
   removeItem: async (key: string) => {
     try {
-      await SecureStore.deleteItemAsync(key)
+      await AsyncStorage.removeItem(key)
+      console.log('AsyncStorage removeItem:', { key })
     }
     catch (error) {
-      console.error('SecureStore removeItem failed:', error)
+      console.error('AsyncStorage removeItem failed:', error)
     }
   },
 }
