@@ -51,11 +51,17 @@ export const TabView: FC<TabViewProps> = ({
     return (
       <TabBar
         {...props}
+        scrollEnabled
+        tabStyle={{ width: 'auto' }}
         activeColor={theme.primary}
         inactiveColor={theme.onSurfaceVariant}
         indicatorStyle={{ backgroundColor: theme.primary }}
         style={{ backgroundColor: theme.surface }}
         options={tabOptions}
+        // tabStyle width: 'auto' cause tab bar indicator children wrong transform
+        // https://github.com/react-navigation/react-navigation/issues/12393
+        // TODO: custom indicator
+        renderIndicator={() => null}
       />
     )
   }

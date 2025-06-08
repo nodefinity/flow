@@ -1,10 +1,10 @@
 import { useTranslation } from '@flow/core'
-import React from 'react'
+import { memo } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { IconButton, List, Text } from 'react-native-paper'
 import { ThemedView } from '@/components/ui/ThemedView'
 
-export function FoldersScreen() {
+export const FoldersScreen = memo(() => {
   const { t } = useTranslation()
 
   // 模拟文件夹数据
@@ -111,7 +111,7 @@ export function FoldersScreen() {
       </ScrollView>
     </ThemedView>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {

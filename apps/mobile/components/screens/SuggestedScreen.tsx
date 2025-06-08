@@ -1,10 +1,10 @@
 import { useTranslation } from '@flow/core'
-import React from 'react'
+import { memo } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { Button, Card, Text } from 'react-native-paper'
 import { ThemedView } from '@/components/ui/ThemedView'
 
-export function SuggestedScreen() {
+export const SuggestedScreen = memo(() => {
   const { t } = useTranslation()
 
   return (
@@ -54,7 +54,7 @@ export function SuggestedScreen() {
       </ScrollView>
     </ThemedView>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {

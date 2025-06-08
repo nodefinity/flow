@@ -1,4 +1,5 @@
 import { useTranslation } from '@flow/core'
+import { memo } from 'react'
 import { Dimensions, ScrollView, StyleSheet, View } from 'react-native'
 import { Card, Chip, Text } from 'react-native-paper'
 import { ThemedView } from '@/components/ui/ThemedView'
@@ -6,7 +7,7 @@ import { ThemedView } from '@/components/ui/ThemedView'
 const { width } = Dimensions.get('window')
 const CARD_WIDTH = (width - 48) / 2 // 2 columns with margins
 
-export function AlbumsScreen() {
+export const AlbumsScreen = memo(() => {
   const { t } = useTranslation()
 
   // 模拟专辑数据
@@ -64,7 +65,7 @@ export function AlbumsScreen() {
       </ScrollView>
     </ThemedView>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {

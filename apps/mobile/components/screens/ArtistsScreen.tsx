@@ -1,10 +1,10 @@
 import { useTranslation } from '@flow/core'
-import React from 'react'
+import { memo } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { Avatar, Chip, List, Text } from 'react-native-paper'
 import { ThemedView } from '@/components/ui/ThemedView'
 
-export function ArtistsScreen() {
+export const ArtistsScreen = memo(() => {
   const { t } = useTranslation()
 
   // 模拟艺术家数据
@@ -68,7 +68,7 @@ export function ArtistsScreen() {
       </ScrollView>
     </ThemedView>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {

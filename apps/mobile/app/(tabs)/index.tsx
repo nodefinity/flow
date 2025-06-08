@@ -21,19 +21,19 @@ export default function HomeScreen() {
   const { t } = useTranslation()
   const theme = useThemeColor()
 
-  const renderScene = SceneMap({
+  const renderScene = useMemo(() => SceneMap({
     [TAB_ROUTES_NAME.SuggestedScreen]: SuggestedScreen,
     [TAB_ROUTES_NAME.SongsScreen]: SongsScreen,
     [TAB_ROUTES_NAME.AlbumsScreen]: AlbumsScreen,
     [TAB_ROUTES_NAME.ArtistsScreen]: ArtistsScreen,
     [TAB_ROUTES_NAME.FoldersScreen]: FoldersScreen,
-  })
+  }), [])
 
-  const routes = TAB_ROUTES.map(route => ({
+  const routes = useMemo(() => TAB_ROUTES.map(route => ({
     key: route.name,
     title: t(route.locale),
     icon: route.focusedIcon,
-  }))
+  })), [t])
 
   const SearchIcon = useMemo(() => {
     return () => <Feather name="search" size={24} color={theme.onBackground} />
@@ -46,7 +46,7 @@ export default function HomeScreen() {
         <Appbar.Action icon={SearchIcon} onPress={() => { }} />
       </Appbar.Header>
 
-      <TabView routes={routes} renderScene={renderScene} />
+      <TabView routes={routes} renderScene={renderScene} lazy lazyPreloadDistance={1} />
     </ThemedView>
   )
 }
