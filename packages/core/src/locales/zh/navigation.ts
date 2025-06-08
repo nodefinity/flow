@@ -5,7 +5,7 @@ export default {
 
   // Tab 导航
   suggested: '推荐',
-  songs: '歌曲',
+  tracks: '歌曲',
   albums: '专辑',
   artists: '艺术家',
   folders: '文件夹',

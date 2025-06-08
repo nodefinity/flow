@@ -22,7 +22,7 @@ export const NAVIGATION_CONFIG: NavigationConfig[] = [
 
 export enum TAB_ROUTES_NAME {
   SuggestedScreen = 'suggested',
-  SongsScreen = 'songs',
+  TracksScreen = 'tracks',
   AlbumsScreen = 'albums',
   ArtistsScreen = 'artists',
   FoldersScreen = 'folders',
@@ -36,8 +36,8 @@ export const TAB_ROUTES: NavigationConfig[] = [
     unfocusedIcon: 'home-outline',
   },
   {
-    name: TAB_ROUTES_NAME.SongsScreen,
-    locale: 'navigation.songs',
+    name: TAB_ROUTES_NAME.TracksScreen,
+    locale: 'navigation.tracks',
     focusedIcon: 'music-box-multiple',
     unfocusedIcon: 'music-box-multiple-outline',
   },

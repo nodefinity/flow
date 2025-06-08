@@ -10,8 +10,8 @@ import {
   AlbumsScreen,
   ArtistsScreen,
   FoldersScreen,
-  SongsScreen,
   SuggestedScreen,
+  TracksScreen,
 } from '@/components/screens'
 import { TabView } from '@/components/ui/TabView'
 import { ThemedView } from '@/components/ui/ThemedView'
@@ -23,7 +23,7 @@ export default function HomeScreen() {
 
   const renderScene = useMemo(() => SceneMap({
     [TAB_ROUTES_NAME.SuggestedScreen]: SuggestedScreen,
-    [TAB_ROUTES_NAME.SongsScreen]: SongsScreen,
+    [TAB_ROUTES_NAME.TracksScreen]: TracksScreen,
     [TAB_ROUTES_NAME.AlbumsScreen]: AlbumsScreen,
     [TAB_ROUTES_NAME.ArtistsScreen]: ArtistsScreen,
     [TAB_ROUTES_NAME.FoldersScreen]: FoldersScreen,

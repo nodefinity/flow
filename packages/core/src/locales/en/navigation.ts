@@ -5,7 +5,7 @@ export default {
 
   // Tab navigation
   suggested: 'Suggested',
-  songs: 'Songs',
+  tracks: 'Songs',
   albums: 'Albums',
   artists: 'Artists',
   folders: 'Folders',
