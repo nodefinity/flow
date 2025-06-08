@@ -17,54 +17,42 @@ interface SettingsState {
   isLoading: boolean
   setting: AppSetting
   updateSetting: (newSetting: Partial<AppSetting>) => void
-  isInitialized: boolean
-  setInitialized: (value: boolean) => void
 }
 
-export const useSettingsStore = create<SettingsState>()(
-  persist(
-    set => ({
-      isLoading: true,
-      setting: DEFAULT_SETTING,
-      updateSetting: (newSetting: Partial<AppSetting>) =>
-        set(state => ({
-          setting: { ...state.setting, ...newSetting },
-        })),
-      isInitialized: false,
-      setInitialized: (value: boolean) => set({ isInitialized: value }),
-    }),
-    {
-      name: 'app-setting',
-      storage: createJSONStorage(() => getStorageAdapter()),
-      onRehydrateStorage: () => (state) => {
-        if (state) {
-          state.isLoading = false
-        }
+let _store: ReturnType<typeof createSettingsStore> | null = null
+
+function createSettingsStore() {
+  return create<SettingsState>()(
+    persist(
+      set => ({
+        isLoading: true,
+        setting: DEFAULT_SETTING,
+        updateSetting: (newSetting: Partial<AppSetting>) =>
+          set(state => ({
+            setting: { ...state.setting, ...newSetting },
+          })),
+      }),
+      {
+        name: 'app-setting',
+        storage: createJSONStorage(() => getStorageAdapter()),
+        onRehydrateStorage: () => (state) => {
+          if (state) {
+            state.isLoading = false
+          }
+        },
       },
-    },
-  ),
-)
+    ),
+  )
+}
 
 export function useAppSetting() {
-  const {
-    isLoading,
-    setting,
-    updateSetting,
-    isInitialized,
-    setInitialized,
-  } = useSettingsStore()
+  if (!_store) {
+    _store = createSettingsStore()
+  }
+  const { isLoading, setting, updateSetting } = _store()
   const colorScheme = useColorScheme()
   const language = useLanguage()
   const { i18n } = useTranslation()
-
-  useEffect(() => {
-    if (!isLoading && !isInitialized) {
-      setInitialized(true)
-      if (!setting || Object.keys(setting).length === 0) {
-        updateSetting(DEFAULT_SETTING)
-      }
-    }
-  }, [isLoading, isInitialized, setting, updateSetting, setInitialized])
 
   useEffect(() => {
     if (setting?.language) {

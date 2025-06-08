@@ -1,6 +1,11 @@
+import { registerColorSchemeAdapter, registerLanguageAdapter, registerStorageAdapter } from '@flow/core'
 import { useFonts } from 'expo-font'
-
+import { colorSchemeAdapter, languageAdapter, mobileStorageAdapter } from '@/adapters'
 import { AppTheme } from '@/components/ui/AppTheme'
+
+registerStorageAdapter(mobileStorageAdapter)
+registerColorSchemeAdapter(colorSchemeAdapter)
+registerLanguageAdapter(languageAdapter)
 
 export default function RootLayout() {
   const [loaded] = useFonts({

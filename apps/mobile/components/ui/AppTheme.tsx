@@ -1,18 +1,13 @@
-import { registerColorSchemeAdapter, registerLanguageAdapter, registerStorageAdapter, useAppSetting } from '@flow/core'
+import { useAppSetting } from '@flow/core'
 import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider } from '@react-navigation/native'
 import { Slot } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
-import { colorSchemeAdapter, languageAdapter, mobileStorageAdapter } from '@/adapters'
 import Themes from '@/constants/Themes'
 import { ThemedView } from './ThemedView'
 
 export function AppTheme() {
-  registerStorageAdapter(mobileStorageAdapter)
-  registerColorSchemeAdapter(colorSchemeAdapter)
-  registerLanguageAdapter(languageAdapter)
-
   const { isSettingLoading, effectiveColorScheme, currentColor } = useAppSetting()
 
   if (isSettingLoading) {
