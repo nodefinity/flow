@@ -1,6 +1,6 @@
 export default {
   // Main navigation
-  home: 'Flow',
+  home: 'home',
   setting: 'Settings',
 
   // Tab navigation

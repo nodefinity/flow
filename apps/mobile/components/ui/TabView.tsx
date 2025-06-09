@@ -56,7 +56,7 @@ export const TabView: FC<TabViewProps> = ({
         activeColor={theme.primary}
         inactiveColor={theme.onSurfaceVariant}
         indicatorStyle={{ backgroundColor: theme.primary }}
-        style={{ backgroundColor: theme.surface }}
+        style={{ backgroundColor: theme.surface, elevation: 0 }}
         options={tabOptions}
         // tabStyle width: 'auto' cause tab bar indicator children wrong transform
         // https://github.com/react-navigation/react-navigation/issues/12393
