@@ -1,17 +1,11 @@
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { CommonActions } from '@react-navigation/native'
 import { BottomNavigation } from 'react-native-paper'
-import { useThemeColor } from '@/hooks/useThemeColor'
 
 function BottomTabBar(props: BottomTabBarProps) {
-  const theme = useThemeColor()
-
   return (
     <BottomNavigation.Bar
       navigationState={props.state}
-      style={{
-        backgroundColor: theme.background,
-      }}
       onTabPress={({ route, preventDefault }) => {
         const event = props.navigation.emit({
           type: 'tabPress',
