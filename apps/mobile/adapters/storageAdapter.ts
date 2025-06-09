@@ -5,7 +5,6 @@ export const mobileStorageAdapter: StorageAdapter = {
   getItem: async (key: string) => {
     try {
       const value = await AsyncStorage.getItem(key)
-      console.log('AsyncStorage getItem:', { key, value })
       return value
     }
     catch (error) {
@@ -17,7 +16,6 @@ export const mobileStorageAdapter: StorageAdapter = {
     try {
       if (value === null) {
         await AsyncStorage.removeItem(key)
-        console.log('AsyncStorage removeItem:', { key })
       }
       else {
         await AsyncStorage.setItem(key, value)
@@ -31,7 +29,6 @@ export const mobileStorageAdapter: StorageAdapter = {
   removeItem: async (key: string) => {
     try {
       await AsyncStorage.removeItem(key)
-      console.log('AsyncStorage removeItem:', { key })
     }
     catch (error) {
       console.error('AsyncStorage removeItem failed:', error)

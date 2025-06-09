@@ -14,6 +14,9 @@ export function AppTheme() {
     return null
   }
 
+  console.log('effectiveColorScheme', effectiveColorScheme)
+  console.log('currentColor', currentColor)
+
   const paperTheme = Themes[effectiveColorScheme ?? 'light'][currentColor]
 
   const { DarkTheme, LightTheme } = adaptNavigationTheme({

@@ -57,9 +57,7 @@ export function useAppSetting() {
   useEffect(() => {
     if (setting?.language) {
       const targetLang = setting.language === 'auto' ? language : setting.language
-      if (i18n.language !== targetLang) {
-        i18n.changeLanguage(targetLang)
-      }
+      i18n.changeLanguage(targetLang)
     }
   }, [setting?.language, i18n, language])
 
