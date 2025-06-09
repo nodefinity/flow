@@ -1743,10 +1743,10 @@
     "@emnapi/runtime" "^1.4.3"
     "@tybys/wasm-util" "^0.9.0"
 
-"@nodefinity/react-native-music-library@0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@nodefinity/react-native-music-library/-/react-native-music-library-0.4.1.tgz#5ae42df9b7d2312b09ef3ea774b1ec06abfeb76a"
-  integrity sha512-NvpTtEA/7sJV6m0InifSE69nO/LI9HrnKbYm3PZpLmMEwJzvSrkiEnZzApSbl6mfVACy/rdiy7RnmuKd1GIU2A==
+"@nodefinity/react-native-music-library@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@nodefinity/react-native-music-library/-/react-native-music-library-0.5.0.tgz#48100e1b77d44b97bf2c206c2bad4a1af0eb0339"
+  integrity sha512-ZSo21y5sR/5NEKuuEV8+km5I8odQ0UmTGNH3kO5nP3blOPrjyvgYpxRoLKMBx54vVSuaBopkreBWPiFaL3/D0A==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -4057,11 +4057,6 @@ expo-manifests@~0.16.4:
   dependencies:
     "@expo/config" "~11.0.10"
     expo-json-utils "~0.15.0"
-
-expo-media-library@~17.1.6:
-  version "17.1.6"
-  resolved "https://registry.yarnpkg.com/expo-media-library/-/expo-media-library-17.1.6.tgz#118ada2d28139d540861b338acf1d088bc03d51f"
-  integrity sha512-Py8Y9wJlNXBZkhtJYy9acj0oRoUV09WXsZnjcvy6xZjpniPQIq0wkIkgS2DLhlYmMdjBrSux2TGp7Omi2WHp1g==
 
 expo-modules-autolinking@2.1.10:
   version "2.1.10"
