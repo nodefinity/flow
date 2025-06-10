@@ -6,7 +6,7 @@ import { IconButton, List, Text } from 'react-native-paper'
 import { ThemedView } from '@/components/ui/ThemedView'
 
 export const TracksScreen = memo(() => {
-  const { tracks, isTracksLoading } = useLocalTracks()
+  const { tracks, isTracksHydrated } = useLocalTracks()
 
   const renderItem = ({ item }: { item: Track }) => (
     <List.Item
@@ -33,7 +33,7 @@ export const TracksScreen = memo(() => {
     />
   )
 
-  if (isTracksLoading) {
+  if (!isTracksHydrated) {
     return null
   }
 

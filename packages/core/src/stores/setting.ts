@@ -14,7 +14,8 @@ const DEFAULT_SETTING: AppSetting = {
 }
 
 interface SettingsState {
-  isLoading: boolean
+  _hasHydrated: boolean
+  setHasHydrated: (state: boolean) => void
   setting: AppSetting
   updateSetting: (newSetting: Partial<AppSetting>) => void
 }
@@ -25,7 +26,12 @@ function createSettingsStore() {
   return create<SettingsState>()(
     persist(
       set => ({
-        isLoading: true,
+        _hasHydrated: true,
+        setHasHydrated: (state: boolean) => {
+          set({
+            _hasHydrated: state,
+          })
+        },
         setting: DEFAULT_SETTING,
         updateSetting: (newSetting: Partial<AppSetting>) =>
           set(state => ({
@@ -36,8 +42,9 @@ function createSettingsStore() {
         name: 'app-setting',
         storage: createJSONStorage(() => getStorageAdapter()),
         onRehydrateStorage: () => (state) => {
+          console.log('onRehydrateStorage', state)
           if (state) {
-            state.isLoading = false
+            state.setHasHydrated(true)
           }
         },
       },
@@ -49,7 +56,7 @@ export function useAppSetting() {
   if (!_store) {
     _store = createSettingsStore()
   }
-  const { isLoading, setting, updateSetting } = _store()
+  const { _hasHydrated, setting, updateSetting } = _store()
   const colorScheme = useColorScheme()
   const language = useLanguage()
   const { i18n } = useTranslation()
@@ -66,7 +73,7 @@ export function useAppSetting() {
   const currentColor = setting?.color || 'default'
 
   return {
-    isSettingLoading: isLoading,
+    isSettingHydrated: _hasHydrated,
     setting,
     updateSetting,
     effectiveColorScheme,

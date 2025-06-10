@@ -17,7 +17,8 @@ function formatSize(bytes: number): string {
 }
 
 interface TracksState {
-  isLoading: boolean
+  _hasHydrated: boolean
+  setHasHydrated: (state: boolean) => void
   tracks: Track[]
   addTracks: (newTracks: Track[]) => void
   clearTracks: () => void
@@ -29,7 +30,12 @@ function createTracksStore() {
   return create<TracksState>()(
     persist(
       set => ({
-        isLoading: true,
+        _hasHydrated: true,
+        setHasHydrated: (state: boolean) => {
+          set({
+            _hasHydrated: state,
+          })
+        },
         tracks: [],
         addTracks: (newTracks: Track[]) =>
           set((state) => {
@@ -54,7 +60,7 @@ function createTracksStore() {
         storage: createJSONStorage(() => getStorageAdapter()),
         onRehydrateStorage: () => (state) => {
           if (state) {
-            state.isLoading = false
+            state.setHasHydrated(true)
             const size = getJsonSize(state.tracks)
             console.log(`Loaded tracks storage size: ${formatSize(size)} (${state.tracks.length} tracks)`)
           }
@@ -64,14 +70,15 @@ function createTracksStore() {
   )
 }
 
+// eslint-disable-next-line react-hooks-extra/no-unnecessary-use-prefix
 export function useLocalTracks() {
   if (!_store) {
     _store = createTracksStore()
   }
-  const { isLoading, tracks, addTracks, clearTracks } = _store()
+  const { _hasHydrated, tracks, addTracks, clearTracks } = _store()
 
   return {
-    isTracksLoading: isLoading,
+    isTracksHydrated: _hasHydrated,
     tracks,
     addTracks,
     clearTracks,

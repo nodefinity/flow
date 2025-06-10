@@ -8,9 +8,9 @@ import Themes from '@/constants/Themes'
 import { ThemedView } from './ThemedView'
 
 export function AppTheme() {
-  const { isSettingLoading, effectiveColorScheme, currentColor } = useAppSetting()
+  const { isSettingHydrated, effectiveColorScheme, currentColor } = useAppSetting()
 
-  if (isSettingLoading) {
+  if (!isSettingHydrated) {
     return null
   }
 
