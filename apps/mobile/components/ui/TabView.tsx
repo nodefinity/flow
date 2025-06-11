@@ -6,6 +6,7 @@ import { Dimensions } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { TabView as RNTabView, TabBar } from 'react-native-tab-view'
 import { useThemeColor } from '@/hooks/useThemeColor'
+import { TabBarIndicator } from './TabBarIndicator'
 
 export interface TabRoute {
   key: string
@@ -61,7 +62,7 @@ export const TabView: FC<TabViewProps> = ({
         // tabStyle width: 'auto' cause tab bar indicator children wrong transform
         // https://github.com/react-navigation/react-navigation/issues/12393
         // TODO: custom indicator
-        renderIndicator={() => null}
+        renderIndicator={TabBarIndicator}
       />
     )
   }
