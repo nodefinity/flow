@@ -77,8 +77,8 @@ export default function SettingScreen() {
         <Surface style={styles.surface} mode="flat">
           <List.Section title={t('setting.playback.title')} style={styles.listSection}>
             <TrackScanButton
-              title={t('setting.playback.scanMusic')}
-              description={t('setting.playback.scanMusicDescription')}
+              title={t('setting.playback.scanTracks')}
+              description={t('setting.playback.scanTracksDescription')}
               icon="music-box-multiple"
               type="scan"
             />
