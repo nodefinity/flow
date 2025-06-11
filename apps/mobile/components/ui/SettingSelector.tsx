@@ -32,8 +32,10 @@ export function SettingSelector({
   }
 
   const handleOptionChange = (value: string) => {
-    onValueChange(value)
     setVisibleDialog(false)
+    requestAnimationFrame(() => {
+      onValueChange(value)
+    })
   }
 
   const renderOptions = () => {
@@ -43,7 +45,6 @@ export function SettingSelector({
         label={option.label}
         value={option.value}
         status={currentValue === option.value ? 'checked' : 'unchecked'}
-        onPress={() => handleOptionChange(option.value)}
         labelStyle={styles.radioLabel}
       />
     ))

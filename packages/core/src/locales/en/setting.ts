@@ -3,8 +3,8 @@ export default {
     title: 'Appearance',
     theme: {
       title: 'Theme',
-      light: 'Light Mode',
-      dark: 'Dark Mode',
+      light: 'Light',
+      dark: 'Dark',
       auto: 'Auto',
     },
     language: {

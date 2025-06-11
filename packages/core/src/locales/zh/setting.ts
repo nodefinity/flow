@@ -3,8 +3,8 @@ export default {
     title: '外观',
     theme: {
       title: '主题',
-      light: '浅色模式',
-      dark: '深色模式',
+      light: '浅色',
+      dark: '深色',
       auto: '自动',
     },
     language: {
