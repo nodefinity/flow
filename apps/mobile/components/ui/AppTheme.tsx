@@ -4,6 +4,7 @@ import { Slot } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
+import { Player } from '@/components/features/Player'
 import Themes from '@/constants/Themes'
 import { ThemedView } from './ThemedView'
 
@@ -32,6 +33,7 @@ export function AppTheme() {
           <ThemedView style={{ flex: 1 }} testID="root-surface">
             <StatusBar style={statusBarStyle} />
             <Slot />
+            <Player />
           </ThemedView>
         </GestureHandlerRootView>
       </ThemeProvider>
