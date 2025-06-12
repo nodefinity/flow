@@ -1,6 +1,7 @@
 import type { DrawerHeaderProps as BaseProps } from '@react-navigation/drawer'
 import type { AppbarProps, SearchbarProps } from 'react-native-paper'
 import { getHeaderTitle } from '@react-navigation/elements'
+import { DeviceType, deviceType } from 'expo-device'
 import React from 'react'
 import { Appbar, Searchbar, Tooltip } from 'react-native-paper'
 
@@ -12,6 +13,8 @@ interface DrawerHeaderProps extends AppbarProps {
 
 export default function DrawerHeader(props: DrawerHeaderProps) {
   const [query, setQuery] = React.useState('')
+
+  const showMenu = deviceType === DeviceType.PHONE
 
   React.useEffect(() => {
     if (props.searchBarProps?.onChangeText) {
@@ -34,12 +37,14 @@ export default function DrawerHeader(props: DrawerHeaderProps) {
       )
     : (
         <Appbar.Header {...props}>
-          <Tooltip title="Open drawer">
-            <Appbar.Action
-              icon="menu"
-              onPress={() => props.navProps.navigation.openDrawer()}
-            />
-          </Tooltip>
+          {showMenu && (
+            <Tooltip title="Open drawer">
+              <Appbar.Action
+                icon="menu"
+                onPress={() => props.navProps.navigation.openDrawer()}
+              />
+            </Tooltip>
+          )}
 
           <Appbar.Content
             title={getHeaderTitle(

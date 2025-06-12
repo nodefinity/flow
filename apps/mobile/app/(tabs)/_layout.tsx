@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useTranslation } from '@flow/core'
+import { DeviceType, deviceType } from 'expo-device'
 import { Drawer } from 'expo-router/drawer'
 import { StyleSheet, useWindowDimensions, View } from 'react-native'
 import { Appbar } from 'react-native-paper'
@@ -18,9 +19,10 @@ export default function DrawerLayout() {
       <Drawer
         drawerContent={props => <DrawerContent {...props} />}
         screenOptions={{
-          drawerType: 'slide',
+          drawerType: deviceType === DeviceType.PHONE ? 'slide' : 'permanent',
           drawerStyle: {
             backgroundColor: colors.background,
+            borderRightColor: colors.outlineVariant,
           },
           header: props => <DrawerHeader navProps={props} children={undefined} />,
           swipeEdgeWidth: layout.width,
