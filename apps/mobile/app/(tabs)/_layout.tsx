@@ -1,51 +1,54 @@
-import type { NavigationConfig } from '@flow/core'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { NAVIGATION_CONFIG, useTranslation } from '@flow/core'
-import { DeviceType } from 'expo-device'
-import { Tabs } from 'expo-router'
-import { StyleSheet, View } from 'react-native'
-import BottomTabBar from '@/components/ui/BottomTabBar'
-import DrawerTabBar from '@/components/ui/DrawerTabBar'
-import { getDeviceType } from '@/utils/getDeviceType'
+import { useTranslation } from '@flow/core'
+import { Drawer } from 'expo-router/drawer'
+import { StyleSheet, useWindowDimensions, View } from 'react-native'
+import { Appbar } from 'react-native-paper'
+import DrawerContent from '@/components/ui/DrawerContent'
+import DrawerHeader from '@/components/ui/DrawerHeader'
+import { useThemeColor } from '@/hooks/useThemeColor'
 
-function RenderTabItem(config: NavigationConfig) {
+export default function DrawerLayout() {
+  const colors = useThemeColor()
   const { t } = useTranslation()
 
-  return (
-    <Tabs.Screen
-      key={config.name}
-      name={config.name}
-      options={{
-        title: t(`${config.locale}`),
-        tabBarIcon: ({ focused, color, size }) => {
-          return <MaterialCommunityIcons size={size} name={focused ? config.focusedIcon : config.unfocusedIcon} color={color} />
-        },
-      }}
-    />
-  )
-}
-
-export default function TabLayout() {
-  const deviceType = getDeviceType()
+  const layout = useWindowDimensions()
 
   return (
     <View style={styles.container}>
-      <Tabs
-        tabBar={props =>
-          deviceType === DeviceType.TABLET
-            ? <DrawerTabBar {...props} />
-            : <BottomTabBar {...props} />}
+      <Drawer
+        drawerContent={props => <DrawerContent {...props} />}
         screenOptions={{
-          tabBarHideOnKeyboard: true,
-          headerShown: false,
-          animation: 'shift',
-          ...(deviceType === DeviceType.TABLET && {
-            sceneStyle: { marginLeft: 92 },
-          }),
+          drawerType: 'slide',
+          drawerStyle: {
+            backgroundColor: colors.background,
+          },
+          header: props => <DrawerHeader navProps={props} children={undefined} />,
+          swipeEdgeWidth: layout.width,
         }}
       >
-        {NAVIGATION_CONFIG.map(RenderTabItem)}
-      </Tabs>
+        <Drawer.Screen
+          name="index"
+          options={{
+            title: t(`navigation.home`),
+            drawerIcon: ({ focused, color, size }) => {
+              const icon = (focused ? 'home' : 'home-outline')
+              return <MaterialCommunityIcons size={size} name={icon} color={color} />
+            },
+            headerRight: () => <Appbar.Action icon="magnify" onPress={() => { }} />,
+          }}
+        />
+
+        <Drawer.Screen
+          name="setting"
+          options={{
+            title: t(`navigation.setting`),
+            drawerIcon: ({ focused, color, size }) => {
+              const icon = (focused ? 'cog' : 'cog-outline')
+              return <MaterialCommunityIcons size={size} name={icon} color={color} />
+            },
+          }}
+        />
+      </Drawer>
     </View>
   )
 }
