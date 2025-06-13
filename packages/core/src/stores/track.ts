@@ -16,12 +16,32 @@ function formatSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
 }
 
+export enum PlaybackState {
+  PLAYING = 'playing',
+  PAUSED = 'paused',
+  STOPPED = 'stopped',
+}
+
+export interface CurrentPlayback {
+  trackId: string | null
+  position: number // seconds
+  state: PlaybackState
+}
+
 interface TrackStore {
   _hasHydrated: boolean
   setHasHydrated: (state: boolean) => void
+
   tracks: Track[]
   addTracks: (newTracks: Track[]) => void
   clearTracks: () => void
+
+  playQueue: string[]
+  setPlayQueue: (ids: string[]) => void
+  clearPlayQueue: () => void
+
+  currentPlayback: CurrentPlayback
+  setCurrentPlayback: (playback: CurrentPlayback) => void
 }
 
 let _store: ReturnType<typeof createTrackStore> | null = null
@@ -36,10 +56,10 @@ function createTrackStore() {
             _hasHydrated: state,
           })
         },
+
         tracks: [],
         addTracks: (newTracks: Track[]) =>
           set((state) => {
-            console.log('Adding tracks:', { newTracksCount: newTracks.length, existingTracksCount: state.tracks.length })
             const existingIds = new Set(state.tracks.map(track => track.id))
             const uniqueNewTracks = newTracks.filter(track => !existingIds.has(track.id))
             const newState = {
@@ -53,6 +73,23 @@ function createTrackStore() {
           }),
         clearTracks: () => {
           set({ tracks: [] })
+        },
+
+        playQueue: [],
+        setPlayQueue: (ids: string[]) => {
+          set({ playQueue: ids })
+        },
+        clearPlayQueue: () => {
+          set({ playQueue: [] })
+        },
+
+        currentPlayback: {
+          trackId: null,
+          position: 0,
+          state: PlaybackState.STOPPED,
+        },
+        setCurrentPlayback: (playback: CurrentPlayback) => {
+          set({ currentPlayback: playback })
         },
       }),
       {
@@ -75,12 +112,30 @@ export function useTrackStore() {
   if (!_store) {
     _store = createTrackStore()
   }
-  const { _hasHydrated, tracks, addTracks, clearTracks } = _store()
-
-  return {
-    isTracksHydrated: _hasHydrated,
+  const {
+    _hasHydrated,
     tracks,
     addTracks,
     clearTracks,
+    playQueue,
+    setPlayQueue,
+    clearPlayQueue,
+    currentPlayback,
+    setCurrentPlayback,
+  } = _store()
+
+  return {
+    isTracksHydrated: _hasHydrated,
+
+    tracks,
+    addTracks,
+    clearTracks,
+
+    playQueue,
+    setPlayQueue,
+    clearPlayQueue,
+
+    currentPlayback,
+    setCurrentPlayback,
   }
 }
