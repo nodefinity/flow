@@ -1,17 +1,23 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
   clamp,
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated'
-import { SNAP_FULL, SNAP_MINI, SNAP_QUEUE } from '@/constants/Player'
+import { MINI_HEIGHT } from '@/constants/Player'
 import FullPlayer from './FullPlayer'
 import QueueList from './QueueList'
 
+const { height: SCREEN_HEIGHT } = Dimensions.get('window')
+
 export function Player() {
+  const SNAP_MINI = MINI_HEIGHT
+  // const SNAP_FULL = SCREEN_HEIGHT
+  // const SNAP_QUEUE = SCREEN_HEIGHT * 2
+
   // Init: show mini player
-  const translateY = useSharedValue(SNAP_MINI)
+  const translateY = useSharedValue(SCREEN_HEIGHT - SNAP_MINI)
   const prevTranslationY = useSharedValue(0)
 
   // Gesture: pan to show full player or queue list
@@ -21,17 +27,10 @@ export function Player() {
       prevTranslationY.value = translateY.value
     })
     .onUpdate((event) => {
-      translateY.value = event.translationY
+      // translateY.value = event.translationY
 
-      let minY = SNAP_QUEUE
-      let maxY = SNAP_MINI
-
-      if (translateY.value >= SNAP_MINI) {
-        maxY = SNAP_FULL
-      }
-      else if (translateY.value <= SNAP_QUEUE) {
-        minY = SNAP_FULL
-      }
+      const minY = 0
+      const maxY = SCREEN_HEIGHT
 
       const newTranslationY = clamp(
         prevTranslationY.value + event.translationY,
