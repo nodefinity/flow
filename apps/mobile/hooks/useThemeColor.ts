@@ -4,13 +4,13 @@
  */
 
 import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
-import { useAppSetting } from '@flow/core'
+import { useSettingStore } from '@flow/core'
 import { Colors } from '@/constants/Colors'
 
 export function useThemeColor(): MD3Colors
 export function useThemeColor<K extends keyof MD3Colors>(colorType: K): MD3Colors[K]
 export function useThemeColor(colorType?: keyof MD3Colors) {
-  const { effectiveColorScheme, currentColor } = useAppSetting()
+  const { effectiveColorScheme, currentColor } = useSettingStore()
 
   return colorType
     ? Colors[effectiveColorScheme!][currentColor][colorType]

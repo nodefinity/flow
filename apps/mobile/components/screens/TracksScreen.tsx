@@ -1,12 +1,12 @@
 import type { Track } from '@flow/core'
-import { formatDuration, useLocalTracks } from '@flow/core'
+import { formatDuration, useTrackStore } from '@flow/core'
 import { memo } from 'react'
 import { FlatList, Image, StyleSheet, View } from 'react-native'
 import { IconButton, List, Text } from 'react-native-paper'
 import { ThemedView } from '@/components/ui/ThemedView'
 
 export const TracksScreen = memo(() => {
-  const { tracks, isTracksHydrated } = useLocalTracks()
+  const { tracks, isTracksHydrated } = useTrackStore()
 
   const renderItem = ({ item }: { item: Track }) => (
     <List.Item

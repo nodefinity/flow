@@ -1,5 +1,5 @@
 import type { ColorName, Language, Theme } from '@flow/core'
-import { ColorNames, useAppSetting, useTranslation } from '@flow/core'
+import { ColorNames, useSettingStore, useTranslation } from '@flow/core'
 import { ScrollView, StyleSheet } from 'react-native'
 import { Appbar, List, Surface } from 'react-native-paper'
 import { SettingSelector } from '@/components/ui/SettingSelector'
@@ -8,7 +8,7 @@ import { TrackScanButton } from '@/components/ui/TrackScanButton'
 
 export default function SettingScreen() {
   const { t } = useTranslation()
-  const { setting, updateSetting } = useAppSetting()
+  const { setting, updateSetting } = useSettingStore()
 
   const languageOptions = [
     { value: 'auto', label: t('setting.appearance.language.auto') },

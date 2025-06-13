@@ -1,13 +1,13 @@
 import type { Track } from '@flow/core'
 import type { IPaginatedResult } from '@nodefinity/react-native-music-library'
-import { formatTime, useLocalTracks, useTranslation } from '@flow/core'
+import { formatTime, useTrackStore, useTranslation } from '@flow/core'
 import { getTracksAsync } from '@nodefinity/react-native-music-library'
 import { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { ActivityIndicator, Button, Dialog, Portal, Text } from 'react-native-paper'
 
 export function TrackScanDialog({ onDismiss, type }: { onDismiss: () => void, type: 'scan' | 'pick' }) {
-  const { addTracks } = useLocalTracks()
+  const { addTracks } = useTrackStore()
 
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)

@@ -13,17 +13,17 @@ const DEFAULT_SETTING: AppSetting = {
   color: 'default',
 }
 
-interface SettingsState {
+interface SettingStore {
   _hasHydrated: boolean
   setHasHydrated: (state: boolean) => void
   setting: AppSetting
   updateSetting: (newSetting: Partial<AppSetting>) => void
 }
 
-let _store: ReturnType<typeof createSettingsStore> | null = null
+let _store: ReturnType<typeof createSettingStore> | null = null
 
-function createSettingsStore() {
-  return create<SettingsState>()(
+function createSettingStore() {
+  return create<SettingStore>()(
     persist(
       set => ({
         _hasHydrated: true,
@@ -52,9 +52,9 @@ function createSettingsStore() {
   )
 }
 
-export function useAppSetting() {
+export function useSettingStore() {
   if (!_store) {
-    _store = createSettingsStore()
+    _store = createSettingStore()
   }
   const { _hasHydrated, setting, updateSetting } = _store()
   const colorScheme = useColorScheme()

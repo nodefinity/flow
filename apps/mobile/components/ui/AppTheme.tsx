@@ -1,4 +1,4 @@
-import { useAppSetting } from '@flow/core'
+import { useSettingStore } from '@flow/core'
 import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider } from '@react-navigation/native'
 import { Slot } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
@@ -9,7 +9,7 @@ import Themes from '@/constants/Themes'
 import { ThemedView } from './ThemedView'
 
 export function AppTheme() {
-  const { isSettingHydrated, effectiveColorScheme, currentColor } = useAppSetting()
+  const { isSettingHydrated, effectiveColorScheme, currentColor } = useSettingStore()
 
   if (!isSettingHydrated) {
     return null

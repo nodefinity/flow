@@ -16,7 +16,7 @@ function formatSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
 }
 
-interface TracksState {
+interface TrackStore {
   _hasHydrated: boolean
   setHasHydrated: (state: boolean) => void
   tracks: Track[]
@@ -24,10 +24,10 @@ interface TracksState {
   clearTracks: () => void
 }
 
-let _store: ReturnType<typeof createTracksStore> | null = null
+let _store: ReturnType<typeof createTrackStore> | null = null
 
-function createTracksStore() {
-  return create<TracksState>()(
+function createTrackStore() {
+  return create<TrackStore>()(
     persist(
       set => ({
         _hasHydrated: true,
@@ -71,9 +71,9 @@ function createTracksStore() {
 }
 
 // eslint-disable-next-line react-hooks-extra/no-unnecessary-use-prefix
-export function useLocalTracks() {
+export function useTrackStore() {
   if (!_store) {
-    _store = createTracksStore()
+    _store = createTrackStore()
   }
   const { _hasHydrated, tracks, addTracks, clearTracks } = _store()
 
