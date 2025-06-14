@@ -13,7 +13,7 @@
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
     "@flow/core": "*",
-    "@gorhom/bottom-sheet": "^5.1.4",
+    "@gorhom/bottom-sheet": "^5.1.6",
     "@nodefinity/react-native-music-library": "0.5.1",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-navigation/bottom-tabs": "^7.3.10",
@@ -38,7 +38,7 @@
     "react-dom": "19.0.0",
     "react-native": "0.79.2",
     "react-native-audio-pro": "^9.9.1",
-    "react-native-gesture-handler": "~2.24.0",
+    "react-native-gesture-handler": "~2.26.0",
     "react-native-pager-view": "^6.8.1",
     "react-native-paper": "^5.14.5",
     "react-native-permissions": "^5.4.1",
