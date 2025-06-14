@@ -35,7 +35,7 @@ export interface Track {
    * File URI or path
    * @default ''
    */
-  uri: string
+  url: string
 
   /**
    * Date added to library (Unix timestamp, optional)

@@ -1,12 +1,14 @@
 import type { Track } from '@flow/core'
+import type { AudioProTrack } from 'react-native-audio-pro'
 import { formatDuration, useTrackStore } from '@flow/core'
 import { memo } from 'react'
 import { FlatList, Image, StyleSheet, View } from 'react-native'
+import { AudioPro } from 'react-native-audio-pro'
 import { IconButton, List, Text } from 'react-native-paper'
 import { ThemedView } from '@/components/ui/ThemedView'
 
 export const TracksScreen = memo(() => {
-  const { tracks, isTracksHydrated } = useTrackStore()
+  const { tracks, isTracksHydrated, setPlayQueue } = useTrackStore()
 
   const renderItem = ({ item }: { item: Track }) => (
     <List.Item
@@ -29,7 +31,10 @@ export const TracksScreen = memo(() => {
           />
         </View>
       )}
-      onPress={() => { }}
+      onPress={() => {
+        setPlayQueue(tracks.map(track => track.id))
+        AudioPro.play(item as unknown as AudioProTrack, { autoPlay: true })
+      }}
     />
   )
 

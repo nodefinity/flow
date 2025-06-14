@@ -43,7 +43,10 @@ export function TrackScanDialog({ onDismiss, type }: { onDismiss: () => void, ty
 
       setTrackResult(prev => ({
         ...prev,
-        items: [...(prev?.items || []), ...result.items],
+        items: [...(prev?.items || []), ...result.items.map(item => ({
+          ...item,
+          url: item.uri,
+        }))],
         hasNextPage: result.hasNextPage,
         endCursor: result.endCursor,
       }))

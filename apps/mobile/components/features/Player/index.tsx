@@ -56,6 +56,7 @@ export function Player() {
 
   // Gesture: pan to show full player or queue list
   const pan = Gesture.Pan()
+    .enabled(false)
     .onStart((_event) => {
       prevTranslationY.value = translateY.value
     })
@@ -104,6 +105,7 @@ export function Player() {
         initialPage={0}
         style={[styles.container, animatedStyle]}
         orientation="vertical"
+        scrollEnabled={false}
       >
         <GestureDetector gesture={pan}>
           {/* TODO: dynamic backgroundColor from artwork */}

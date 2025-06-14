@@ -4,6 +4,7 @@ import { ErrorBoundary } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { colorSchemeAdapter, languageAdapter, mobileStorageAdapter } from '@/adapters'
 import { AppTheme } from '@/components/ui/AppTheme'
+import { setupAudioPro, useSetupAudioPro } from '@/hooks/useAudioPro'
 
 registerStorageAdapter(mobileStorageAdapter)
 registerColorSchemeAdapter(colorSchemeAdapter)
@@ -12,6 +13,8 @@ registerLanguageAdapter(languageAdapter)
 export { ErrorBoundary }
 
 SplashScreen.preventAutoHideAsync()
+
+setupAudioPro()
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -38,6 +41,8 @@ export default function RootLayout() {
 
   const { isTracksHydrated } = useTrackStore()
   const { isSettingHydrated } = useSettingStore()
+
+  useSetupAudioPro()
 
   if (!loaded || !isTracksHydrated || !isSettingHydrated) {
     SplashScreen.hideAsync()
