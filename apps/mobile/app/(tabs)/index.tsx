@@ -1,11 +1,13 @@
 import { StyleSheet } from 'react-native'
-import { TracksScreen } from '@/components/screens'
 import { ThemedView } from '@/components/ui/ThemedView'
+import { RootNavigator } from '@/navigators/RootNavigator'
 
 export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>
-      <TracksScreen />
+
+      <RootNavigator />
+
     </ThemedView>
   )
 }

@@ -2,8 +2,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useTranslation } from '@flow/core'
 import { DeviceType, deviceType } from 'expo-device'
 import { Drawer } from 'expo-router/drawer'
-import { StyleSheet, useWindowDimensions, View } from 'react-native'
+import { Animated, StyleSheet, useWindowDimensions } from 'react-native'
 import { Appbar } from 'react-native-paper'
+import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import DrawerContent from '@/components/ui/DrawerContent'
 import DrawerHeader from '@/components/ui/DrawerHeader'
 import { useThemeColor } from '@/hooks/useThemeColor'
@@ -13,9 +14,13 @@ export default function DrawerLayout() {
   const { t } = useTranslation()
 
   const layout = useWindowDimensions()
+  const active = useSharedValue(false)
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: active.value ? withTiming(1) : withTiming(0.8) }],
+  }))
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedStyle]}>
       <Drawer
         drawerContent={props => <DrawerContent {...props} />}
         screenOptions={{
@@ -51,7 +56,7 @@ export default function DrawerLayout() {
           }}
         />
       </Drawer>
-    </View>
+    </Animated.View>
   )
 }
 
