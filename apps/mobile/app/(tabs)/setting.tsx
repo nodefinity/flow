@@ -1,9 +1,8 @@
 import type { ColorName, Language, Theme } from '@flow/core'
 import { ColorNames, useSettingStore, useTranslation } from '@flow/core'
 import { ScrollView, StyleSheet } from 'react-native'
-import { Appbar, List, Surface } from 'react-native-paper'
+import { List, Surface } from 'react-native-paper'
 import { SettingSelector } from '@/components/ui/SettingSelector'
-import { ThemedView } from '@/components/ui/ThemedView'
 import { TrackScanButton } from '@/components/ui/TrackScanButton'
 
 export default function SettingScreen() {
@@ -40,59 +39,53 @@ export default function SettingScreen() {
   }
 
   return (
-    <ThemedView style={styles.container}>
-      <Appbar.Header>
-        <Appbar.Content title={t('navigation.setting')} titleStyle={{ fontFamily: 'UrbanistSemiBold' }} />
-      </Appbar.Header>
+    <ScrollView style={styles.scrollView}>
+      <Surface style={styles.surface} mode="flat">
+        <List.Section title={t('setting.appearance.title')} style={styles.listSection}>
+          <SettingSelector
+            title={t('setting.appearance.language.title')}
+            icon="translate"
+            currentValue={setting.language}
+            options={languageOptions}
+            onValueChange={handleLanguageChange}
+          />
 
-      <ScrollView style={styles.scrollView}>
-        <Surface style={styles.surface} mode="flat">
-          <List.Section title={t('setting.appearance.title')} style={styles.listSection}>
-            <SettingSelector
-              title={t('setting.appearance.language.title')}
-              icon="translate"
-              currentValue={setting.language}
-              options={languageOptions}
-              onValueChange={handleLanguageChange}
-            />
+          <SettingSelector
+            title={t('setting.appearance.theme.title')}
+            icon="theme-light-dark"
+            currentValue={setting.theme}
+            options={themeOptions}
+            onValueChange={handleThemeChange}
+          />
 
-            <SettingSelector
-              title={t('setting.appearance.theme.title')}
-              icon="theme-light-dark"
-              currentValue={setting.theme}
-              options={themeOptions}
-              onValueChange={handleThemeChange}
-            />
+          <SettingSelector
+            title={t('setting.appearance.color.title')}
+            icon="palette"
+            currentValue={setting.color}
+            options={colorOptions}
+            onValueChange={handleColorChange}
+          />
+        </List.Section>
+      </Surface>
 
-            <SettingSelector
-              title={t('setting.appearance.color.title')}
-              icon="palette"
-              currentValue={setting.color}
-              options={colorOptions}
-              onValueChange={handleColorChange}
-            />
-          </List.Section>
-        </Surface>
+      <Surface style={styles.surface} mode="flat">
+        <List.Section title={t('setting.playback.title')} style={styles.listSection}>
+          <TrackScanButton
+            title={t('setting.playback.scanTracks')}
+            description={t('setting.playback.scanTracksDescription')}
+            icon="music-box-multiple"
+            type="scan"
+          />
 
-        <Surface style={styles.surface} mode="flat">
-          <List.Section title={t('setting.playback.title')} style={styles.listSection}>
-            <TrackScanButton
-              title={t('setting.playback.scanTracks')}
-              description={t('setting.playback.scanTracksDescription')}
-              icon="music-box-multiple"
-              type="scan"
-            />
-
-            <TrackScanButton
-              title={t('setting.playback.pickFiles')}
-              description={t('setting.playback.pickFilesDescription')}
-              icon="file-music"
-              type="pick"
-            />
-          </List.Section>
-        </Surface>
-      </ScrollView>
-    </ThemedView>
+          <TrackScanButton
+            title={t('setting.playback.pickFiles')}
+            description={t('setting.playback.pickFilesDescription')}
+            icon="file-music"
+            type="pick"
+          />
+        </List.Section>
+      </Surface>
+    </ScrollView>
   )
 }
 
