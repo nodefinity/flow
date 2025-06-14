@@ -1,6 +1,7 @@
-import { registerColorSchemeAdapter, registerLanguageAdapter, registerStorageAdapter } from '@flow/core'
+import { registerColorSchemeAdapter, registerLanguageAdapter, registerStorageAdapter, useSettingStore, useTrackStore } from '@flow/core'
 import { useFonts } from 'expo-font'
 import { ErrorBoundary } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
 import { colorSchemeAdapter, languageAdapter, mobileStorageAdapter } from '@/adapters'
 import { AppTheme } from '@/components/ui/AppTheme'
 
@@ -9,6 +10,8 @@ registerColorSchemeAdapter(colorSchemeAdapter)
 registerLanguageAdapter(languageAdapter)
 
 export { ErrorBoundary }
+
+SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -33,9 +36,11 @@ export default function RootLayout() {
     UrbanistBlackItalic: require('../assets/fonts/Urbanist-BlackItalic.ttf'),
   })
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null
+  const { isTracksHydrated } = useTrackStore()
+  const { isSettingHydrated } = useSettingStore()
+
+  if (!loaded || !isTracksHydrated || !isSettingHydrated) {
+    SplashScreen.hideAsync()
   }
 
   return (
