@@ -1,9 +1,9 @@
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
 import { Home } from './Home'
 
-export interface RootStackParamList {
+// eslint-disable-next-line ts/consistent-type-definitions
+export type RootStackParamList = {
   Home: undefined
-  [key: string]: undefined
 }
 
 export function RootNavigator() {

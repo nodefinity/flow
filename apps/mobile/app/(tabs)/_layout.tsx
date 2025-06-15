@@ -1,27 +1,49 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { useTranslation } from '@flow/core'
-import { DeviceType, deviceType } from 'expo-device'
-import { Drawer } from 'expo-router/drawer'
-import { Animated, StyleSheet, useWindowDimensions } from 'react-native'
-import { Appbar } from 'react-native-paper'
-import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import DrawerContent from '@/components/ui/DrawerContent'
-import DrawerHeader from '@/components/ui/DrawerHeader'
-import { useThemeColor } from '@/hooks/useThemeColor'
+// import { MaterialCommunityIcons } from '@expo/vector-icons'
+// import { useTranslation } from '@flow/core'
+// import { DeviceType, deviceType } from 'expo-device'
+import { Slot } from 'expo-router'
+import { StyleSheet } from 'react-native'
+// import { Appbar } from 'react-native-paper'
+import Animated, { Extrapolation, interpolate, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
+import Drawer from '@/components/ui/Drawer'
+// import DrawerContent from '@/components/ui/DrawerContent'
+// import DrawerHeader from '@/components/ui/DrawerHeader'
+import Header from '@/components/ui/Header'
+import Overlay from '@/components/ui/Overlay'
+// import { useThemeColor } from '@/hooks/useThemeColor'
 
 export default function DrawerLayout() {
-  const colors = useThemeColor()
-  const { t } = useTranslation()
+  // const colors = useThemeColor()
+  // const { t } = useTranslation()
 
-  const layout = useWindowDimensions()
+  // const layout = useWindowDimensions()
   const active = useSharedValue(false)
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: active.value ? withTiming(1) : withTiming(0.8) }],
-  }))
+  const progress = useDerivedValue(() => {
+    return withTiming(active.value ? 1 : 0)
+  })
+  const animatedStyle = useAnimatedStyle(() => {
+    const rotateY = interpolate(
+      progress.value,
+      [0, 1],
+      [0, -15],
+      Extrapolation.CLAMP,
+    )
+    return {
+      transform: [
+        // {perspective: 1000},r
+        { scale: active.value ? withTiming(0.8) : withTiming(1) },
+        { translateX: active.value ? withSpring(240) : withTiming(0) },
+        {
+          rotateY: `${rotateY}deg`,
+        },
+      ],
+      borderRadius: active.value ? withTiming(28) : withTiming(0),
+    }
+  })
 
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
-      <Drawer
+    <Animated.View style={{ flex: 1 }}>
+      {/* <Drawer
         drawerContent={props => <DrawerContent {...props} />}
         screenOptions={{
           drawerType: deviceType === DeviceType.PHONE ? 'slide' : 'permanent',
@@ -55,7 +77,13 @@ export default function DrawerLayout() {
             },
           }}
         />
-      </Drawer>
+      </Drawer> */}
+      <Animated.View style={[styles.container, animatedStyle]}>
+        <Header active={active} />
+        <Slot />
+        <Overlay active={active} />
+      </Animated.View>
+      <Drawer active={active} />
     </Animated.View>
   )
 }
@@ -63,5 +91,9 @@ export default function DrawerLayout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#1d2733',
+    overflow: 'hidden',
+    zIndex: 1,
+    position: 'relative',
   },
 })

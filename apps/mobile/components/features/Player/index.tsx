@@ -6,8 +6,6 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated'
 import { MINI_HEIGHT } from '@/constants/Player'
-import FullPlayer from './FullPlayer'
-import QueueList from './QueueList'
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window')
 
@@ -54,8 +52,8 @@ export function Player() {
   return (
     <GestureDetector gesture={pan}>
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
-        <FullPlayer />
-        <QueueList />
+        {/* <FullPlayer /> */}
+        {/* <QueueList /> */}
       </Animated.View>
     </GestureDetector>
   )
