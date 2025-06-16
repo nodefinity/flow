@@ -22,9 +22,6 @@ export interface Track {
    */
   album: string
 
-  /** Music genre */
-  genre: string
-
   /**
    * Duration in seconds
    * @default 0
@@ -41,17 +38,37 @@ export interface Track {
    * Date added to library (Unix timestamp, optional)
    * @default undefined
    */
-  createdAt?: number
+  createdAt: number
 
   /**
    * Date modified (Unix timestamp, optional)
    * @default undefined
    */
-  modifiedAt?: number
+  modifiedAt: number
 
   /**
    * File size in bytes (optional)
    * @default undefined
    */
-  fileSize?: number
+  fileSize: number
+}
+
+export interface TrackMetadata extends Track {
+  // audio header
+  duration: number
+  bitrate: number
+  sampleRate: number
+  channels: number
+  format: string
+
+  // tag info
+  year: number
+  genre: string
+  track: number
+  disc: number
+  composer: string
+  lyricist: string
+  lyrics: string
+  albumArtist: string
+  comment: string
 }

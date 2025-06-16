@@ -88,7 +88,6 @@ export function useSetupAudioPro(): void {
           return null
         return {
           ...track,
-          url: track.url,
         }
       }).filter(track => track !== null) as AudioProTrack[],
     })

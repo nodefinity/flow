@@ -1,5 +1,5 @@
 import type { Track } from '@flow/core'
-import type { IPaginatedResult } from '@nodefinity/react-native-music-library'
+import type { PaginatedResult } from '@nodefinity/react-native-music-library'
 import { formatTime, useTrackStore, useTranslation } from '@flow/core'
 import { getTracksAsync } from '@nodefinity/react-native-music-library'
 import { useEffect, useRef, useState } from 'react'
@@ -12,7 +12,7 @@ export function TrackScanDialog({ onDismiss, type }: { onDismiss: () => void, ty
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
-  const [trackResult, setTrackResult] = useState<IPaginatedResult<Track> | null>(null)
+  const [trackResult, setTrackResult] = useState<PaginatedResult<Track> | null>(null)
   const [startTime, setStartTime] = useState<Date | null>(null)
   const [endTime, setEndTime] = useState<Date | null>(null)
   const scrollViewRef = useRef<ScrollView>(null)
@@ -43,10 +43,7 @@ export function TrackScanDialog({ onDismiss, type }: { onDismiss: () => void, ty
 
       setTrackResult(prev => ({
         ...prev,
-        items: [...(prev?.items || []), ...result.items.map(item => ({
-          ...item,
-          url: item.uri,
-        }))],
+        items: [...(prev?.items || []), ...result.items],
         hasNextPage: result.hasNextPage,
         endCursor: result.endCursor,
       }))
