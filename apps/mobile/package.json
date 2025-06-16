@@ -14,7 +14,6 @@
     "@flow/core": "*",
     "@gorhom/bottom-sheet": "^5.1.6",
     "@nodefinity/react-native-music-library": "0.5.1",
-    "@react-native-async-storage/async-storage": "2.1.2",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/drawer": "^7.3.12",
     "@react-navigation/elements": "^2.3.8",
@@ -44,8 +43,7 @@
     "react-native-reanimated": "~3.18.0",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.10.0",
-    "react-native-tab-view": "^4.1.1",
-    "react-native-webview": "13.13.5"
+    "react-native-tab-view": "^4.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
