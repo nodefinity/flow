@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen'
 import { colorSchemeAdapter, languageAdapter, mobileStorageAdapter } from '@/adapters'
 import { AppTheme } from '@/components/ui/AppTheme'
 import { setupAudioPro, useSetupAudioPro } from '@/hooks/useAudioPro'
+import { useNotificationPermission } from '@/hooks/useNotificationPermission'
 
 registerStorageAdapter(mobileStorageAdapter)
 registerColorSchemeAdapter(colorSchemeAdapter)
@@ -43,6 +44,7 @@ export default function RootLayout() {
   const { isSettingHydrated } = useSettingStore()
 
   useSetupAudioPro()
+  useNotificationPermission()
 
   if (!loaded || !isTracksHydrated || !isSettingHydrated) {
     SplashScreen.hideAsync()
