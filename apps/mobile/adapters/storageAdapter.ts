@@ -1,37 +1,39 @@
 import type { StorageAdapter } from '@flow/core'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { MMKV } from 'react-native-mmkv'
+
+const storage = new MMKV()
 
 export const mobileStorageAdapter: StorageAdapter = {
   getItem: async (key: string) => {
     try {
-      const value = await AsyncStorage.getItem(key)
-      return value
+      const value = storage.getString(key)
+      return value ?? null
     }
     catch (error) {
-      console.error('AsyncStorage getItem failed:', error)
+      console.error('MMKV getItem failed:', error)
       return null
     }
   },
   setItem: async (key: string, value: string | null) => {
     try {
       if (value === null) {
-        await AsyncStorage.removeItem(key)
+        storage.delete(key)
       }
       else {
-        await AsyncStorage.setItem(key, value)
-        console.log('AsyncStorage setItem:', { key, valueLength: value.length })
+        storage.set(key, value)
+        console.log('MMKV setItem:', { key, valueLength: value.length })
       }
     }
     catch (error) {
-      console.error('AsyncStorage setItem failed:', error)
+      console.error('MMKV setItem failed:', error)
     }
   },
   removeItem: async (key: string) => {
     try {
-      await AsyncStorage.removeItem(key)
+      storage.delete(key)
     }
     catch (error) {
-      console.error('AsyncStorage removeItem failed:', error)
+      console.error('MMKV removeItem failed:', error)
     }
   },
 }
