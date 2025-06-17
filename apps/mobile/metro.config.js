@@ -6,6 +6,8 @@ const monorepoRoot = path.resolve(projectRoot, '../..')
 
 const config = getDefaultConfig(projectRoot)
 
+config.resolver.assetExts.push('ttf', 'otf')
+
 // Only list the packages within your monorepo that your app uses. No need to add anything else.
 // If your monorepo tooling can give you the list of monorepo workspaces linked
 // in your app workspace, you can automate this list instead of hardcoding them.

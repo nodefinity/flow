@@ -14,7 +14,7 @@ export default function DrawerTabBar({ state, descriptors, navigation }: DrawerC
     }]}
     >
       <Appbar.Header>
-        <Appbar.Content title="Flow" titleStyle={{ fontFamily: 'UrbanistSemiBold' }} />
+        <Appbar.Content title="Flow" />
       </Appbar.Header>
 
       {state.routes.map((route, index) => {

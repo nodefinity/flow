@@ -37,7 +37,6 @@ export const TabView: FC<TabViewProps> = ({
     routes.forEach((route) => {
       options[route.key] = {
         labelStyle: {
-          fontFamily: 'UrbanistSemiBold',
           fontSize: paperTheme.fonts.labelLarge.fontSize || 14,
           letterSpacing: paperTheme.fonts.labelLarge.letterSpacing || 0,
         },
