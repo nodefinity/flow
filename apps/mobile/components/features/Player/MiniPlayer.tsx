@@ -58,7 +58,7 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
   }, [playingTrack?.id, playQueue, tracks])
 
   return (
-    <Animated.View style={[styles.container, { height: MINI_HEIGHT, backgroundColor: colors.background }, animatedStyle]}>
+    <Animated.View style={[styles.container, { height: MINI_HEIGHT, backgroundColor: colors.elevation.level1 }, animatedStyle]}>
       <Pressable onPress={onPress} style={styles.content}>
         <View style={styles.trackInfo}>
           <Image source={{ uri: playingTrack?.artwork as string }} style={{ width: 40, height: 40, borderRadius: 4 }} />
@@ -94,8 +94,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     paddingLeft: 16,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(0,0,0,0.1)',
+    paddingRight: 4,
   },
   content: {
     flexDirection: 'row',

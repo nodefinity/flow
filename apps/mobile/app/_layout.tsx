@@ -20,14 +20,14 @@ export default function RootLayout() {
   const { isTracksHydrated } = useTrackStore()
   const { isSettingHydrated } = useSettingStore()
 
-  console.log('RootLayout', isTracksHydrated, isSettingHydrated)
-
   useSetupAudioPro()
   useNotificationPermission()
 
   if (isTracksHydrated && isSettingHydrated) {
-    console.log('RootLayout', 'hide')
     SplashScreen.hideAsync()
+  }
+  else {
+    return null
   }
 
   return (
