@@ -1,14 +1,15 @@
 import type { AudioProTrack } from 'react-native-audio-pro'
 import { useTrackStore } from '@flow/core'
 import { useCallback, useEffect } from 'react'
-import { Image, StyleSheet, View } from 'react-native'
+import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { AudioPro, AudioProState, useAudioPro } from 'react-native-audio-pro'
 import { IconButton, Text } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated'
+import { MINI_HEIGHT } from '@/constants/Player'
 import { useThemeColor } from '@/hooks/useThemeColor'
 import { usePlayerAnimation } from './Context'
 
-export default function MiniPlayer({ height }: { height: number }) {
+export default function MiniPlayer({ onPress }: { onPress: () => void }) {
   const colors = useThemeColor()
   const { thresholdPercent } = usePlayerAnimation()
   const { state, playingTrack } = useAudioPro()
@@ -57,8 +58,8 @@ export default function MiniPlayer({ height }: { height: number }) {
   }, [playingTrack?.id, playQueue, tracks])
 
   return (
-    <Animated.View style={[styles.container, { height, backgroundColor: colors.background }, animatedStyle]}>
-      <View style={styles.content}>
+    <Animated.View style={[styles.container, { height: MINI_HEIGHT, backgroundColor: colors.background }, animatedStyle]}>
+      <Pressable onPress={onPress} style={styles.content}>
         <View style={styles.trackInfo}>
           <Image source={{ uri: playingTrack?.artwork as string }} style={{ width: 40, height: 40, borderRadius: 4 }} />
 
@@ -84,7 +85,7 @@ export default function MiniPlayer({ height }: { height: number }) {
             onPress={handleNext}
           />
         </View>
-      </View>
+      </Pressable>
     </Animated.View>
   )
 }

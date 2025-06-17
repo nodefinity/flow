@@ -49,9 +49,9 @@ export function Player() {
     )
   })
 
-  const animateToPosition = (shouldShowMini: boolean) => {
+  const animateToPosition = (snap: 'MINI' | 'FULL') => {
     'worklet'
-    translateY.value = withTiming(shouldShowMini ? SNAP_MINI : SNAP_FULL)
+    translateY.value = withTiming(snap === 'MINI' ? SNAP_MINI : SNAP_FULL)
   }
 
   // Gesture: pan to show full player or queue list
@@ -73,7 +73,7 @@ export function Player() {
       // when velocity is greater than MIN_VELOCITY
       // animate to the final position
       if (Math.abs(velocity) > MIN_VELOCITY) {
-        animateToPosition(velocity > 0)
+        animateToPosition(velocity > 0 ? 'MINI' : 'FULL')
         return
       }
 
@@ -84,13 +84,13 @@ export function Player() {
         // determine the final position based on the current position
         const currentPosition = translateY.value
         const isNearMini = Math.abs(currentPosition - SNAP_MINI) < Math.abs(currentPosition - SNAP_FULL)
-        animateToPosition(isNearMini)
+        animateToPosition(isNearMini ? 'MINI' : 'FULL')
         return
       }
 
       // when velocity is less than MIN_VELOCITY
       // animate to the final position
-      animateToPosition(event.translationY > 0)
+      animateToPosition(event.translationY > 0 ? 'MINI' : 'FULL')
     })
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -110,7 +110,7 @@ export function Player() {
         <GestureDetector gesture={pan}>
           {/* TODO: dynamic backgroundColor from artwork */}
           <Animated.View style={{ flex: 1, backgroundColor: '#444' }}>
-            <MiniPlayer height={MINI_HEIGHT} />
+            <MiniPlayer onPress={() => animateToPosition('FULL')} />
             <FullPlayer />
           </Animated.View>
         </GestureDetector>

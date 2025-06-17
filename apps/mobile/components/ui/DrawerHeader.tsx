@@ -36,7 +36,7 @@ export default function DrawerHeader(props: DrawerHeaderProps) {
         </Appbar.Header>
       )
     : (
-        <Appbar.Header {...props}>
+        <Appbar.Header {...props} mode="center-aligned">
           {showMenu && (
             <Tooltip title="Open drawer">
               <Appbar.Action
