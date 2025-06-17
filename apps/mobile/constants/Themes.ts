@@ -6,60 +6,7 @@ import { configureFonts, MD3DarkTheme, MD3LightTheme } from 'react-native-paper'
 import { Colors } from '@/constants/Colors'
 
 // TODO: change font
-// #region custom fonts
-const fontConfig = {
-  default: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  displayLarge: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  displayMedium: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  displaySmall: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  headlineLarge: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  headlineMedium: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  headlineSmall: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  titleLarge: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  titleMedium: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  titleSmall: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  bodyLarge: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  bodyMedium: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  bodySmall: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  labelLarge: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  labelMedium: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-  labelSmall: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-}
-// #endregion
-
-const fonts = configureFonts({ config: fontConfig, isV3: true })
+const fonts = configureFonts({ config: {}, isV3: true })
 
 const BaseLightTheme = {
   ...MD3LightTheme,
