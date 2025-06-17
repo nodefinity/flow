@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Dimensions, StyleSheet } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import PagerView from 'react-native-pager-view'
@@ -6,12 +6,15 @@ import Animated, {
   clamp,
   Extrapolation,
   interpolate,
+  runOnJS,
+  useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
 import { MINI_HEIGHT } from '@/constants/Player'
+import { useBackHandler } from '@/hooks/useBackHandler'
 import { Context } from './Context'
 import FullPlayer from './FullPlayer'
 import MiniPlayer from './MiniPlayer'
@@ -26,6 +29,10 @@ const AnimatedPagerView = Animated.createAnimatedComponent(PagerView)
 export function Player() {
   const SNAP_MINI = SCREEN_HEIGHT - MINI_HEIGHT
   const SNAP_FULL = 0
+
+  const [isFull, setIsFull] = useState(false)
+  const [page, setPage] = useState(0)
+  const pagerRef = useRef<PagerView>(null)
 
   // Init: show mini player
   const translateY = useSharedValue(SNAP_MINI)
@@ -56,7 +63,6 @@ export function Player() {
 
   // Gesture: pan to show full player or queue list
   const pan = Gesture.Pan()
-    .enabled(false)
     .onStart((_event) => {
       prevTranslationY.value = translateY.value
     })
@@ -99,13 +105,34 @@ export function Player() {
 
   const contextValue = useMemo(() => ({ percent, thresholdPercent }), [percent, thresholdPercent])
 
+  useAnimatedReaction(
+    () => thresholdPercent.value,
+    (value) => {
+      const newIsFull = value > 0.5
+      if (newIsFull !== isFull) {
+        runOnJS(setIsFull)(newIsFull)
+      }
+    },
+    [isFull],
+  )
+
+  useBackHandler(isFull || page === 1, () => {
+    if (page === 1) {
+      pagerRef.current?.setPage(0)
+    }
+    else if (isFull) {
+      animateToPosition('MINI')
+    }
+  })
+
   return (
     <Context value={contextValue}>
       <AnimatedPagerView
+        ref={pagerRef}
         initialPage={0}
         style={[styles.container, animatedStyle]}
         orientation="vertical"
-        scrollEnabled={false}
+        onPageSelected={event => setPage(event.nativeEvent.position)}
       >
         <GestureDetector gesture={pan}>
           {/* TODO: dynamic backgroundColor from artwork */}
