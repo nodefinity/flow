@@ -1,14 +1,14 @@
 import type { Track } from '@flow/core'
-import type { AudioProTrack } from 'react-native-audio-pro'
 import { useTrackStore } from '@flow/core'
 import { memo } from 'react'
 import { FlatList, Image, StyleSheet, View } from 'react-native'
-import { AudioPro } from 'react-native-audio-pro'
 import { IconButton, List, Text } from 'react-native-paper'
 import { ThemedView } from '@/components/ui/ThemedView'
+import { usePlayerControl } from '@/hooks/usePlayerControl'
 
 export const TracksScreen = memo(() => {
-  const { tracks, setPlayQueue } = useTrackStore()
+  const { tracks } = useTrackStore()
+  const { playList } = usePlayerControl()
 
   const renderItem = ({ item }: { item: Track }) => (
     <List.Item
@@ -34,8 +34,7 @@ export const TracksScreen = memo(() => {
         </View>
       )}
       onPress={() => {
-        setPlayQueue(tracks.map(track => track.id))
-        AudioPro.play(item as unknown as AudioProTrack, { autoPlay: true })
+        playList(item, tracks)
       }}
     />
   )

@@ -16,18 +16,6 @@ function formatSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
 }
 
-export enum PlaybackState {
-  PLAYING = 'playing',
-  PAUSED = 'paused',
-  STOPPED = 'stopped',
-}
-
-export interface CurrentPlayback {
-  trackId: string | null
-  position: number // seconds
-  state: PlaybackState
-}
-
 interface TrackStore {
   _hasHydrated: boolean
   setHasHydrated: (state: boolean) => void
@@ -35,13 +23,6 @@ interface TrackStore {
   tracks: Track[]
   addTracks: (newTracks: Track[]) => void
   clearTracks: () => void
-
-  playQueue: string[]
-  setPlayQueue: (ids: string[]) => void
-  clearPlayQueue: () => void
-
-  currentPlayback: CurrentPlayback
-  setCurrentPlayback: (playback: CurrentPlayback) => void
 }
 
 let _store: ReturnType<typeof createTrackStore> | null = null
@@ -74,23 +55,6 @@ function createTrackStore() {
         clearTracks: () => {
           set({ tracks: [] })
         },
-
-        playQueue: [],
-        setPlayQueue: (ids: string[]) => {
-          set({ playQueue: ids })
-        },
-        clearPlayQueue: () => {
-          set({ playQueue: [] })
-        },
-
-        currentPlayback: {
-          trackId: null,
-          position: 0,
-          state: PlaybackState.STOPPED,
-        },
-        setCurrentPlayback: (playback: CurrentPlayback) => {
-          set({ currentPlayback: playback })
-        },
       }),
       {
         name: 'local-tracks',
@@ -117,11 +81,6 @@ export function useTrackStore() {
     tracks,
     addTracks,
     clearTracks,
-    playQueue,
-    setPlayQueue,
-    clearPlayQueue,
-    currentPlayback,
-    setCurrentPlayback,
   } = _store()
 
   return {
@@ -130,12 +89,5 @@ export function useTrackStore() {
     tracks,
     addTracks,
     clearTracks,
-
-    playQueue,
-    setPlayQueue,
-    clearPlayQueue,
-
-    currentPlayback,
-    setCurrentPlayback,
   }
 }

@@ -133,6 +133,7 @@ export function Player() {
         style={[styles.container, animatedStyle]}
         orientation="vertical"
         onPageSelected={event => setPage(event.nativeEvent.position)}
+        overScrollMode="never"
       >
         <GestureDetector gesture={pan}>
           {/* TODO: dynamic backgroundColor from artwork */}
@@ -142,7 +143,9 @@ export function Player() {
           </Animated.View>
         </GestureDetector>
 
-        <QueueList />
+        <Animated.View style={{ flex: 1, backgroundColor: 'red', paddingVertical: 50 }}>
+          <QueueList />
+        </Animated.View>
       </AnimatedPagerView>
     </Context>
   )

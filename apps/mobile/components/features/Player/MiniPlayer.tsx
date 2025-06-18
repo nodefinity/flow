@@ -1,11 +1,10 @@
-import type { AudioProTrack } from 'react-native-audio-pro'
-import { useTrackStore } from '@flow/core'
 import { useCallback, useEffect } from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
-import { AudioPro, AudioProState, useAudioPro } from 'react-native-audio-pro'
+import { AudioProState, useAudioPro } from 'react-native-audio-pro'
 import { IconButton, Text } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated'
 import { MINI_HEIGHT } from '@/constants/Player'
+import { usePlayerControl } from '@/hooks/usePlayerControl'
 import { useThemeColor } from '@/hooks/useThemeColor'
 import { usePlayerAnimation } from './Context'
 
@@ -13,7 +12,7 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
   const colors = useThemeColor()
   const { thresholdPercent } = usePlayerAnimation()
   const { state, playingTrack } = useAudioPro()
-  const { playQueue, tracks } = useTrackStore()
+  const { currentTrack, playPause, playNext } = usePlayerControl()
 
   const opacity = useDerivedValue(() => {
     return interpolate(thresholdPercent.value, [0, 1], [1, 0], Extrapolation.CLAMP)
@@ -30,45 +29,28 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
   }, [state])
 
   const handlePlayPause = useCallback(() => {
-    if (state === AudioProState.PLAYING) {
-      AudioPro.pause()
-    }
-    else if (state === AudioProState.PAUSED) {
-      AudioPro.resume()
-    }
-  }, [state])
+    playPause()
+  }, [playPause])
 
   const handleNext = useCallback(() => {
-    const currentIndex = playQueue.findIndex(id => id === playingTrack?.id)
-    const nextIndex = (currentIndex + 1) % playQueue.length
-    const nextTrackId = playQueue[nextIndex]
-    const nextTrack = tracks.find(track => track.id === nextTrackId)
+    playNext(true)
+  }, [playNext])
 
-    if (nextTrack) {
-      const audioProTrack: AudioProTrack = {
-        id: nextTrack.id,
-        title: nextTrack.title,
-        artist: nextTrack.artist,
-        artwork: nextTrack.artwork,
-        url: nextTrack.url,
-        duration: nextTrack.duration,
-      }
-      AudioPro.play(audioProTrack, { autoPlay: true })
-    }
-  }, [playingTrack?.id, playQueue, tracks])
+  // Use currentTrack as display data, if not, use playingTrack
+  const displayTrack = currentTrack || playingTrack
 
   return (
     <Animated.View style={[styles.container, { height: MINI_HEIGHT, backgroundColor: colors.elevation.level1 }, animatedStyle]}>
       <Pressable onPress={onPress} style={styles.content}>
         <View style={styles.trackInfo}>
-          <Image source={{ uri: playingTrack?.artwork as string }} style={{ width: 40, height: 40, borderRadius: 4 }} />
+          <Image source={{ uri: displayTrack?.artwork as string }} style={{ width: 40, height: 40, borderRadius: 4 }} />
 
           <View>
             <Text numberOfLines={1} style={styles.title}>
-              {playingTrack?.title || '未播放'}
+              {displayTrack?.title || '未播放'}
             </Text>
             <Text numberOfLines={1} style={styles.artist}>
-              {playingTrack?.artist || '未知艺术家'}
+              {displayTrack?.artist || '未知艺术家'}
             </Text>
           </View>
         </View>
