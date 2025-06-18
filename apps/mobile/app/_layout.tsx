@@ -1,8 +1,14 @@
 import { registerColorSchemeAdapter, registerLanguageAdapter, registerStorageAdapter, useSettingStore, useTrackStore } from '@flow/core'
-import { ErrorBoundary } from 'expo-router'
+import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider } from '@react-navigation/native'
+import { ErrorBoundary, Slot } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
+import { StatusBar } from 'expo-status-bar'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
 import { colorSchemeAdapter, languageAdapter, mobileStorageAdapter } from '@/adapters'
-import { AppTheme } from '@/components/ui/AppTheme'
+import { Player } from '@/components/features/Player'
+import { ThemedView } from '@/components/ui/ThemedView'
+import Themes from '@/constants/Themes'
 import { setupAudioPro, useSetupAudioPro } from '@/hooks/useAudioPro'
 import { useNotificationPermission } from '@/hooks/useNotificationPermission'
 
@@ -18,7 +24,7 @@ setupAudioPro()
 
 export default function RootLayout() {
   const { isTracksHydrated } = useTrackStore()
-  const { isSettingHydrated } = useSettingStore()
+  const { isSettingHydrated, effectiveColorScheme, currentColor } = useSettingStore()
 
   useSetupAudioPro()
   useNotificationPermission()
@@ -30,7 +36,28 @@ export default function RootLayout() {
     return null
   }
 
+  const paperTheme = Themes[effectiveColorScheme ?? 'light'][currentColor]
+
+  const { DarkTheme, LightTheme } = adaptNavigationTheme({
+    reactNavigationDark: NavDarkTheme,
+    reactNavigationLight: NavLightTheme,
+    materialDark: Themes.dark.default,
+    materialLight: Themes.light.default,
+  })
+
+  const statusBarStyle = effectiveColorScheme === 'dark' ? 'light' : 'dark'
+
   return (
-    <AppTheme />
+    <PaperProvider theme={paperTheme}>
+      <ThemeProvider value={effectiveColorScheme === 'dark' ? DarkTheme : LightTheme}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <ThemedView style={{ flex: 1 }} testID="root-surface">
+            <StatusBar style={statusBarStyle} />
+            <Slot />
+            <Player />
+          </ThemedView>
+        </GestureHandlerRootView>
+      </ThemeProvider>
+    </PaperProvider>
   )
 }
