@@ -50,10 +50,10 @@ const fontConfig = {
     lineHeight: 32,
   },
   titleLarge: {
-    fontSize: 22,
-    fontWeight: '400',
+    fontSize: 18,
+    fontWeight: '700',
     letterSpacing: 0,
-    lineHeight: 28,
+    lineHeight: 26,
   },
   titleMedium: {
     fontSize: 16,
