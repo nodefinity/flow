@@ -129,7 +129,7 @@ function createPlayerStore() {
         },
       }),
       {
-        name: 'local-tracks',
+        name: 'player-store',
         storage: createJSONStorage(() => getStorageAdapter()),
         onRehydrateStorage: () => (state) => {
           if (state) {

@@ -57,7 +57,7 @@ function createTrackStore() {
         },
       }),
       {
-        name: 'local-tracks',
+        name: 'track-store',
         storage: createJSONStorage(() => getStorageAdapter()),
         onRehydrateStorage: () => (state) => {
           if (state) {
