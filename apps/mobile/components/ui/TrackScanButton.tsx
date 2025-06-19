@@ -7,7 +7,7 @@ interface TrackScanButtonProps {
   title: string
   description: string
   icon: string
-  type: 'scan' | 'pick'
+  type: 'scan' | 'pick' | 'kgDecode'
 }
 
 export function TrackScanButton({

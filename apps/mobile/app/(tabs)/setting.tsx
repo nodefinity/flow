@@ -83,6 +83,12 @@ export default function SettingScreen() {
             icon="file-music"
             type="pick"
           />
+          <TrackScanButton
+            title={t('setting.playback.kgDecode')}
+            description={t('setting.playback.kgDecodeDescription')}
+            icon="file-music"
+            type="kgDecode"
+          />
         </List.Section>
       </Surface>
     </ScrollView>

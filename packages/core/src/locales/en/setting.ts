@@ -56,6 +56,8 @@ export default {
     foundTracks: 'Found {{count}} tracks',
     pickFiles: 'Pick Audio Files',
     pickFilesDescription: 'Select audio files from file system',
+    kgDecode: 'Kugou Music Decode',
+    kgDecodeDescription: 'Decode kugou music files',
   },
 
   about: {

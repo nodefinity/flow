@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { ActivityIndicator, Button, Dialog, Portal, Text } from 'react-native-paper'
 
-export function TrackScanDialog({ onDismiss, type }: { onDismiss: () => void, type: 'scan' | 'pick' }) {
+export function TrackScanDialog({ onDismiss, type }: { onDismiss: () => void, type: 'scan' | 'pick' | 'kgDecode' }) {
   const { addTracks } = useTrackStore()
 
   const { t } = useTranslation()
@@ -61,8 +61,12 @@ export function TrackScanDialog({ onDismiss, type }: { onDismiss: () => void, ty
   }
 
   useEffect(() => {
+    console.log('type', type)
     if (type === 'scan') {
       getLocalTracks()
+    }
+    else if (type === 'kgDecode') {
+      console.log('kgDecode')
     }
   }, [type])
 

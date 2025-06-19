@@ -56,6 +56,8 @@ export default {
     foundTracks: '找到 {{count}} 首歌曲',
     pickFiles: '选择音频文件',
     pickFilesDescription: '从文件系统选择音频文件',
+    kgDecode: '酷狗音乐解码',
+    kgDecodeDescription: '解码酷狗音乐文件',
   },
 
   about: {
