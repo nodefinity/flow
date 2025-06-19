@@ -1,3 +1,3 @@
-export * from './player'
-export * from './setting'
-export * from './track'
+export * from './playerStore'
+export * from './settingStore'
+export * from './trackStore'
