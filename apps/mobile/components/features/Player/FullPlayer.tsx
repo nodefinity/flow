@@ -3,17 +3,16 @@ import { useCallback } from 'react'
 import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import { AudioProState, useAudioPro } from 'react-native-audio-pro'
 import PagerView from 'react-native-pager-view'
-import { IconButton, Text } from 'react-native-paper'
+import { IconButton, Text, useTheme } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
 import { usePlayerControl } from '@/hooks/usePlayerControl'
-import { useThemeColor } from '@/hooks/useThemeColor'
 import { usePlayerAnimation } from './Context'
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView)
 const { width: screenWidth } = Dimensions.get('window')
 
 export default function FullPlayer() {
-  const colors = useThemeColor()
+  const { colors } = useTheme()
   const { thresholdPercent } = usePlayerAnimation()
   const { state, playingTrack } = useAudioPro()
   const { currentTrack, playPause, playNext, playPrevious, mode } = usePlayerControl()

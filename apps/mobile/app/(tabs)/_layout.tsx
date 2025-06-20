@@ -3,13 +3,12 @@ import { useTranslation } from '@flow/core'
 import { DeviceType, deviceType } from 'expo-device'
 import { Drawer } from 'expo-router/drawer'
 import { useWindowDimensions } from 'react-native'
-import { Appbar } from 'react-native-paper'
+import { Appbar, useTheme } from 'react-native-paper'
 import DrawerContent from '@/components/ui/DrawerContent'
 import DrawerHeader from '@/components/ui/DrawerHeader'
-import { useThemeColor } from '@/hooks/useThemeColor'
 
 export default function DrawerLayout() {
-  const colors = useThemeColor()
+  const { colors } = useTheme()
   const { t } = useTranslation()
 
   const layout = useWindowDimensions()

@@ -1,15 +1,14 @@
 import { useCallback, useEffect } from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { AudioProState, useAudioPro } from 'react-native-audio-pro'
-import { IconButton, Text } from 'react-native-paper'
+import { IconButton, Text, useTheme } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated'
 import { MINI_HEIGHT } from '@/constants/Player'
 import { usePlayerControl } from '@/hooks/usePlayerControl'
-import { useThemeColor } from '@/hooks/useThemeColor'
 import { usePlayerAnimation } from './Context'
 
 export default function MiniPlayer({ onPress }: { onPress: () => void }) {
-  const colors = useThemeColor()
+  const { colors } = useTheme()
   const { thresholdPercent } = usePlayerAnimation()
   const { state, playingTrack } = useAudioPro()
   const { currentTrack, playPause, playNext } = usePlayerControl()

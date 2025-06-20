@@ -5,7 +5,6 @@ import { useMemo, useState } from 'react'
 import { Dimensions } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { TabView as RNTabView, TabBar } from 'react-native-tab-view'
-import { useThemeColor } from '@/hooks/useThemeColor'
 import { TabBarIndicator } from './TabBarIndicator'
 
 export interface TabRoute {
@@ -23,7 +22,7 @@ export const TabView: FC<TabViewProps> = ({
   renderScene,
   ...rest
 }) => {
-  const theme = useThemeColor()
+  const { colors } = useTheme()
   const paperTheme = useTheme()
   const [index, setIndex] = useState(0)
 
@@ -52,10 +51,10 @@ export const TabView: FC<TabViewProps> = ({
         {...props}
         scrollEnabled
         tabStyle={{ width: 'auto' }}
-        activeColor={theme.primary}
-        inactiveColor={theme.onSurfaceVariant}
-        indicatorStyle={{ backgroundColor: theme.primary }}
-        style={{ backgroundColor: theme.surface, elevation: 0 }}
+        activeColor={colors.primary}
+        inactiveColor={colors.onSurfaceVariant}
+        indicatorStyle={{ backgroundColor: colors.primary }}
+        style={{ backgroundColor: colors.surface, elevation: 0 }}
         options={tabOptions}
         // tabStyle width: 'auto' cause tab bar indicator children wrong transform
         // https://github.com/react-navigation/react-navigation/issues/12393
@@ -73,7 +72,7 @@ export const TabView: FC<TabViewProps> = ({
       renderTabBar={renderTabBar}
       initialLayout={{ width: Dimensions.get('window').width }}
       style={{
-        backgroundColor: theme.background,
+        backgroundColor: colors.background,
       }}
       {...rest}
     />

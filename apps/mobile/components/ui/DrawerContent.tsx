@@ -1,16 +1,15 @@
 import type { DrawerContentComponentProps } from '@react-navigation/drawer'
 import { CommonActions } from '@react-navigation/native'
 import { View } from 'react-native'
-import { Appbar, Drawer } from 'react-native-paper'
-import { useThemeColor } from '@/hooks/useThemeColor'
+import { Appbar, Drawer, useTheme } from 'react-native-paper'
 
 export default function DrawerTabBar({ state, descriptors, navigation }: DrawerContentComponentProps) {
-  const theme = useThemeColor()
+  const { colors } = useTheme()
 
   return (
     <View style={[{
-      backgroundColor: theme.background,
-      borderRightColor: theme.outline,
+      backgroundColor: colors.background,
+      borderRightColor: colors.outline,
     }]}
     >
       <Appbar.Header>

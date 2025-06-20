@@ -1,8 +1,8 @@
 import type { StyleProp, ViewStyle } from 'react-native'
 import type { NavigationState, Route, SceneRendererProps } from 'react-native-tab-view'
 import { useEffect, useRef } from 'react'
+import { useTheme } from 'react-native-paper'
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import { useThemeColor } from '@/hooks/useThemeColor'
 
 type TabBarIndicatorProps<T extends Route> = SceneRendererProps & {
   navigationState: NavigationState<T>
@@ -21,7 +21,7 @@ export function TabBarIndicator<T extends Route>({
   style,
   gap,
 }: TabBarIndicatorProps<T>) {
-  const theme = useThemeColor()
+  const { colors } = useTheme()
 
   const isIndicatorShown = useRef(false)
   const isWidthDynamic = width === 'auto'
@@ -65,7 +65,7 @@ export function TabBarIndicator<T extends Route>({
   return (
     <Animated.View
       style={[{
-        backgroundColor: theme.primary,
+        backgroundColor: colors.primary,
         position: 'absolute',
         bottom: 0,
         left: 0,
