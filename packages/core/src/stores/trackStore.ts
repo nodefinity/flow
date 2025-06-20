@@ -31,7 +31,7 @@ function createTrackStore() {
   return create<TrackStore>()(
     persist(
       set => ({
-        _hasHydrated: true,
+        _hasHydrated: false,
         setHasHydrated: (state: boolean) => {
           set({
             _hasHydrated: state,

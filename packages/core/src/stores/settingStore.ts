@@ -26,7 +26,7 @@ function createSettingStore() {
   return create<SettingStore>()(
     persist(
       set => ({
-        _hasHydrated: true,
+        _hasHydrated: false,
         setHasHydrated: (state: boolean) => {
           set({
             _hasHydrated: state,
@@ -42,7 +42,6 @@ function createSettingStore() {
         name: 'app-setting',
         storage: createJSONStorage(() => getStorageAdapter()),
         onRehydrateStorage: () => (state) => {
-          console.log('onRehydrateStorage', state)
           if (state) {
             state.setHasHydrated(true)
           }
@@ -64,7 +63,9 @@ export function useSettingStore() {
   useEffect(() => {
     if (setting?.language) {
       const targetLang = setting.language === 'auto' ? language : setting.language
-      i18n.changeLanguage(targetLang)
+      if (i18n.language !== targetLang) {
+        i18n.changeLanguage(targetLang)
+      }
     }
   }, [setting?.language, i18n, language])
 

@@ -10,9 +10,6 @@ export enum PlayMode {
 }
 
 interface PlayerStore {
-  _hasHydrated: boolean
-  setHasHydrated: (state: boolean) => void
-
   queue: Track[]
   originalQueue: Track[]
   currentIndex: number
@@ -40,13 +37,6 @@ function createPlayerStore() {
   return create<PlayerStore>()(
     persist(
       (set, get) => ({
-        _hasHydrated: true,
-        setHasHydrated: (state: boolean) => {
-          set({
-            _hasHydrated: state,
-          })
-        },
-
         queue: [],
         originalQueue: [],
         currentIndex: 0,
@@ -131,11 +121,6 @@ function createPlayerStore() {
       {
         name: 'player-store',
         storage: createJSONStorage(() => getStorageAdapter()),
-        onRehydrateStorage: () => (state) => {
-          if (state) {
-            state.setHasHydrated(true)
-          }
-        },
       },
     ),
   )
@@ -147,7 +132,6 @@ export function usePlayerStore() {
     _store = createPlayerStore()
   }
   const {
-    _hasHydrated,
     queue,
     originalQueue,
     currentIndex,
@@ -160,8 +144,6 @@ export function usePlayerStore() {
   } = _store()
 
   return {
-    isPlayerHydrated: _hasHydrated,
-
     queue,
     originalQueue,
     currentIndex,
