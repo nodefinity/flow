@@ -7,7 +7,10 @@ import { IconButton, List, Text } from 'react-native-paper'
 import { usePlayerControl } from '@/hooks/usePlayerControl'
 
 export default function HomeScreen() {
-  const { tracks } = useTrackStore()
+  const localTracks = useTrackStore.use.localTracks()
+  const remoteTracks = useTrackStore.use.remoteTracks()
+  const tracks = [...localTracks, ...remoteTracks]
+
   const { playList } = usePlayerControl()
 
   const renderItem = ({ item }: { item: Track }) => (
@@ -38,6 +41,8 @@ export default function HomeScreen() {
     />
   )
 
+  console.log('home')
+
   return (
     <>
       {
@@ -49,6 +54,7 @@ export default function HomeScreen() {
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
                 extraData={tracks}
+                estimatedItemSize={70}
               />
             )
           : (

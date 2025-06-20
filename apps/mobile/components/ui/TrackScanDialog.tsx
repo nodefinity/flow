@@ -7,7 +7,7 @@ import { ScrollView, StyleSheet, View } from 'react-native'
 import { ActivityIndicator, Button, Dialog, Portal, Text } from 'react-native-paper'
 
 export function TrackScanDialog({ onDismiss, type }: { onDismiss: () => void, type: 'scan' | 'pick' }) {
-  const { addTracks } = useTrackStore()
+  const setLocalTracks = useTrackStore.use.setLocalTracks()
 
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
@@ -68,7 +68,7 @@ export function TrackScanDialog({ onDismiss, type }: { onDismiss: () => void, ty
 
   const handleConfirm = () => {
     setIsSaving(true)
-    addTracks(trackResult?.items || [])
+    setLocalTracks(trackResult?.items || [])
     setIsSaving(false)
     onDismiss()
   }

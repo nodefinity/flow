@@ -1,3 +1,5 @@
+import type { Track } from '@nodefinity/react-native-music-library'
+import { getTracksAsync } from '@nodefinity/react-native-music-library'
 import { Platform } from 'react-native'
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions'
 
@@ -41,6 +43,26 @@ export async function requestMusicPermission(): Promise<boolean> {
     console.error('Request permission error:', error)
     return false
   }
+}
+
+export async function getLocalTracks() {
+  let hasMore = true
+  let cursor
+  const localTracks: Track[] = []
+
+  while (hasMore) {
+    const result = await getTracksAsync({
+      first: 20,
+      after: cursor,
+    })
+
+    hasMore = result.hasNextPage
+    cursor = result.endCursor
+
+    localTracks.push(...result.items)
+  }
+
+  return localTracks
 }
 
 /**

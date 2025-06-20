@@ -10,6 +10,7 @@ import { Player } from '@/components/features/Player'
 import { ThemedView } from '@/components/ui/ThemedView'
 import Themes from '@/constants/Themes'
 import { setupAudioPro, useSetupAudioPro } from '@/hooks/useAudioPro'
+import { useInitLocalTracks } from '@/hooks/useInitLocalTracks'
 import { useNotificationPermission } from '@/hooks/useNotificationPermission'
 
 registerStorageAdapter(mobileStorageAdapter)
@@ -23,13 +24,14 @@ SplashScreen.preventAutoHideAsync()
 setupAudioPro()
 
 export default function RootLayout() {
-  const { isTracksHydrated } = useTrackStore()
+  const remoteTracksHydrated = useTrackStore.use.hasHydrated()
   const { isSettingHydrated, effectiveColorScheme, currentColor } = useSettingStore()
 
   useSetupAudioPro()
   useNotificationPermission()
+  const localTracksHydrated = useInitLocalTracks()
 
-  if (isTracksHydrated && isSettingHydrated) {
+  if (remoteTracksHydrated && isSettingHydrated && localTracksHydrated) {
     SplashScreen.hideAsync()
   }
   else {
