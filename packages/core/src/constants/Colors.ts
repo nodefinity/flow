@@ -4,21 +4,8 @@
  */
 
 import type { MD3Colors } from 'react-native-paper/lib/typescript/types'
+import type { ColorName } from '../types'
 import { MD3DarkTheme, MD3LightTheme } from 'react-native-paper'
-
-export type ColorName =
-  | 'default'
-  | 'orange'
-  | 'red'
-  | 'violet'
-  | 'indigo'
-  | 'blue'
-  | 'teal'
-  | 'cyan'
-  | 'green'
-  | 'lime'
-  | 'olive'
-  | 'brown'
 
 export const ColorNames: ColorName[] = [
   'default',

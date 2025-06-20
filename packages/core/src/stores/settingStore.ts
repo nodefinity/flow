@@ -1,23 +1,18 @@
-import type { AppSetting } from '../types/setting'
-import { useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
+import type { ColorName, Language, Theme } from '../types/setting'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { useColorScheme } from '../hooks/useColorScheme'
-import { useLanguage } from '../hooks/useLanguage'
 import { getStorageAdapter } from '../hooks/useStorageState'
-
-const DEFAULT_SETTING: AppSetting = {
-  theme: 'auto',
-  language: 'auto',
-  color: 'default',
-}
+import { createSelectors } from '../utils/createSelectors'
 
 interface SettingStore {
   _hasHydrated: boolean
   setHasHydrated: (state: boolean) => void
-  setting: AppSetting
-  updateSetting: (newSetting: Partial<AppSetting>) => void
+
+  theme: Theme
+  language: Language
+  color: ColorName
+
+  updateSetting: (partial: Partial<Pick<SettingStore, 'theme' | 'language' | 'color'>>) => void
 }
 
 let _store: ReturnType<typeof createSettingStore> | null = null
@@ -32,52 +27,26 @@ function createSettingStore() {
             _hasHydrated: state,
           })
         },
-        setting: DEFAULT_SETTING,
-        updateSetting: (newSetting: Partial<AppSetting>) =>
-          set(state => ({
-            setting: { ...state.setting, ...newSetting },
-          })),
+
+        theme: 'auto',
+        language: 'auto',
+        color: 'default',
+
+        updateSetting: partial => set(partial),
       }),
       {
         name: 'app-setting',
         storage: createJSONStorage(() => getStorageAdapter()),
-        onRehydrateStorage: () => (state) => {
-          if (state) {
-            state.setHasHydrated(true)
-          }
-        },
+        onRehydrateStorage: () => state => state?.setHasHydrated(true),
       },
     ),
   )
 }
 
-export function useSettingStore() {
+export const useSettingStore = (() => {
   if (!_store) {
     _store = createSettingStore()
   }
-  const { _hasHydrated, setting, updateSetting } = _store()
-  const colorScheme = useColorScheme()
-  const language = useLanguage()
-  const { i18n } = useTranslation()
 
-  useEffect(() => {
-    if (setting?.language) {
-      const targetLang = setting.language === 'auto' ? language : setting.language
-      if (i18n.language !== targetLang) {
-        i18n.changeLanguage(targetLang)
-      }
-    }
-  }, [setting?.language, i18n, language])
-
-  const currentTheme = setting?.theme || 'auto'
-  const effectiveColorScheme = currentTheme === 'auto' ? colorScheme : currentTheme
-  const currentColor = setting?.color || 'default'
-
-  return {
-    isSettingHydrated: _hasHydrated,
-    setting,
-    updateSetting,
-    effectiveColorScheme,
-    currentColor,
-  }
-}
+  return createSelectors(_store)
+})()

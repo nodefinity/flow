@@ -7,7 +7,10 @@ import { TrackScanButton } from '@/components/ui/TrackScanButton'
 
 export default function SettingScreen() {
   const { t } = useTranslation()
-  const { setting, updateSetting } = useSettingStore()
+  const theme = useSettingStore.use.theme()
+  const language = useSettingStore.use.language()
+  const color = useSettingStore.use.color()
+  const updateSetting = useSettingStore.use.updateSetting()
 
   const languageOptions = [
     { value: 'auto', label: t('setting.appearance.language.auto') },
@@ -38,6 +41,8 @@ export default function SettingScreen() {
     updateSetting({ color: value as ColorName })
   }
 
+  console.log('setting')
+
   return (
     <ScrollView style={styles.scrollView}>
       <Surface style={styles.surface} mode="flat">
@@ -45,7 +50,7 @@ export default function SettingScreen() {
           <SettingSelector
             title={t('setting.appearance.language.title')}
             icon="translate"
-            currentValue={setting.language}
+            currentValue={language}
             options={languageOptions}
             onValueChange={handleLanguageChange}
           />
@@ -53,7 +58,7 @@ export default function SettingScreen() {
           <SettingSelector
             title={t('setting.appearance.theme.title')}
             icon="theme-light-dark"
-            currentValue={setting.theme}
+            currentValue={theme}
             options={themeOptions}
             onValueChange={handleThemeChange}
           />
@@ -61,7 +66,7 @@ export default function SettingScreen() {
           <SettingSelector
             title={t('setting.appearance.color.title')}
             icon="palette"
-            currentValue={setting.color}
+            currentValue={color}
             options={colorOptions}
             onValueChange={handleColorChange}
           />

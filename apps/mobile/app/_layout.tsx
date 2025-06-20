@@ -1,4 +1,4 @@
-import { registerColorSchemeAdapter, registerLanguageAdapter, registerStorageAdapter, useSettingStore, useTrackStore } from '@flow/core'
+import { registerColorSchemeAdapter, registerLanguageAdapter, registerStorageAdapter, useAppearanceSetting, useSettingStore, useTrackStore } from '@flow/core'
 import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider } from '@react-navigation/native'
 import { ErrorBoundary, Slot } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
@@ -25,7 +25,8 @@ setupAudioPro()
 
 export default function RootLayout() {
   const remoteTracksHydrated = useTrackStore.use.hasHydrated()
-  const { isSettingHydrated, effectiveColorScheme, currentColor } = useSettingStore()
+  const { effectiveColorScheme, currentColor } = useAppearanceSetting()
+  const isSettingHydrated = useSettingStore.use._hasHydrated()
 
   useSetupAudioPro()
   useNotificationPermission()
