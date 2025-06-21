@@ -23,8 +23,8 @@ expo-env.d.ts
 
 # debug
 npm-debug.*
-yarn-debug.*
-yarn-error.*
+pnpm-debug.*
+pnpm-error.*
 
 # macOS
 .DS_Store
@@ -37,3 +37,7 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+
+# turbo
+.turbo/

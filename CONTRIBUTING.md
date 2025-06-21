@@ -34,17 +34,23 @@ Ensure you have [set up your Environment](https://reactnative.dev/docs/set-up-yo
 3. **Install Dependencies**
 
    ```bash
-   yarn install
+   pnpm install
    ```
 
-4. **Start the Development Server**
+4. **Install**
 
    ```bash
    # iOS
-   yarn mobile ios
+   pnpm mobile ios
 
    # Android
-   yarn mobile android
+   pnpm mobile android
+   ```
+
+5. **Start**
+
+   ```
+   pnpm dev
    ```
 
 ## Contribution Guidelines

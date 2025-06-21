@@ -4,14 +4,14 @@
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
-    "start": "expo start",
+    "dev": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "prebuild": "expo prebuild"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
-    "@flow/core": "*",
+    "@flow/core": "workspace:*",
     "@gorhom/bottom-sheet": "^5.1.6",
     "@nodefinity/react-native-music-library": "0.7.1",
     "@react-navigation/bottom-tabs": "^7.3.10",

@@ -34,17 +34,23 @@
 3. **安装依赖**
 
    ```bash
-   yarn install
+   pnpm install
    ```
 
-4. **启动项目**
+4. **安装开发包**
 
    ```bash
    # iOS
-   yarn mobile ios
+   pnpm mobile ios
 
    # Android
-   yarn mobile android
+   pnpm mobile android
+   ```
+
+5. **启动项目**
+
+   ```bash
+   pnpm dev
    ```
 
 ## 贡献指南

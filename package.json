@@ -2,12 +2,11 @@
   "name": "flow",
   "version": "0.0.1",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
-    "mobile": "yarn workspace mobile",
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "mobile": "pnpm --filter mobile",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "prepare": "husky"
@@ -22,11 +21,13 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "husky": "^9.1.7",
     "lint-staged": "^16.0.0",
+    "turbo": "2.5.4",
     "typescript": "^5.8.3"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "yarn lint:fix"
+      "pnpm lint:fix"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.12.1"
 }

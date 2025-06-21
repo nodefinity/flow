@@ -7,7 +7,7 @@
   "build": {
     "base": {
       "node": "22.16.0",
-      "yarn": "1.22.22"
+      "pnpm": "10.12.1"
     },
     "development": {
       "extends": "base",
