@@ -25,8 +25,8 @@ setupAudioPro()
 
 export default function RootLayout() {
   const remoteTracksHydrated = useTrackStore.use.hasHydrated()
-  const { effectiveColorScheme, currentColor } = useAppearanceSetting()
-  const isSettingHydrated = useSettingStore.use._hasHydrated()
+  const { effectiveColorScheme } = useAppearanceSetting()
+  const isSettingHydrated = useSettingStore.use.hasHydrated()
 
   useSetupAudioPro()
   useNotificationPermission()
@@ -39,13 +39,13 @@ export default function RootLayout() {
     return null
   }
 
-  const paperTheme = Themes[effectiveColorScheme ?? 'light'][currentColor]
+  const paperTheme = Themes[effectiveColorScheme ?? 'light']
 
   const { DarkTheme, LightTheme } = adaptNavigationTheme({
     reactNavigationDark: NavDarkTheme,
     reactNavigationLight: NavLightTheme,
-    materialDark: Themes.dark.default,
-    materialLight: Themes.light.default,
+    materialDark: Themes.dark,
+    materialLight: Themes.light,
   })
 
   const statusBarStyle = effectiveColorScheme === 'dark' ? 'light' : 'dark'

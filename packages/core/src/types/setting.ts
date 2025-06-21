@@ -6,17 +6,3 @@ export enum Languages {
 export type Language = 'en' | 'zh' | 'auto'
 
 export type Theme = 'light' | 'dark' | 'auto'
-
-export type ColorName =
-  | 'default'
-  | 'orange'
-  | 'red'
-  | 'violet'
-  | 'indigo'
-  | 'blue'
-  | 'teal'
-  | 'cyan'
-  | 'green'
-  | 'lime'
-  | 'olive'
-  | 'brown'

@@ -1,5 +1,5 @@
-import type { ColorName, Language, Theme } from '@flow/core'
-import { ColorNames, useSettingStore, useTranslation } from '@flow/core'
+import type { Language, Theme } from '@flow/core'
+import { useSettingStore, useTranslation } from '@flow/core'
 import { ScrollView, StyleSheet } from 'react-native'
 import { List, Surface } from 'react-native-paper'
 import { SettingSelector } from '@/components/ui/SettingSelector'
@@ -9,7 +9,6 @@ export default function SettingScreen() {
   const { t } = useTranslation()
   const theme = useSettingStore.use.theme()
   const language = useSettingStore.use.language()
-  const color = useSettingStore.use.color()
   const updateSetting = useSettingStore.use.updateSetting()
 
   const languageOptions = [
@@ -24,21 +23,12 @@ export default function SettingScreen() {
     { value: 'dark', label: t('setting.appearance.theme.dark') },
   ]
 
-  const colorOptions = ColorNames.map(color => ({
-    value: color,
-    label: t(`setting.appearance.color.${color}`),
-  }))
-
   const handleLanguageChange = (value: string) => {
     updateSetting({ language: value as Language })
   }
 
   const handleThemeChange = (value: string) => {
     updateSetting({ theme: value as Theme })
-  }
-
-  const handleColorChange = (value: string) => {
-    updateSetting({ color: value as ColorName })
   }
 
   console.log('setting')
@@ -61,14 +51,6 @@ export default function SettingScreen() {
             currentValue={theme}
             options={themeOptions}
             onValueChange={handleThemeChange}
-          />
-
-          <SettingSelector
-            title={t('setting.appearance.color.title')}
-            icon="palette"
-            currentValue={color}
-            options={colorOptions}
-            onValueChange={handleColorChange}
           />
         </List.Section>
       </Surface>

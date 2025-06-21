@@ -6,13 +6,12 @@ import { useColorScheme } from './useColorScheme'
 import { useLanguage } from './useLanguage'
 
 export function useAppearanceSetting() {
-  const colorScheme = useColorScheme()
+  const systemColorScheme = useColorScheme()
   const systemLanguage = useLanguage() as Language
   const { i18n } = useTranslation()
 
-  const theme = useSettingStore.use.theme()
+  const currentTheme = useSettingStore.use.theme()
   const language = useSettingStore.use.language()
-  const color = useSettingStore.use.color()
 
   useEffect(() => {
     if (language) {
@@ -23,12 +22,9 @@ export function useAppearanceSetting() {
     }
   }, [language, systemLanguage, i18n])
 
-  const currentTheme = theme
-  const effectiveColorScheme = currentTheme === 'auto' ? colorScheme : currentTheme
-  const currentColor = color
+  const effectiveColorScheme = currentTheme === 'auto' ? systemColorScheme : currentTheme
 
   return {
     effectiveColorScheme,
-    currentColor,
   }
 }
