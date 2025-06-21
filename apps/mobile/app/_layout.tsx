@@ -6,12 +6,12 @@ import { StatusBar } from 'expo-status-bar'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
 import { colorSchemeAdapter, languageAdapter, mobileStorageAdapter } from '@/adapters'
-import { Player } from '@/components/features/Player'
 import { ThemedView } from '@/components/ui/ThemedView'
 import Themes from '@/constants/Themes'
 import { setupAudioPro, useSetupAudioPro } from '@/hooks/useAudioPro'
 import { useInitLocalTracks } from '@/hooks/useInitLocalTracks'
 import { useNotificationPermission } from '@/hooks/useNotificationPermission'
+import { Player } from '@/modules/player'
 
 registerStorageAdapter(mobileStorageAdapter)
 registerColorSchemeAdapter(colorSchemeAdapter)

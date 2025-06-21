@@ -4,8 +4,8 @@ import { DeviceType, deviceType } from 'expo-device'
 import { Drawer } from 'expo-router/drawer'
 import { useWindowDimensions } from 'react-native'
 import { Appbar, useTheme } from 'react-native-paper'
-import DrawerContent from '@/components/ui/DrawerContent'
-import DrawerHeader from '@/components/ui/DrawerHeader'
+import DrawerContent from '@/components/layout/drawer/DrawerContent'
+import DrawerHeader from '@/components/layout/drawer/DrawerHeader'
 
 export default function DrawerLayout() {
   const { colors } = useTheme()
