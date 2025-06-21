@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  react-native-track-player:
+    hash: 00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf
+    path: patches/react-native-track-player.patch
+
 importers:
 
   .:
@@ -149,6 +154,9 @@ importers:
       react-native-tab-view:
         specifier: ^4.1.1
         version: 4.1.2(react-native-pager-view@6.8.1(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-track-player:
+        specifier: 4.1.1
+        version: 4.1.1(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
     devDependencies:
       '@babel/core':
         specifier: ^7.25.2
@@ -162,6 +170,21 @@ importers:
       i18next:
         specifier: ^25.2.0
         version: 25.2.1(typescript@5.8.3)
+      react-i18next:
+        specifier: ^15.5.2
+        version: 15.5.3(i18next@25.2.1(typescript@5.8.3))(react@19.0.0)(typescript@5.8.3)
+      zustand:
+        specifier: ^5.0.5
+        version: 5.0.5(@types/react@19.0.14)(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0))
+
+  packages/store:
+    dependencies:
+      i18next:
+        specifier: ^25.2.0
+        version: 25.2.1(typescript@5.8.3)
+      react:
+        specifier: '>=18.0.0'
+        version: 19.0.0
       react-i18next:
         specifier: ^15.5.2
         version: 15.5.3(i18next@25.2.1(typescript@5.8.3))(react@19.0.0)(typescript@5.8.3)
@@ -3905,6 +3928,19 @@ packages:
       react: '>= 18.2.0'
       react-native: '*'
       react-native-pager-view: '>= 6.0.0'
+
+  react-native-track-player@4.1.1:
+    resolution: {integrity: sha512-E5N/eK/+HtAVJUAzXpm1cWz8ROheV9jb0TI6h2bM+333U+DWibTTnT2T1122FkCoXLXIYavtm2FR2if+5jH8cA==}
+    peerDependencies:
+      react: '>=16.8.6'
+      react-native: '>=0.60.0-rc.2'
+      react-native-windows: '>=0.63.0'
+      shaka-player: ^4.7.9
+    peerDependenciesMeta:
+      react-native-windows:
+        optional: true
+      shaka-player:
+        optional: true
 
   react-native@0.79.4:
     resolution: {integrity: sha512-CfxYMuszvnO/33Q5rB//7cU1u9P8rSOvzhE2053Phdb8+6bof9NLayCllU2nmPrm8n9o6RU1Fz5H0yquLQ0DAw==}
@@ -9373,6 +9409,11 @@ snapshots:
       react-native: 0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)
       react-native-pager-view: 6.8.1(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       use-latest-callback: 0.2.4(react@19.0.0)
+
+  react-native-track-player@4.1.1(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)
 
   react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0):
     dependencies:

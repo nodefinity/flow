@@ -2,6 +2,7 @@
   "name": "flow",
   "version": "0.0.1",
   "private": true,
+  "packageManager": "pnpm@10.12.1",
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
@@ -24,10 +25,14 @@
     "turbo": "2.5.4",
     "typescript": "^5.8.3"
   },
+  "pnpm": {
+    "patchedDependencies": {
+      "react-native-track-player": "patches/react-native-track-player.patch"
+    }
+  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "pnpm lint:fix"
     ]
-  },
-  "packageManager": "pnpm@10.12.1"
+  }
 }
