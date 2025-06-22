@@ -1,5 +1,6 @@
 import type { Language, Theme } from '@flow/core'
-import { useSettingStore, useTranslation } from '@flow/core'
+import { useTranslation } from '@flow/core'
+import { useSettingStore } from '@flow/store'
 import { ScrollView, StyleSheet } from 'react-native'
 import { List, Surface } from 'react-native-paper'
 import { SettingSelector } from '@/modules/setting/SettingSelector'

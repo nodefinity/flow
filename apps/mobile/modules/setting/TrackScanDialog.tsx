@@ -1,6 +1,7 @@
 import type { Track } from '@flow/core'
 import type { PaginatedResult } from '@nodefinity/react-native-music-library'
-import { formatTime, useTrackStore, useTranslation } from '@flow/core'
+import { formatTime, useTranslation } from '@flow/core'
+import { useTrackStore } from '@flow/store'
 import { getTracksAsync } from '@nodefinity/react-native-music-library'
 import { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'

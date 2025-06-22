@@ -1,7 +1,7 @@
-import type { Track } from '../types'
+import type { Track } from '@flow/core'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { getStorageAdapter } from '../hooks/useStorageState'
+import { storageAdapter } from './adapters/storage'
 
 export enum PlayMode {
   SINGLE = 'single',
@@ -26,7 +26,7 @@ function shuffle<T>(array: T[]): T[] {
   const arr = [...array]
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+    ;[arr[i]!, arr[j]!] = [arr[j]!, arr[i]!]
   }
   return arr
 }
@@ -99,6 +99,8 @@ function createPlayerStore() {
           if (mode === PlayMode.SHUFFLE) {
             const shuffled = shuffle(originalQueue)
             const nowTrack = queue[currentIndex]
+            if (!nowTrack)
+              return
             const newIndex = shuffled.findIndex(t => t.id === nowTrack.id)
             set({
               mode,
@@ -109,6 +111,8 @@ function createPlayerStore() {
           else {
             // ordered / single: restore order
             const nowTrack = queue[currentIndex]
+            if (!nowTrack)
+              return
             const newIndex = originalQueue.findIndex(t => t.id === nowTrack.id)
             set({
               mode,
@@ -120,7 +124,7 @@ function createPlayerStore() {
       }),
       {
         name: 'player-store',
-        storage: createJSONStorage(() => getStorageAdapter()),
+        storage: createJSONStorage(() => storageAdapter),
       },
     ),
   )

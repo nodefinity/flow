@@ -1,4 +1,4 @@
-import { PlayMode } from '@flow/core'
+import { PlayMode } from '@flow/store'
 import { useCallback } from 'react'
 import { Dimensions, Image, StyleSheet, View } from 'react-native'
 import { AudioProState, useAudioPro } from 'react-native-audio-pro'

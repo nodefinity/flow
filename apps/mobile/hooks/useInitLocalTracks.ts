@@ -1,4 +1,4 @@
-import { useTrackStore } from '@flow/core'
+import { useTrackStore } from '@flow/store'
 import { useEffect, useState } from 'react'
 import { getLocalTracks, requestMusicPermission } from '@/utils/localTrackService'
 

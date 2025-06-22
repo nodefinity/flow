@@ -1,8 +1,8 @@
-import type { Language, Theme } from '../types/setting'
+import type { Language, Theme } from '@flow/core'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { getStorageAdapter } from '../hooks/useStorageState'
-import { createSelectors } from '../utils/createSelectors'
+import { storageAdapter } from './adapters/storage'
+import { createSelectors } from './utils/createSelectors'
 
 interface SettingStore {
   hasHydrated: boolean
@@ -34,7 +34,7 @@ function createSettingStore() {
       }),
       {
         name: 'setting-store',
-        storage: createJSONStorage(() => getStorageAdapter()),
+        storage: createJSONStorage(() => storageAdapter),
         onRehydrateStorage: () => state => state?.setHasHydrated(true),
       },
     ),

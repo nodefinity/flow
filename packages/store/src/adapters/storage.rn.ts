@@ -1,9 +1,8 @@
-import type { StorageAdapter } from '@flow/core'
 import { MMKV } from 'react-native-mmkv'
 
 const storage = new MMKV()
 
-export const mobileStorageAdapter: StorageAdapter = {
+export const storageAdapter = {
   getItem: async (key: string) => {
     try {
       const value = storage.getString(key)

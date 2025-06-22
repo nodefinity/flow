@@ -28,7 +28,7 @@
 
 import type { Track } from '@flow/core'
 import type { AudioProTrack } from 'react-native-audio-pro'
-import { usePlayerStore } from '@flow/core'
+import { usePlayerStore } from '@flow/store'
 import { useCallback } from 'react'
 import { AudioPro, AudioProState } from 'react-native-audio-pro'
 

@@ -5,7 +5,6 @@
   "types": "index.d.ts",
   "dependencies": {
     "i18next": "^25.2.0",
-    "react-i18next": "^15.5.2",
-    "zustand": "^5.0.5"
+    "react-i18next": "^15.5.2"
   }
 }

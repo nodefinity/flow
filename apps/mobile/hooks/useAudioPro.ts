@@ -1,5 +1,5 @@
 import type { AudioProEvent, AudioProTrack } from 'react-native-audio-pro'
-import { PlayMode, usePlayerStore } from '@flow/core'
+import { PlayMode, usePlayerStore } from '@flow/store'
 import { useEffect } from 'react'
 import { AudioPro, AudioProContentType, AudioProEventType } from 'react-native-audio-pro'
 

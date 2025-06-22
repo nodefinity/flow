@@ -1,5 +1,5 @@
 import type { Track } from '@flow/core'
-import { useTrackStore } from '@flow/core'
+import { useTrackStore } from '@flow/store'
 import { FlashList } from '@shopify/flash-list'
 import { Image } from 'expo-image'
 import { StyleSheet, View } from 'react-native'

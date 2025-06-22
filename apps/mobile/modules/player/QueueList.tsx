@@ -1,5 +1,5 @@
 import type { Track } from '@flow/core'
-import { usePlayerStore } from '@flow/core'
+import { usePlayerStore } from '@flow/store'
 import { FlatList, Image, StyleSheet, View } from 'react-native'
 import { IconButton, List, Text } from 'react-native-paper'
 import { ThemedView } from '@/components/ui/ThemedView'
