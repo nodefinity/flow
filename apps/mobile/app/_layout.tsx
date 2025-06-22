@@ -1,4 +1,4 @@
-import { registerColorSchemeAdapter, registerLanguageAdapter, useAppearanceSetting } from '@flow/core'
+import { useAppearanceSetting } from '@flow/hooks'
 import { useSettingStore, useTrackStore } from '@flow/store'
 import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider } from '@react-navigation/native'
 import { ErrorBoundary, Slot } from 'expo-router'
@@ -6,18 +6,12 @@ import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
-import { colorSchemeAdapter, languageAdapter } from '@/adapters'
 import { ThemedView } from '@/components/ui/ThemedView'
 import Themes from '@/constants/Themes'
 import { setupAudioPro, useSetupAudioPro } from '@/hooks/useAudioPro'
 import { useInitLocalTracks } from '@/hooks/useInitLocalTracks'
 import { useNotificationPermission } from '@/hooks/useNotificationPermission'
 import { Player } from '@/modules/player'
-
-registerColorSchemeAdapter(colorSchemeAdapter)
-registerLanguageAdapter(languageAdapter)
-
-export { ErrorBoundary }
 
 SplashScreen.preventAutoHideAsync()
 
@@ -39,7 +33,7 @@ export default function RootLayout() {
     return null
   }
 
-  const paperTheme = Themes[effectiveColorScheme ?? 'light']
+  const paperTheme = Themes[effectiveColorScheme as keyof typeof Themes] ?? Themes.light
 
   const { DarkTheme, LightTheme } = adaptNavigationTheme({
     reactNavigationDark: NavDarkTheme,
@@ -64,3 +58,5 @@ export default function RootLayout() {
     </PaperProvider>
   )
 }
+
+export { ErrorBoundary }

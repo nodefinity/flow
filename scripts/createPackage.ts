@@ -17,8 +17,8 @@ if (fs.existsSync(packagePath)) {
 
 const packageJson = {
   name: `@flow/${packageName}`,
-  private: true,
   type: 'module',
+  private: true,
   exports: {
     '.': './src/index.ts',
   },
@@ -45,7 +45,7 @@ const tsconfigJson = {
 fs.mkdirSync(packagePath, { recursive: true })
 fs.mkdirSync(`${packagePath}/src`, { recursive: true })
 fs.writeFileSync(`${packagePath}/src/index.ts`, '')
-fs.writeFileSync(`${packagePath}/package.json`, JSON.stringify(packageJson, null, 2))
-fs.writeFileSync(`${packagePath}/tsconfig.json`, JSON.stringify(tsconfigJson, null, 2))
+fs.writeFileSync(`${packagePath}/package.json`, `${JSON.stringify(packageJson, null, 2)}\n`)
+fs.writeFileSync(`${packagePath}/tsconfig.json`, `${JSON.stringify(tsconfigJson, null, 2)}\n`)
 
 console.log(`📦 Package ${packageName} created successfully`)

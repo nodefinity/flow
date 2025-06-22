@@ -1,7 +1,7 @@
 import type { Track } from '@flow/core'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { storageAdapter } from './adapters/storage'
+import { getStorage } from './providers/storage'
 import { createSelectors } from './utils/createSelectors'
 
 interface TrackStore {
@@ -39,7 +39,7 @@ function createTrackStore() {
       }),
       {
         name: 'track-store',
-        storage: createJSONStorage(() => storageAdapter),
+        storage: createJSONStorage(() => getStorage),
         onRehydrateStorage: () => state => state?.setHasHydrated(true),
         // only persist remoteTracks, get localTracks in runtime
         partialize: state => ({

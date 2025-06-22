@@ -1,5 +1,5 @@
 {
-  "name": "@flow/store",
+  "name": "@flow/hooks",
   "type": "module",
   "private": true,
   "exports": {
@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@flow/core": "workspace:*",
-    "zustand": "^5.0.5"
+    "@flow/store": "workspace:*",
+    "i18next": "^25.2.0",
+    "react-i18next": "^15.5.2"
   },
   "devDependencies": {
     "@flow/config": "workspace:*"

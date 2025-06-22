@@ -1,19 +1,17 @@
-import type { Language } from '../types'
+import type { Language } from '@flow/core'
+import { useSettingStore } from '@flow/store'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-// import { useSettingStore } from '../stores'
-import { useColorScheme } from './useColorScheme'
-import { useLanguage } from './useLanguage'
+import { useColorScheme } from './providers/colorScheme'
+import { useLanguage } from './providers/language'
 
 export function useAppearanceSetting() {
   const systemColorScheme = useColorScheme()
   const systemLanguage = useLanguage() as Language
   const { i18n } = useTranslation()
 
-  // const currentTheme = useSettingStore.use.theme()
-  // const language = useSettingStore.use.language()
-  const currentTheme = 'auto'
-  const language = 'auto'
+  const currentTheme = useSettingStore.use.theme()
+  const language = useSettingStore.use.language()
 
   useEffect(() => {
     if (language) {

@@ -1,7 +1,7 @@
 import type { Track } from '@flow/core'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { storageAdapter } from './adapters/storage'
+import { getStorage } from './providers/storage'
 
 export enum PlayMode {
   SINGLE = 'single',
@@ -124,7 +124,7 @@ function createPlayerStore() {
       }),
       {
         name: 'player-store',
-        storage: createJSONStorage(() => storageAdapter),
+        storage: createJSONStorage(() => getStorage),
       },
     ),
   )

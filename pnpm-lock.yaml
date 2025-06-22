@@ -58,6 +58,9 @@ importers:
       '@flow/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@flow/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
       '@flow/store':
         specifier: workspace:*
         version: link:../../packages/store
@@ -174,13 +177,29 @@ importers:
   packages/config: {}
 
   packages/core:
+    devDependencies:
+      '@flow/config':
+        specifier: workspace:*
+        version: link:../config
+
+  packages/hooks:
     dependencies:
+      '@flow/core':
+        specifier: workspace:*
+        version: link:../core
+      '@flow/store':
+        specifier: workspace:*
+        version: link:../store
       i18next:
         specifier: ^25.2.0
         version: 25.2.1(typescript@5.8.3)
       react-i18next:
         specifier: ^15.5.2
         version: 15.5.3(i18next@25.2.1(typescript@5.8.3))(react@19.0.0)(typescript@5.8.3)
+    devDependencies:
+      '@flow/config':
+        specifier: workspace:*
+        version: link:../config
 
   packages/store:
     dependencies:

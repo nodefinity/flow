@@ -1,4 +1,4 @@
-export const storageAdapter = {
+export const getStorage = {
   getItem: async (key: string) => {
     try {
       return localStorage.getItem(key)

@@ -1,10 +1,15 @@
 {
   "name": "@flow/core",
-  "version": "0.0.1",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "dependencies": {
-    "i18next": "^25.2.0",
-    "react-i18next": "^15.5.2"
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@flow/config": "workspace:*"
   }
 }

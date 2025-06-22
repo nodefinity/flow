@@ -2,7 +2,7 @@ import { MMKV } from 'react-native-mmkv'
 
 const storage = new MMKV()
 
-export const storageAdapter = {
+export const getStorage = {
   getItem: async (key: string) => {
     try {
       const value = storage.getString(key)
