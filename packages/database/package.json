@@ -1,0 +1,19 @@
+{
+  "name": "@flow/database",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.44.2",
+    "expo-sqlite": "15.2.12"
+  },
+  "devDependencies": {
+    "@flow/config": "workspace:*",
+    "drizzle-kit": "0.31.1"
+  }
+}

@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
     "@flow/core": "workspace:*",
+    "@flow/database": "workspace:*",
     "@flow/hooks": "workspace:*",
     "@flow/store": "workspace:*",
     "@gorhom/bottom-sheet": "^5.1.6",
