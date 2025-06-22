@@ -10,7 +10,8 @@
     "mobile": "pnpm --filter mobile",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "create:package": "tsx scripts/createPackage.ts"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.13.2",
@@ -22,6 +23,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "husky": "^9.1.7",
     "lint-staged": "^16.0.0",
+    "tsx": "4.20.3",
     "turbo": "2.5.4",
     "typescript": "^5.8.3"
   },

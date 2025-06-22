@@ -1,3 +1,4 @@
+const fs = require('node:fs')
 const path = require('node:path')
 const { getDefaultConfig } = require('expo/metro-config')
 
@@ -6,12 +7,53 @@ const monorepoRoot = path.resolve(projectRoot, '../..')
 
 const config = getDefaultConfig(projectRoot)
 
-// Only list the packages within your monorepo that your app uses. No need to add anything else.
-// If your monorepo tooling can give you the list of monorepo workspaces linked
-// in your app workspace, you can automate this list instead of hardcoding them.
-const monorepoPackages = {
-  '@flow/core': path.resolve(monorepoRoot, 'packages/core'),
+function getMonorepoPackages() {
+  const packagesPath = path.resolve(monorepoRoot, 'packages')
+
+  if (!fs.existsSync(packagesPath)) {
+    return {}
+  }
+
+  const appPackageJson = fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8')
+  const appPackage = JSON.parse(appPackageJson)
+
+  const allDependencies = {
+    ...appPackage.dependencies,
+    ...appPackage.devDependencies,
+  }
+
+  const flowPackages = Object.keys(allDependencies).filter(pkg => pkg.startsWith('@flow/'))
+
+  console.log('📦 App dependencies:', flowPackages)
+
+  return flowPackages.reduce((acc, pkg) => {
+    const pkgName = pkg.replace('@flow/', '')
+    const pkgPath = path.join(packagesPath, pkgName)
+
+    if (fs.existsSync(pkgPath)) {
+      acc[pkg] = pkgPath
+    }
+    else {
+      console.warn(`⚠️ Package ${pkg} not found at ${pkgPath}`)
+    }
+
+    return acc
+  }, {})
 }
+
+const autoMonorepoPackages = getMonorepoPackages()
+
+const manualMonorepoPackages = {
+  // some special packages
+  // '@flow/special': path.resolve(monorepoRoot, 'packages/special'),
+}
+
+const monorepoPackages = {
+  ...autoMonorepoPackages,
+  ...manualMonorepoPackages,
+}
+
+console.log('📦 Discovered packages:', Object.keys(monorepoPackages))
 
 // 1. Watch the local app directory, and only the shared packages (limiting the scope and speeding it up)
 // Note how we change this from `monorepoRoot` to `projectRoot`. This is part of the optimization!
@@ -31,5 +73,24 @@ config.resolver.nodeModulesPaths = [
 
 // 3. Force Metro to resolve (sub)dependencies only from the `nodeModulesPaths`
 config.resolver.disableHierarchicalLookup = true
+
+config.resolver.resolveRequest = (context, moduleName, platform) => {
+  const result = context.resolveRequest(context, moduleName, platform)
+  if (result.type === 'sourceFile') {
+    const lastDotIndex = result.filePath.lastIndexOf('.')
+    const mobilePath = `${result.filePath.slice(0, lastDotIndex)}.rn${result.filePath.slice(lastDotIndex)}`
+    const file = context.fileSystemLookup(mobilePath)
+    if (file.exists) {
+      return {
+        ...result,
+        filePath: mobilePath,
+      }
+    }
+    else {
+      return result
+    }
+  }
+  return result
+}
 
 module.exports = config

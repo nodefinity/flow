@@ -1,0 +1,11 @@
+{
+  "extends": "@flow/config/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@follow/store/*": ["./src/*"],
+      "@pkg": ["../../package.json"]
+    }
+  },
+  "include": ["src/**/*"]
+}

@@ -1,20 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "es2020",
-    "jsx": "preserve",
-    "rootDir": ".",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "paths": {
-      "@flow/*": ["./packages/*/src"]
-    },
-    "resolveJsonModule": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "skipLibCheck": true
-  },
-  "include": [
-    "packages/*/src"
-  ]
+  "extends": "./packages/config/tsconfig.base.json",
+  "exclude": ["apps", "packages"]
 }

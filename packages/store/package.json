@@ -1,0 +1,17 @@
+{
+  "name": "@flow/store",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@flow/config": "workspace:*"
+  }
+}
