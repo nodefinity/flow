@@ -121,7 +121,7 @@ export class Logger {
 export const logger = new Logger({ prefix: 'Flow' })
 
 // convenient functions
-export const debug = (message: string, ...args: any[]) => logger.debug(message, ...args)
-export const info = (message: string, ...args: any[]) => logger.info(message, ...args)
-export const warn = (message: string, ...args: any[]) => logger.warn(message, ...args)
-export const error = (message: string, ...args: any[]) => logger.error(message, ...args)
+export const Debug = (message: string, ...args: any[]) => logger.debug(message, ...args)
+export const Info = (message: string, ...args: any[]) => logger.info(message, ...args)
+export const Warn = (message: string, ...args: any[]) => logger.warn(message, ...args)
+export const Error = (message: string, ...args: any[]) => logger.error(message, ...args)

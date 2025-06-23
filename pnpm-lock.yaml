@@ -58,6 +58,9 @@ importers:
       '@flow/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@flow/database':
+        specifier: workspace:*
+        version: link:../../packages/database
       '@flow/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
@@ -194,6 +197,9 @@ importers:
       '@flow/config':
         specifier: workspace:*
         version: link:../config
+      '@flow/core':
+        specifier: workspace:*
+        version: link:../core
       drizzle-kit:
         specifier: 0.31.1
         version: 0.31.1
