@@ -14,37 +14,27 @@ interface SettingStore {
   updateSetting: (partial: Partial<Pick<SettingStore, 'theme' | 'language'>>) => void
 }
 
-let _store: ReturnType<typeof createSettingStore> | null = null
-
-function createSettingStore() {
-  return create<SettingStore>()(
-    persist(
-      set => ({
-        hasHydrated: false,
-        setHasHydrated: (state: boolean) => {
-          set({
-            hasHydrated: state,
-          })
-        },
-
-        theme: 'auto',
-        language: 'auto',
-
-        updateSetting: partial => set(partial),
-      }),
-      {
-        name: 'setting-store',
-        storage: createJSONStorage(() => getStorage),
-        onRehydrateStorage: () => state => state?.setHasHydrated(true),
+const settingStoreBase = create<SettingStore>()(
+  persist(
+    set => ({
+      hasHydrated: false,
+      setHasHydrated: (state: boolean) => {
+        set({
+          hasHydrated: state,
+        })
       },
-    ),
-  )
-}
 
-export const useSettingStore = (() => {
-  if (!_store) {
-    _store = createSettingStore()
-  }
+      theme: 'auto',
+      language: 'auto',
 
-  return createSelectors(_store)
-})()
+      updateSetting: partial => set(partial),
+    }),
+    {
+      name: 'setting-store',
+      storage: createJSONStorage(() => getStorage),
+      onRehydrateStorage: () => state => state?.setHasHydrated(true),
+    },
+  ),
+)
+
+export const useSettingStore = createSelectors(settingStoreBase)
