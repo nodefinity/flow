@@ -64,6 +64,9 @@ importers:
       '@flow/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
+      '@flow/player':
+        specifier: workspace:*
+        version: link:../../packages/player
       '@flow/store':
         specifier: workspace:*
         version: link:../../packages/store
@@ -136,9 +139,6 @@ importers:
       react-native:
         specifier: 0.79.4
         version: 0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)
-      react-native-audio-pro:
-        specifier: ^9.9.1
-        version: 9.9.1(@types/react@19.0.14)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0))
       react-native-gesture-handler:
         specifier: ~2.26.0
         version: 2.26.0(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -166,9 +166,6 @@ importers:
       react-native-tab-view:
         specifier: ^4.1.1
         version: 4.1.2(react-native-pager-view@6.8.1(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
-      react-native-track-player:
-        specifier: 4.1.1
-        version: 4.1.1(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
     devDependencies:
       '@babel/core':
         specifier: ^7.25.2
@@ -222,6 +219,21 @@ importers:
       '@flow/config':
         specifier: workspace:*
         version: link:../config
+
+  packages/player:
+    devDependencies:
+      '@flow/config':
+        specifier: workspace:*
+        version: link:../config
+      '@flow/core':
+        specifier: workspace:*
+        version: link:../core
+      '@flow/store':
+        specifier: workspace:*
+        version: link:../store
+      react-native-track-player:
+        specifier: ^4.1.1
+        version: 4.1.1(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
   packages/store:
     dependencies:
@@ -4299,12 +4311,6 @@ packages:
 
   react-is@19.1.0:
     resolution: {integrity: sha512-Oe56aUPnkHyyDxxkvqtd7KkdQP5uIUfHxd5XTb3wE9d/kRnZLmKbDB0GWk919tdQ+mxxPtG6EAs6RMT6i1qtHg==}
-
-  react-native-audio-pro@9.9.1:
-    resolution: {integrity: sha512-UcIXHUe6WrKaKuVYe0THna+amj4q0eZL1PsFa41Z82n4Ix8unteMUGawRrxlx9OLiZ8SG3YAR9DV1dzzGa9u+Q==}
-    peerDependencies:
-      react: '*'
-      react-native: '*'
 
   react-native-drawer-layout@4.1.11:
     resolution: {integrity: sha512-31gilubSKPLToy31/bb0hhgOOenHYJq4JC7g/JkIEqBqSWzoCgiOlccDHlBRG+MV37UtXZnJN2spj3VusdCd4A==}
@@ -10007,16 +10013,6 @@ snapshots:
   react-is@18.3.1: {}
 
   react-is@19.1.0: {}
-
-  react-native-audio-pro@9.9.1(@types/react@19.0.14)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0)):
-    dependencies:
-      react: 19.0.0
-      react-native: 0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)
-      zustand: 5.0.5(@types/react@19.0.14)(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0))
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-      - use-sync-external-store
 
   react-native-drawer-layout@4.1.11(react-native-gesture-handler@2.26.0(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.18.0(@babel/core@7.27.4)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:

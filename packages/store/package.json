@@ -3,7 +3,9 @@
   "type": "module",
   "private": true,
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./providers/*": "./src/providers/*.ts",
+    "./utils/*": "./src/utils/*.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"

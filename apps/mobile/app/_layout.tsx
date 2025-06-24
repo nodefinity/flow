@@ -1,4 +1,5 @@
 import { useAppearanceSetting } from '@flow/hooks'
+import { PlaybackService, setupPlayer } from '@flow/player'
 import { useSettingStore, useTrackStore } from '@flow/store'
 import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider } from '@react-navigation/native'
 import { ErrorBoundary, Slot } from 'expo-router'
@@ -6,23 +7,23 @@ import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
+import TrackPlayer from 'react-native-track-player'
 import { ThemedView } from '@/components/ui/ThemedView'
 import Themes from '@/constants/Themes'
-import { setupAudioPro, useSetupAudioPro } from '@/hooks/useAudioPro'
 import { useInitLocalTracks } from '@/hooks/useInitLocalTracks'
 import { useNotificationPermission } from '@/hooks/useNotificationPermission'
 import { Player } from '@/modules/player'
 
 SplashScreen.preventAutoHideAsync()
 
-setupAudioPro()
+TrackPlayer.registerPlaybackService(() => PlaybackService)
+setupPlayer()
 
 export default function RootLayout() {
   const remoteTracksHydrated = useTrackStore.use.hasHydrated()
   const { effectiveColorScheme } = useAppearanceSetting()
   const isSettingHydrated = useSettingStore.use.hasHydrated()
 
-  useSetupAudioPro()
   useNotificationPermission()
   const localTracksHydrated = useInitLocalTracks()
 
