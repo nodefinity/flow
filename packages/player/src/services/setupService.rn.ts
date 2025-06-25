@@ -2,6 +2,7 @@ import type { UpdateOptions } from 'react-native-track-player'
 import { logger } from '@flow/core'
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
+  Capability,
   // Capability,
   RepeatMode,
 } from 'react-native-track-player'
@@ -17,17 +18,17 @@ export function getTrackPlayerOptions(options?: UpdateOptions) {
         AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
     },
     capabilities: [
-      // Capability.Play,
-      // Capability.Pause,
-      // Capability.SkipToNext,
-      // Capability.SkipToPrevious,
-      // Capability.SeekTo,
+      Capability.Play,
+      Capability.Pause,
+      Capability.SkipToNext,
+      Capability.SkipToPrevious,
+      Capability.SeekTo,
     ],
     compactCapabilities: [
-      // Capability.Play,
-      // Capability.Pause,
-      // Capability.SkipToNext,
-      // Capability.SkipToPrevious,
+      Capability.Play,
+      Capability.Pause,
+      Capability.SkipToNext,
+      Capability.SkipToPrevious,
     ],
     ...options,
   }

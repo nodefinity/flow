@@ -27,13 +27,14 @@ export default function FullPlayer() {
   }))
 
   const handlePlayPause = useCallback(() => {
+    console.log('handlePlayPause', isPlaying)
     if (isPlaying) {
       playerController.pause()
     }
     else {
       playerController.play()
     }
-  }, [])
+  }, [isPlaying])
 
   const handleNext = useCallback(() => {
     playerController.next()

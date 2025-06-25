@@ -42,9 +42,33 @@ export class Logger {
     const timestamp = this.getTimestamp()
     const prefix = this.getPrefix()
     const formattedArgs = args.length > 0
-      ? ` ${args.map(arg =>
-        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg),
-      ).join(' ')}`
+      ? ` ${args.map((arg) => {
+        if (arg instanceof Error) {
+          // handle Error object
+          const error = arg as Error
+          let errorStr = `${error.name}: ${error.message}`
+          if (error.stack) {
+            // only show first 5 lines of stack trace, avoid too long log
+            const stackLines = error.stack.split('\n').slice(0, 5)
+            errorStr += `\n${stackLines.join('\n')}`
+          }
+          return errorStr
+        }
+        else if (typeof arg === 'object' && arg !== null) {
+          // handle normal object
+          try {
+            return JSON.stringify(arg, null, 2)
+          }
+          catch {
+            // if JSON.stringify failed, use toString
+            return String(arg)
+          }
+        }
+        else {
+          // handle basic type
+          return String(arg)
+        }
+      }).join(' ')}`
       : ''
 
     return `${timestamp}${prefix}${level} ${message}${formattedArgs}`

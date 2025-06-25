@@ -1,4 +1,5 @@
 import type { Track } from '@flow/core'
+import { playerController } from '@flow/player'
 import { useTrackStore } from '@flow/store'
 import { FlashList } from '@shopify/flash-list'
 import { Image } from 'expo-image'
@@ -33,12 +34,11 @@ export default function HomeScreen() {
         </View>
       )}
       onPress={() => {
-        // playerController.playQueue(tracks, item)
+        console.log('onPress', playerController)
+        playerController.playQueue(tracks, item)
       }}
     />
   )
-
-  console.log('home')
 
   return (
     <>
