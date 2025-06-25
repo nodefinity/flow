@@ -30,7 +30,7 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
     else {
       playerController.play()
     }
-  }, [])
+  }, [isPlaying])
 
   const handleNext = useCallback(() => {
     playerController.next()
