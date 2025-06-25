@@ -166,6 +166,9 @@ importers:
       react-native-tab-view:
         specifier: ^4.1.1
         version: 4.1.2(react-native-pager-view@6.8.1(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-track-player:
+        specifier: ^4.1.1
+        version: 4.1.1(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
     devDependencies:
       '@babel/core':
         specifier: ^7.25.2
@@ -231,9 +234,6 @@ importers:
       '@flow/store':
         specifier: workspace:*
         version: link:../store
-      react-native-track-player:
-        specifier: ^4.1.1
-        version: 4.1.1(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
   packages/store:
     dependencies:

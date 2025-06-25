@@ -11,7 +11,6 @@
   "devDependencies": {
     "@flow/config": "workspace:*",
     "@flow/core": "workspace:*",
-    "@flow/store": "workspace:*",
-    "react-native-track-player": "^4.1.1"
+    "@flow/store": "workspace:*"
   }
 }
