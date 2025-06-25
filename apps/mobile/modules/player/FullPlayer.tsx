@@ -1,11 +1,10 @@
-import { PlayMode } from '@flow/store'
+import { playerController, PlayMode, usePlayerStore } from '@flow/player'
 import { useCallback } from 'react'
 import { Dimensions, Image, StyleSheet, View } from 'react-native'
-import { AudioProState, useAudioPro } from 'react-native-audio-pro'
 import PagerView from 'react-native-pager-view'
 import { IconButton, Text, useTheme } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
-import { usePlayerControl } from '@/hooks/usePlayerControl'
+import { useActiveTrack } from 'react-native-track-player'
 import { usePlayerAnimation } from './Context'
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView)
@@ -14,8 +13,9 @@ const { width: screenWidth } = Dimensions.get('window')
 export default function FullPlayer() {
   const { colors } = useTheme()
   const { thresholdPercent } = usePlayerAnimation()
-  const { state, playingTrack } = useAudioPro()
-  const { currentTrack, playPause, playNext, playPrevious, mode } = usePlayerControl()
+
+  const isPlaying = usePlayerStore.use.isPlaying()
+  const mode = usePlayerStore.use.mode()
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -27,18 +27,24 @@ export default function FullPlayer() {
   }))
 
   const handlePlayPause = useCallback(() => {
-    playPause()
-  }, [playPause])
+    console.log('handlePlayPause', isPlaying)
+    if (isPlaying) {
+      playerController.pause()
+    }
+    else {
+      playerController.play()
+    }
+  }, [isPlaying])
 
   const handleNext = useCallback(() => {
-    playNext(true)
-  }, [playNext])
+    playerController.next()
+  }, [])
 
   const handlePrevious = useCallback(() => {
-    playPrevious(true)
-  }, [playPrevious])
+    playerController.prev()
+  }, [])
 
-  const displayTrack = currentTrack || playingTrack
+  const displayTrack = useActiveTrack()
 
   return (
     <Animated.View style={[styles.container, { backgroundColor: colors.background }, animatedStyle]}>
@@ -76,7 +82,7 @@ export default function FullPlayer() {
               iconColor={colors.onBackground}
             />
             <IconButton
-              icon={state === AudioProState.PLAYING ? 'pause-circle' : 'play-circle'}
+              icon={isPlaying ? 'pause-circle' : 'play-circle'}
               size={64}
               onPress={handlePlayPause}
               iconColor={colors.primary}

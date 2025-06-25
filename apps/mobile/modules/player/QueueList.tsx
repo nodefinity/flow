@@ -1,13 +1,11 @@
 import type { Track } from '@flow/core'
-import { usePlayerStore } from '@flow/store'
+import { usePlayerStore } from '@flow/player'
 import { FlatList, Image, StyleSheet, View } from 'react-native'
 import { IconButton, List, Text } from 'react-native-paper'
 import { ThemedView } from '@/components/ui/ThemedView'
-import { usePlayerControl } from '@/hooks/usePlayerControl'
 
 export default function QueueList() {
   const { queue } = usePlayerStore()
-  const { playList } = usePlayerControl()
 
   const renderItem = ({ item }: { item: Track }) => (
     <List.Item
@@ -33,7 +31,7 @@ export default function QueueList() {
         </View>
       )}
       onPress={() => {
-        playList(item, queue)
+        // playQueue(queue, item)
       }}
     />
   )

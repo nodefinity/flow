@@ -1,0 +1,17 @@
+{
+  "name": "@flow/player",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@flow/config": "workspace:*",
+    "@flow/core": "workspace:*",
+    "@flow/store": "workspace:*",
+    "react-native-track-player": "^4.1.1"
+  }
+}
