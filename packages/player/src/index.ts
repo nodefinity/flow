@@ -1,4 +1,4 @@
-export * from './playbackService'
 export * from './playerController'
 export * from './playerStore'
-export * from './setupPlayer'
+export * from './services/playbackService'
+export * from './services/setupService'

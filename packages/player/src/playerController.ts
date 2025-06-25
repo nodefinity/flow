@@ -1,6 +1,3 @@
-export declare const playerController: {
-  play: () => Promise<void>
-  pause: () => Promise<void>
-  next: () => Promise<void>
-  prev: () => Promise<void>
-}
+import type { PlayerStoreActions } from './playerStore'
+
+export declare const playerController: PlayerStoreActions

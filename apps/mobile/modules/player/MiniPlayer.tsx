@@ -1,16 +1,17 @@
-import { useCallback, useEffect } from 'react'
+import { playerController, usePlayerStore } from '@flow/player'
+import { useCallback } from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { IconButton, Text, useTheme } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated'
+import { useActiveTrack } from 'react-native-track-player'
 import { MINI_HEIGHT } from '@/constants/Player'
-import { usePlayerControl } from '@/hooks/usePlayerControl'
 import { usePlayerAnimation } from './Context'
 
 export default function MiniPlayer({ onPress }: { onPress: () => void }) {
   const { colors } = useTheme()
   const { thresholdPercent } = usePlayerAnimation()
-  const { state, playingTrack } = usePlayerStore()
-  const { currentTrack, playPause, playNext } = usePlayerControl()
+  const isPlaying = usePlayerStore.use.isPlaying()
+  const activeTrack = useActiveTrack()
 
   const opacity = useDerivedValue(() => {
     return interpolate(thresholdPercent.value, [0, 1], [1, 0], Extrapolation.CLAMP)
@@ -22,20 +23,21 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
     }
   })
 
-  useEffect(() => {
-    console.log('state', state)
-  }, [state])
-
   const handlePlayPause = useCallback(() => {
-    playPause()
-  }, [playPause])
+    if (isPlaying) {
+      playerController.pause()
+    }
+    else {
+      playerController.play()
+    }
+  }, [])
 
   const handleNext = useCallback(() => {
-    playNext(true)
-  }, [playNext])
+    playerController.next()
+  }, [])
 
   // Use currentTrack as display data, if not, use playingTrack
-  const displayTrack = currentTrack || playingTrack
+  const displayTrack = activeTrack
 
   return (
     <Animated.View style={[styles.container, { height: MINI_HEIGHT, backgroundColor: colors.elevation.level1 }, animatedStyle]}>
@@ -55,7 +57,7 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
 
         <View style={styles.controls}>
           <IconButton
-            icon={state === AudioProState.PLAYING ? 'pause' : 'play'}
+            icon={isPlaying ? 'pause' : 'play'}
             size={24}
             onPress={handlePlayPause}
           />

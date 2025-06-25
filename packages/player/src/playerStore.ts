@@ -16,7 +16,9 @@ interface PlayerStore {
   currentIndex: number
   mode: PlayMode
   isPlaying: boolean
+}
 
+export interface PlayerStoreActions {
   // queue management
   addToQueue: (track: Track) => void
   insertNext: (track: Track) => void
@@ -44,7 +46,7 @@ function shuffle<T>(array: T[]): T[] {
   return arr
 }
 
-const playerStoreBase = create<PlayerStore>()(
+const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
   persist(
     (set, get) => ({
       queue: [],

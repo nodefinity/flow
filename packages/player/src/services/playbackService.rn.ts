@@ -1,5 +1,5 @@
 import TrackPlayer, { Event } from 'react-native-track-player'
-import { playerController } from './playerController'
+import { playerController } from '../playerController'
 
 export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.RemotePlay, () => {
