@@ -1,3 +1,4 @@
+export * from './hooks/useDisplayTrack'
 export * from './playerController'
 export * from './playerStore'
 export * from './services/playbackService'

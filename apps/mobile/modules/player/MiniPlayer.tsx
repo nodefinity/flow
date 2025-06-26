@@ -1,9 +1,8 @@
-import { playerController, usePlayerStore } from '@flow/player'
+import { playerController, useDisplayTrack, usePlayerStore } from '@flow/player'
 import { useCallback } from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { IconButton, Text, useTheme } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated'
-import { useActiveTrack } from 'react-native-track-player'
 import { MINI_HEIGHT } from '@/constants/Player'
 import { usePlayerAnimation } from './Context'
 
@@ -11,7 +10,7 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
   const { colors } = useTheme()
   const { thresholdPercent } = usePlayerAnimation()
   const isPlaying = usePlayerStore.use.isPlaying()
-  const activeTrack = useActiveTrack()
+  const displayTrack = useDisplayTrack()
 
   const opacity = useDerivedValue(() => {
     return interpolate(thresholdPercent.value, [0, 1], [1, 0], Extrapolation.CLAMP)
@@ -35,9 +34,6 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
   const handleNext = useCallback(() => {
     playerController.next()
   }, [])
-
-  // Use currentTrack as display data, if not, use playingTrack
-  const displayTrack = activeTrack
 
   return (
     <Animated.View style={[styles.container, { height: MINI_HEIGHT, backgroundColor: colors.elevation.level1 }, animatedStyle]}>
