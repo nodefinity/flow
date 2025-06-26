@@ -1,0 +1,22 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+You are writing a UI modernized, AI-driven, user-friendly Music Player that is including local and remote features.
+
+This project is a monorepo for cross-platform development.
+
+- apps/mobile: Using react native.
+- apps/desktop: Using electron, not started yet.
+
+Before starting, you need to know the current technical stack structure and the construction of the monorepo.
+
+## For React Native
+
+- React 19
+- Expo
+- Expo Module Core (Some Native modules included)
+- React Native Paper (UI library)
+- react native track player (Player Engine)
+
