@@ -5,11 +5,14 @@ import { FlashList } from '@shopify/flash-list'
 import { Image } from 'expo-image'
 import { StyleSheet, View } from 'react-native'
 import { IconButton, List, Text } from 'react-native-paper'
+import { useActiveTrack } from 'react-native-track-player'
 
 export default function HomeScreen() {
   const localTracks = useTrackStore.use.localTracks()
   const remoteTracks = useTrackStore.use.remoteTracks()
   const tracks = [...localTracks, ...remoteTracks]
+
+  const activeTrack = useActiveTrack()
 
   const renderItem = ({ item }: { item: Track }) => (
     <List.Item
@@ -34,7 +37,9 @@ export default function HomeScreen() {
         </View>
       )}
       onPress={() => {
-        console.log('onPress', playerController)
+        if (activeTrack?.id === item.id) {
+          return
+        }
         playerController.playQueue(tracks, item)
       }}
     />

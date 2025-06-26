@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { IconButton, Text, useTheme } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated'
+import { ScrollingText } from '@/components/ui/ScrollingText'
 import { MINI_HEIGHT } from '@/constants/Player'
 import { usePlayerAnimation } from './Context'
 
@@ -41,10 +42,8 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
         <View style={styles.trackInfo}>
           <Image source={{ uri: displayTrack?.artwork as string }} style={{ width: 40, height: 40, borderRadius: 4 }} />
 
-          <View>
-            <Text numberOfLines={1} style={styles.title}>
-              {displayTrack?.title || '未播放'}
-            </Text>
+          <View style={styles.trackInfoText} key={displayTrack?.id}>
+            <ScrollingText text={displayTrack?.title || '未播放'} style={styles.title} />
             <Text numberOfLines={1} style={styles.artist}>
               {displayTrack?.artist || '未知艺术家'}
             </Text>
@@ -78,6 +77,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  trackInfoText: {
+    flex: 1,
   },
   trackInfo: {
     flex: 1,
