@@ -43,7 +43,7 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
           <Image source={{ uri: displayTrack?.artwork as string }} style={{ width: 40, height: 40, borderRadius: 4 }} />
 
           <View style={styles.trackInfoText} key={displayTrack?.id}>
-            <ScrollingText text={displayTrack?.title || '未播放'} style={styles.title} />
+            <ScrollingText text={displayTrack?.title || '未播放'} textStyle={styles.title} shadowColor={colors.elevation.level1} />
             <Text numberOfLines={1} style={styles.artist}>
               {displayTrack?.artist || '未知艺术家'}
             </Text>
