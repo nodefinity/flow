@@ -1,10 +1,9 @@
-import { useActiveTrack } from 'react-native-track-player'
 import { usePlayerStore } from '../playerStore'
 
+// eslint-disable-next-line react-hooks-extra/no-unnecessary-use-prefix
 export function useDisplayTrack() {
-  const activeTrack = useActiveTrack()
   const queue = usePlayerStore.use.queue()
   const currentIndex = usePlayerStore.use.currentIndex()
 
-  return activeTrack || queue[currentIndex] || undefined
+  return queue[currentIndex] || undefined
 }
