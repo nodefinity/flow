@@ -205,7 +205,6 @@ const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
         originalQueue: state.originalQueue,
         currentIndex: state.currentIndex,
         mode: state.mode,
-        isPlaying: state.isPlaying,
       }),
     },
   ),
