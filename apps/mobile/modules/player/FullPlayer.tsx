@@ -1,22 +1,20 @@
-import { playerController, PlayMode, useDisplayTrack, usePlayerStore } from '@flow/player'
-import { useCallback } from 'react'
-import { Dimensions, Image, StyleSheet, View } from 'react-native'
+import { useDisplayTrack } from '@flow/player'
+import { StyleSheet, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
-import { IconButton, Text, useTheme } from 'react-native-paper'
+import { Text, useTheme } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
 import { usePlayerAnimation } from './Context'
+import FullPlayerArtwork from './FullPlayerArtwork'
+import FullPlayerControl from './FullPlayerControl'
+import FullPlayerHeader from './FullPlayerHeader'
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView)
-const { width: screenWidth } = Dimensions.get('window')
 
 export default function FullPlayer() {
   const { colors } = useTheme()
   const { thresholdPercent } = usePlayerAnimation()
 
   const displayTrack = useDisplayTrack()
-
-  const isPlaying = usePlayerStore.use.isPlaying()
-  const mode = usePlayerStore.use.mode()
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -27,25 +25,10 @@ export default function FullPlayer() {
     ),
   }))
 
-  const handlePlayPause = useCallback(() => {
-    if (isPlaying) {
-      playerController.pause()
-    }
-    else {
-      playerController.play()
-    }
-  }, [isPlaying])
-
-  const handleNext = useCallback(() => {
-    playerController.next()
-  }, [])
-
-  const handlePrevious = useCallback(() => {
-    playerController.prev()
-  }, [])
-
   return (
-    <Animated.View style={[styles.container, { backgroundColor: colors.background }, animatedStyle]}>
+    <Animated.View style={[styles.container, animatedStyle]}>
+      <FullPlayerHeader />
+
       <AnimatedPagerView style={styles.container} initialPage={1} orientation="horizontal">
         <View style={styles.page} key="1">
           <Text style={[styles.pageTitle, { color: colors.onBackground }]}>Track Info</Text>
@@ -54,59 +37,15 @@ export default function FullPlayer() {
           </Text>
         </View>
 
-        <View style={styles.page} key="2">
-          <View style={styles.artworkContainer}>
-            <Image
-              source={{ uri: displayTrack?.artwork as string }}
-              style={styles.artwork}
-              resizeMode="cover"
-            />
-          </View>
-
-          <View style={styles.trackInfo}>
-            <Text style={[styles.title, { color: colors.onBackground }]} numberOfLines={2}>
-              {displayTrack?.title || '未播放'}
-            </Text>
-            <Text style={[styles.artist, { color: colors.onSurfaceVariant }]} numberOfLines={1}>
-              {displayTrack?.artist || '未知艺术家'}
-            </Text>
-          </View>
-
-          <View style={styles.controls}>
-            <IconButton
-              icon="skip-previous"
-              size={32}
-              onPress={handlePrevious}
-              iconColor={colors.onBackground}
-            />
-            <IconButton
-              icon={isPlaying ? 'pause-circle' : 'play-circle'}
-              size={64}
-              onPress={handlePlayPause}
-              iconColor={colors.primary}
-            />
-            <IconButton
-              icon="skip-next"
-              size={32}
-              onPress={handleNext}
-              iconColor={colors.onBackground}
-            />
-          </View>
-
-          <View style={styles.modeInfo}>
-            <Text style={[styles.modeText, { color: colors.onSurfaceVariant }]}>
-              Play mode:
-              {' '}
-              {mode === PlayMode.SINGLE ? 'Single' : mode === PlayMode.ORDERED ? 'Ordered' : 'Shuffle'}
-            </Text>
-          </View>
-        </View>
+        <FullPlayerArtwork />
 
         <View style={styles.page} key="3">
           <Text style={[styles.pageTitle, { color: colors.onBackground }]}>Lyrics</Text>
           <Text style={[styles.pageSubtitle, { color: colors.onSurfaceVariant }]}>No lyrics</Text>
         </View>
       </AnimatedPagerView>
+
+      <FullPlayerControl />
     </Animated.View>
   )
 }
@@ -130,22 +69,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     opacity: 0.7,
   },
-  artworkContainer: {
-    marginBottom: 40,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  artwork: {
-    width: screenWidth * 0.7,
-    height: screenWidth * 0.7,
-    borderRadius: 16,
-  },
   trackInfo: {
     alignItems: 'center',
     marginBottom: 40,
@@ -161,19 +84,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     opacity: 0.7,
-  },
-  controls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 20,
-    marginBottom: 40,
-  },
-  modeInfo: {
-    alignItems: 'center',
-  },
-  modeText: {
-    fontSize: 14,
-    opacity: 0.6,
   },
 })
