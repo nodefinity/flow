@@ -2,7 +2,7 @@
   "expo": {
     "name": "Flow",
     "slug": "flow",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "flow",
@@ -29,7 +29,7 @@
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.READ_MEDIA_AUDIO"
       ],
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "bundler": "metro",
