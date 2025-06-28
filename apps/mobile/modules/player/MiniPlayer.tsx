@@ -37,7 +37,14 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
   }, [])
 
   return (
-    <Animated.View style={[styles.container, { height: MINI_HEIGHT, backgroundColor: colors.elevation.level1 }, animatedStyle]}>
+    <Animated.View style={
+      [
+        styles.container,
+        { height: MINI_HEIGHT, backgroundColor: colors.elevation.level1 },
+        animatedStyle,
+      ]
+    }
+    >
       <Pressable onPress={onPress} style={styles.content}>
         <View style={styles.trackInfo}>
           <Image source={{ uri: displayTrack?.artwork as string }} style={{ width: 40, height: 40, borderRadius: 4 }} />

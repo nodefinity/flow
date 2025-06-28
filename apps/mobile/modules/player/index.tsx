@@ -1,3 +1,4 @@
+import { useDisplayTrack } from '@flow/player'
 import { useMemo, useRef, useState } from 'react'
 import { Dimensions, StyleSheet } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
@@ -18,7 +19,8 @@ import { useBackHandler } from '@/hooks/useBackHandler'
 import { Context } from './Context'
 import FullPlayer from './FullPlayer'
 import MiniPlayer from './MiniPlayer'
-import QueueList from './QueueList'
+import PlayerBackground from './PlayerBackground'
+// import QueueList from './QueueList'
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window')
 const MIN_VELOCITY = 500 // Velocity Threshold
@@ -125,6 +127,8 @@ export function Player() {
     }
   })
 
+  const displayTrack = useDisplayTrack()
+
   return (
     <Context value={contextValue}>
       <AnimatedPagerView
@@ -136,16 +140,16 @@ export function Player() {
         overScrollMode="never"
       >
         <GestureDetector gesture={pan}>
-          {/* TODO: dynamic backgroundColor from artwork */}
-          <Animated.View style={{ flex: 1, backgroundColor: '#444' }}>
+          <Animated.View style={{ flex: 1 }}>
+            <PlayerBackground artworkUrl={displayTrack?.artwork ?? ''} />
             <MiniPlayer onPress={() => animateToPosition('FULL')} />
             <FullPlayer />
           </Animated.View>
         </GestureDetector>
 
-        <Animated.View style={{ flex: 1, backgroundColor: 'red', paddingVertical: 50 }}>
+        {/* <AnimatedPagerView style={{ flex: 1, backgroundColor: 'red', paddingVertical: 50 }}>
           <QueueList />
-        </Animated.View>
+        </AnimatedPagerView> */}
       </AnimatedPagerView>
     </Context>
   )

@@ -1,6 +1,7 @@
 import type { Track } from '@flow/core'
 import { usePlayerStore } from '@flow/player'
-import { FlatList, Image, StyleSheet, View } from 'react-native'
+import { FlashList } from '@shopify/flash-list'
+import { Image, StyleSheet, View } from 'react-native'
 import { IconButton, List, Text } from 'react-native-paper'
 import { ThemedView } from '@/components/ui/ThemedView'
 
@@ -41,12 +42,13 @@ export default function QueueList() {
       {
         queue.length > 0
           ? (
-              <FlatList
+              <FlashList
                 data={queue}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
                 extraData={queue}
+                estimatedItemSize={70}
               />
             )
           : (
