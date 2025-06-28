@@ -88,18 +88,50 @@ async function release() {
     console.log(`📁 Build file found: ${buildFile}`)
 
     console.log('🚀 Upload to GitHub Release...')
-    const uploadCommand = `gh release upload v${newVersion} "${buildFilePath}" --repo nodefinity/flow`
+
+    // create GitHub Release
+    console.log('📝 Creating GitHub Release...')
+    const createReleaseCommand = `gh release create v${newVersion} --title "Release v${newVersion}" --notes "Release v${newVersion} for ${platform}" --repo nodefinity/flow`
+    console.log(`Execute command: ${createReleaseCommand}`)
+
+    try {
+      execSync(createReleaseCommand, { stdio: 'inherit' })
+      console.log('✅ GitHub Release created successfully')
+    }
+    catch (error) {
+      console.error('❌ Failed to create GitHub Release:', error)
+      throw error
+    }
+
+    // rename build file
+    const fileExtension = platform === 'android' ? 'apk' : 'ipa'
+    const newFileName = `flow_${platform}_v${newVersion}_release.${fileExtension}`
+    const newFilePath = path.join(buildDir, newFileName)
+
+    try {
+      await fs.rename(buildFilePath, newFilePath)
+      console.log(`📁 File renamed to: ${newFileName}`)
+    }
+    catch (error) {
+      console.error('❌ Failed to rename build file:', error)
+      throw error
+    }
+
+    // upload file to GitHub Release
+    const uploadCommand = `gh release upload v${newVersion} "${newFilePath}" --repo nodefinity/flow`
     console.log(`Execute command: ${uploadCommand}`)
 
     try {
       execSync(uploadCommand, { stdio: 'inherit' })
+      console.log('✅ File uploaded to GitHub Release successfully')
     }
     catch (error) {
       console.error('❌ GitHub Release upload failed:', error)
       throw error
     }
 
-    await fs.rm(buildFilePath, { force: true })
+    // clean up build file
+    await fs.rm(newFilePath, { force: true })
 
     console.log(`✅ Release successful! Version v${newVersion} uploaded to GitHub Release`)
     console.log(`🔗 View release: https://github.com/nodefinity/flow/releases/tag/v${newVersion}`)
