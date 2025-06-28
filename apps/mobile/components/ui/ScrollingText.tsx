@@ -1,3 +1,4 @@
+import type { TextProps } from 'react-native-paper'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native'
@@ -10,24 +11,22 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
-interface ScrollingTextProps {
-  text: string
+interface ScrollingTextProps extends TextProps<string> {
   speed?: number // 滚动速度（像素/秒）
   delay?: number // 开始滚动前的延迟（毫秒）
   shadowColor?: string
   shadowWidth?: number
   loopGap?: number // 循环文本的间距
-  textStyle?: any
 }
 
 export function ScrollingText({
-  text,
   speed = 40,
   delay = 1000,
   shadowColor = 'transparent',
   shadowWidth = 32,
   loopGap = 50,
-  textStyle,
+  children,
+  ...textProps
 }: ScrollingTextProps) {
   const [shouldScroll, setShouldScroll] = useState(false)
   const [textWidth, setTextWidth] = useState(0)
@@ -104,17 +103,17 @@ export function ScrollingText({
         <Animated.View style={[styles.contentContainer, animatedStyle]}>
           {/* 第一个文本 */}
           <Text
-            style={textStyle}
+            {...textProps}
             onLayout={e => setTextWidth(e.nativeEvent.layout.width)}
             numberOfLines={1}
           >
-            {text}
+            {children}
           </Text>
           {/* 第二个文本 - 用于循环效果 */}
           {
             shouldScroll && (
-              <Text style={[textStyle, { marginLeft: loopGap }]} numberOfLines={1}>
-                {text}
+              <Text {...textProps} style={[{ marginLeft: loopGap }]} numberOfLines={1}>
+                {children}
               </Text>
             )
           }
