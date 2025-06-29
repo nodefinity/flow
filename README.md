@@ -1,50 +1,27 @@
-# Welcome to your Expo app 👋
+# Flow - 现代化音乐播放器
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Flow 是一个现代化的、AI 驱动的跨平台音乐播放器，支持本地和远程音乐播放功能。
 
-## Get started
+## ✨ 特性
 
-1. Install dependencies
+- [x] 🎵 **本地音乐播放** - 支持本地音乐文件播放和管理
+- [ ] 🌐 **远程音乐支持** - 集成远程音乐服务
+- [ ] 🤖 **AI 驱动** - 智能推荐和音乐分析
+- [ ] 📱 **跨平台** - React Native 移动端 + Electron 桌面端
 
-   ```bash
-   npm install
-   ```
+## 🚀 技术栈
 
-2. Start the app
+### 移动端 (React Native)
 
-   ```bash
-   npx expo start
-   ```
+- React 19 + Expo SDK 53
+- React Native Paper (UI 组件)
+- React Native Track Player (音频播放)
+- Expo Router (文件系统路由)
 
-In the output, you'll find options to open the app in a
+### 桌面端 (计划中)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Electron
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🤝 贡献
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+我们欢迎所有形式的贡献！请查看 [CONTRIBUTING.md](CONTRIBUTING.md) 了解详细的贡献指南。

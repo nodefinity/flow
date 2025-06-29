@@ -1,8 +1,29 @@
 {
   "name": "flow",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "packageManager": "pnpm@10.12.1",
+  "description": "Cross-platform music player",
+  "license": "MIT",
+  "homepage": "https://github.com/nodefinity/flow#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nodefinity/flow.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nodefinity/flow/issues"
+  },
+  "keywords": [
+    "music-player",
+    "music",
+    "player",
+    "track-player",
+    "track",
+    "react-native",
+    "cross-platform",
+    "typescript",
+    "turbo"
+  ],
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",

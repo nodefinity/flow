@@ -6,8 +6,18 @@
 
 本项目是一个使用 [Yarn workspaces](https://yarnpkg.com/features/workspaces) 管理的 monorepo。它包含以下包：
 
-- `apps`：所有不同平台的应用程序
-- `packages/core`：核心功能库，包含共享工具和公共状态
+```
+flow/
+├── apps/
+│   ├── mobile/          # React Native 移动应用
+│   └── desktop/         # Electron 桌面应用 (计划中)
+├── packages/
+│   ├── core/            # 共享模块
+│   ├── database/        # 数据库相关
+│   ├── hooks/           # 自定义 React Hooks
+│   ├── player/          # 播放器核心逻辑
+│   └── store/           # 状态管理
+```
 
 ### 前提条件
 

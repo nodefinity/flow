@@ -6,8 +6,18 @@ We are grateful for your interest in contributing to the **Flow** project! Contr
 
 This project is a monorepo managed using [Yarn workspaces](https://yarnpkg.com/features/workspaces). It contains the following packages:
 
-- `apps`: all applications for different platform.
-- `packages/core`: core functionality library containing shared utilities, and store
+```
+flow/
+├── apps/
+│   ├── mobile/          # React Native
+│   └── desktop/         # Electron (planning)
+├── packages/
+│   ├── core/            # Shared
+│   ├── database/        # Database (planning)
+│   ├── hooks/           # Custom React Hooks
+│   ├── player/          # Player core logic
+│   └── store/           # State
+```
 
 ### Prerequisites
 
