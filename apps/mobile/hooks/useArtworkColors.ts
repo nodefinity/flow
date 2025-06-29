@@ -51,7 +51,7 @@ export function useArtworkColors(artworkUrl?: string) {
         })
       }
     }).catch((err) => {
-      console.error('Failed to get image colors:', err)
+      console.error('Failed to get image colors:', err, 'artworkUrl:', artworkUrl)
       // 出错时使用主题默认颜色
       setColors({
         dominant: themeColors.primary,
