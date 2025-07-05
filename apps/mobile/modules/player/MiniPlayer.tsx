@@ -36,6 +36,9 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
     playerController.next()
   }, [])
 
+  if (!displayTrack)
+    return null
+
   return (
     <Animated.View style={
       [
@@ -47,14 +50,14 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
     >
       <Pressable onPress={onPress} style={styles.content}>
         <View style={styles.trackInfo}>
-          <Image source={{ uri: displayTrack?.artwork as string }} style={{ width: 40, height: 40, borderRadius: 4 }} />
+          <Image source={{ uri: displayTrack.artwork }} style={{ width: 40, height: 40, borderRadius: 4 }} />
 
-          <View style={styles.trackInfoText} key={displayTrack?.id}>
+          <View style={styles.trackInfoText} key={displayTrack.id}>
             <ScrollingText style={styles.title} shadowColor={colors.elevation.level1}>
-              {displayTrack?.title || '未播放'}
+              {displayTrack.title}
             </ScrollingText>
             <Text numberOfLines={1} style={styles.artist}>
-              {displayTrack?.artist || '未知艺术家'}
+              {displayTrack.artist}
             </Text>
           </View>
         </View>

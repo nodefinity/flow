@@ -6,10 +6,14 @@ import { usePlayerStore } from '../playerStore'
 export function useDisplayTrack() {
   const queue = usePlayerStore.use.queue()
   const currentIndex = usePlayerStore.use.currentIndex()
-
-  const [trackWithMetadata, setTrackWithMetadata] = useState<TrackMetadata | undefined>(undefined)
-
   const currentTrack = queue[currentIndex]
+
+  const [trackWithMetadata, setTrackWithMetadata] = useState<TrackMetadata | undefined>(() => {
+    if (!currentTrack)
+      return undefined
+
+    return currentTrack as TrackMetadata
+  })
 
   useEffect(() => {
     if (!currentTrack)
