@@ -6,6 +6,7 @@ import TrackPlayer, {
   // Capability,
   RepeatMode,
 } from 'react-native-track-player'
+import { usePlayerStore } from '../playerStore'
 
 /**
  * Whenever we use `TrackPlayer.updateOptions()`, we need to include all
@@ -60,4 +61,28 @@ export async function setupPlayer() {
   await TrackPlayer.setRepeatMode(RepeatMode.Queue)
 
   await TrackPlayer.updateOptions(getTrackPlayerOptions())
+
+  // Sync queue to TrackPlayer
+  try {
+    const { queue, currentIndex } = usePlayerStore.getState()
+
+    if (queue.length > 0) {
+      logger.info(`Setting up TrackPlayer with ${queue.length} tracks, current index: ${currentIndex}`)
+
+      // Reset TrackPlayer and add queue
+      await TrackPlayer.reset()
+      await TrackPlayer.add(queue)
+
+      // Set current track
+      if (currentIndex >= 0 && currentIndex < queue.length) {
+        await TrackPlayer.skip(currentIndex)
+      }
+    }
+    else {
+      logger.info('No tracks in store, TrackPlayer queue will be empty')
+    }
+  }
+  catch (error) {
+    logger.error('Failed to sync queue to TrackPlayer during setup:', error)
+  }
 }
