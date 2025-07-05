@@ -35,6 +35,9 @@ interface PlayerStoreActions {
 
   // play mode
   setMode: (mode: PlayMode) => void
+
+  // sync
+  setCurrentIndex: (index: number) => void
 }
 
 function shuffle<T>(array: T[]): T[] {
@@ -195,6 +198,10 @@ const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
             currentIndex: newIndex >= 0 ? newIndex : 0,
           })
         }
+      },
+
+      setCurrentIndex: (index) => {
+        set({ currentIndex: index })
       },
     }),
     {

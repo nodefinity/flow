@@ -17,4 +17,10 @@ export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.RemotePrevious, () => {
     playerController.prev()
   })
+
+  TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, (event) => {
+    if (event.index !== undefined) {
+      playerController.syncCurrentIndex(event.index)
+    }
+  })
 }

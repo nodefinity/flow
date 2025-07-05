@@ -176,4 +176,21 @@ export const playerController: PlayerController = {
     }
   },
   // #endregion
+
+  // #region sync
+  async syncCurrentIndex(index: number) {
+    try {
+      const { queue } = usePlayerStore.getState()
+
+      if (index >= 0 && index < queue.length) {
+        const setCurrentIndex = usePlayerStore.getState().setCurrentIndex
+        setCurrentIndex(index)
+        logger.info(`Synced current index to: ${index}`)
+      }
+    }
+    catch (error) {
+      logger.error('syncCurrentIndex error:', error)
+    }
+  },
+  // #endregion
 }

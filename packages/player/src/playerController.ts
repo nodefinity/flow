@@ -16,6 +16,8 @@ export interface PlayerController {
   playTrack: (track: Track) => void
 
   setMode: (mode: PlayMode) => void
+
+  syncCurrentIndex: (index: number) => void
 }
 
 export declare const playerController: PlayerController
