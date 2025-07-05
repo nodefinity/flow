@@ -1,3 +1,21 @@
-import type { PlayerStoreActions } from './playerStore'
+import type { Track } from '@flow/core'
+import type { PlayMode } from './playerStore'
 
-export declare const playerController: PlayerStoreActions
+export interface PlayerController {
+  addToQueue: (track: Track) => void
+  insertNext: (track: Track) => void
+  removeFromQueue: (trackId: string) => void
+  clearQueue: () => void
+
+  play: () => void
+  pause: () => void
+  next: () => void
+  prev: () => void
+
+  playQueue: (tracks: Track[], startTrack?: Track) => void
+  playTrack: (track: Track) => void
+
+  setMode: (mode: PlayMode) => void
+}
+
+export declare const playerController: PlayerController

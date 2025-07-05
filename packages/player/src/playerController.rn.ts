@@ -1,10 +1,10 @@
 import type { Track } from '@flow/core'
-import type { PlayerStoreActions } from './playerStore'
+import type { PlayerController } from './playerController'
 import { logger } from '@flow/core'
 import TrackPlayer, { RepeatMode } from 'react-native-track-player'
 import { PlayMode, usePlayerStore } from './playerStore'
 
-export const playerController: PlayerStoreActions = {
+export const playerController: PlayerController = {
   // #region queue management
   async addToQueue(track: Track) {
     try {

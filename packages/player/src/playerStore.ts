@@ -18,7 +18,7 @@ interface PlayerStore {
   isPlaying: boolean
 }
 
-export interface PlayerStoreActions {
+interface PlayerStoreActions {
   // queue management
   addToQueue: (track: Track) => void
   insertNext: (track: Track) => void
