@@ -1,0 +1,31 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: friday
+      time: '12:00'
+      timezone: Asia/Shanghai
+    target-branch: master
+    ignore:
+      - dependency-name: react-native
+      - dependency-name: expo
+
+    open-pull-requests-limit: 100
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - minor
+          - patch
+      pathed:
+        patterns:
+          - react-native-track-player
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+    target-branch: master
+    open-pull-requests-limit: 100
