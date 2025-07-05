@@ -2,10 +2,10 @@ import type { Track } from '@flow/core'
 import { playerController } from '@flow/player'
 import { useTrackStore } from '@flow/store'
 import { FlashList } from '@shopify/flash-list'
-import { Image } from 'expo-image'
-import { StyleSheet, View } from 'react-native'
-import { IconButton, List, Text } from 'react-native-paper'
+import { View } from 'react-native'
+import { Text } from 'react-native-paper'
 import { useActiveTrack } from 'react-native-track-player'
+import TrackItem from '@/modules/track/TrackItem'
 
 export default function HomeScreen() {
   const localTracks = useTrackStore.use.localTracks()
@@ -14,36 +14,12 @@ export default function HomeScreen() {
 
   const activeTrack = useActiveTrack()
 
-  const renderItem = ({ item }: { item: Track }) => (
-    <List.Item
-      title={item.title}
-      description={`${item.artist} - ${item.album}`}
-      descriptionNumberOfLines={1}
-      style={{ paddingLeft: 16, paddingRight: 8 }}
-      left={() => <Image source={{ uri: item.artwork }} style={{ aspectRatio: 1, borderRadius: 10 }} />}
-      right={() => (
-        <View style={styles.rightContent}>
-          <IconButton
-            icon="plus"
-            size={14}
-            onPress={() => console.log('Pressed')}
-          />
-
-          <IconButton
-            icon="dots-vertical"
-            size={14}
-            onPress={() => console.log('Pressed')}
-          />
-        </View>
-      )}
-      onPress={() => {
-        if (activeTrack?.id === item.id) {
-          return
-        }
-        playerController.playQueue(tracks, item)
-      }}
-    />
-  )
+  const onTrackPress = (track: Track) => {
+    if (activeTrack?.id === track.id) {
+      return
+    }
+    playerController.playQueue(tracks, track)
+  }
 
   return (
     <>
@@ -52,7 +28,7 @@ export default function HomeScreen() {
           ? (
               <FlashList
                 data={tracks}
-                renderItem={renderItem}
+                renderItem={({ item }) => <TrackItem item={item} onPress={() => onTrackPress(item)} />}
                 keyExtractor={item => item.id}
                 showsVerticalScrollIndicator={false}
                 extraData={tracks}
@@ -68,16 +44,3 @@ export default function HomeScreen() {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  rightContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  duration: {
-    opacity: 0.6,
-  },
-})
