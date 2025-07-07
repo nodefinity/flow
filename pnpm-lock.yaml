@@ -156,7 +156,7 @@ importers:
         version: 2.26.0(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-image-colors:
         specifier: github:nodefinity/react-native-image-colors
-        version: https://codeload.github.com/nodefinity/react-native-image-colors/tar.gz/2c8c84ee724a851f763c5c9ebffc690f2e8500a0(expo@53.0.12(@babel/core@7.27.4)(@expo/metro-runtime@5.0.4(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: git+https://git@github.com:nodefinity/react-native-image-colors.git#2c8c84ee724a851f763c5c9ebffc690f2e8500a0(expo@53.0.12(@babel/core@7.27.4)(@expo/metro-runtime@5.0.4(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-mmkv:
         specifier: ^3.2.0
         version: 3.3.0(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -182,8 +182,8 @@ importers:
         specifier: ^4.1.1
         version: 4.1.2(react-native-pager-view@6.8.1(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-track-player:
-        specifier: ^4.1.1
-        version: 4.1.1(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        specifier: github:dribble-njr/react-native-track-player
+        version: https://codeload.github.com/dribble-njr/react-native-track-player/tar.gz/ad5f79e03497394fe339f419dc98400811e2dbbb(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
     devDependencies:
       '@babel/core':
         specifier: ^7.25.2
@@ -4726,8 +4726,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-image-colors@https://codeload.github.com/nodefinity/react-native-image-colors/tar.gz/2c8c84ee724a851f763c5c9ebffc690f2e8500a0:
-    resolution: {tarball: https://codeload.github.com/nodefinity/react-native-image-colors/tar.gz/2c8c84ee724a851f763c5c9ebffc690f2e8500a0}
+  react-native-image-colors@git+https://git@github.com:nodefinity/react-native-image-colors.git#2c8c84ee724a851f763c5c9ebffc690f2e8500a0:
+    resolution: {commit: 2c8c84ee724a851f763c5c9ebffc690f2e8500a0, repo: git@github.com:nodefinity/react-native-image-colors.git, type: git}
     version: 2.4.0
     peerDependencies:
       expo: '*'
@@ -4795,8 +4795,9 @@ packages:
       react-native: '*'
       react-native-pager-view: '>= 6.0.0'
 
-  react-native-track-player@4.1.1:
-    resolution: {integrity: sha512-E5N/eK/+HtAVJUAzXpm1cWz8ROheV9jb0TI6h2bM+333U+DWibTTnT2T1122FkCoXLXIYavtm2FR2if+5jH8cA==}
+  react-native-track-player@https://codeload.github.com/dribble-njr/react-native-track-player/tar.gz/ad5f79e03497394fe339f419dc98400811e2dbbb:
+    resolution: {tarball: https://codeload.github.com/dribble-njr/react-native-track-player/tar.gz/ad5f79e03497394fe339f419dc98400811e2dbbb}
+    version: 4.1.1
     peerDependencies:
       react: '>=16.8.6'
       react-native: '>=0.60.0-rc.2'
@@ -10932,7 +10933,7 @@ snapshots:
       react: 19.0.0
       react-native: 0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)
 
-  react-native-image-colors@https://codeload.github.com/nodefinity/react-native-image-colors/tar.gz/2c8c84ee724a851f763c5c9ebffc690f2e8500a0(expo@53.0.12(@babel/core@7.27.4)(@expo/metro-runtime@5.0.4(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+  react-native-image-colors@git+https://git@github.com:nodefinity/react-native-image-colors.git#2c8c84ee724a851f763c5c9ebffc690f2e8500a0(expo@53.0.12(@babel/core@7.27.4)(@expo/metro-runtime@5.0.4(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       expo: 53.0.12(@babel/core@7.27.4)(@expo/metro-runtime@5.0.4(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       node-vibrant: 3.1.6
@@ -11010,7 +11011,7 @@ snapshots:
       react-native-pager-view: 6.8.1(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       use-latest-callback: 0.2.4(react@19.0.0)
 
-  react-native-track-player@4.1.1(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+  react-native-track-player@https://codeload.github.com/dribble-njr/react-native-track-player/tar.gz/ad5f79e03497394fe339f419dc98400811e2dbbb(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
       react-native: 0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)
