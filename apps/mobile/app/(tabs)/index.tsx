@@ -2,6 +2,7 @@ import type { Track } from '@flow/core'
 import { playerController } from '@flow/player'
 import { useTrackStore } from '@flow/store'
 import { FlashList } from '@shopify/flash-list'
+import { useCallback } from 'react'
 import { View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { useActiveTrack } from 'react-native-track-player'
@@ -14,12 +15,12 @@ export default function HomeScreen() {
 
   const activeTrack = useActiveTrack()
 
-  const onTrackPress = (track: Track) => {
+  const onTrackPress = useCallback((track: Track) => {
     if (activeTrack?.id === track.id) {
       return
     }
     playerController.playQueue(tracks, track)
-  }
+  }, [activeTrack?.id, tracks])
 
   return (
     <>
