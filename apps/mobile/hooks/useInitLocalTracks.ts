@@ -1,6 +1,7 @@
 import { useTrackStore } from '@flow/store'
 import { useEffect, useState } from 'react'
-import { getLocalTracks, requestMusicPermission } from '@/utils/localTrackService'
+import { getLocalTracks } from '@/utils/localTrackService'
+import { requestMusicPermission, requestNotificationPermission } from '@/utils/permission'
 
 export function useInitLocalTracks() {
   const setLocalTracks = useTrackStore.use.setLocalTracks()
@@ -8,6 +9,7 @@ export function useInitLocalTracks() {
 
   useEffect(() => {
     const init = async () => {
+      await requestNotificationPermission()
       const hasPermission = await requestMusicPermission()
       if (!hasPermission) {
         setLocalTracks([])

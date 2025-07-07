@@ -11,7 +11,6 @@ import TrackPlayer from 'react-native-track-player'
 import { ThemedView } from '@/components/ui/ThemedView'
 import Themes from '@/constants/Themes'
 import { useInitLocalTracks } from '@/hooks/useInitLocalTracks'
-import { useNotificationPermission } from '@/hooks/useNotificationPermission'
 import { Player } from '@/modules/player'
 
 SplashScreen.preventAutoHideAsync()
@@ -24,7 +23,6 @@ export default function RootLayout() {
   const { effectiveColorScheme } = useAppearanceSetting()
   const isSettingHydrated = useSettingStore.use.hasHydrated()
 
-  useNotificationPermission()
   const localTracksHydrated = useInitLocalTracks()
 
   if (remoteTracksHydrated && isSettingHydrated && localTracksHydrated) {
