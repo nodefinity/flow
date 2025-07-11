@@ -15,11 +15,11 @@
   },
   "dependencies": {
     "drizzle-orm": "0.44.2",
-    "expo-sqlite": "15.2.12"
+    "expo-sqlite": "15.2.14"
   },
   "devDependencies": {
     "@flow/config": "workspace:*",
     "@flow/core": "workspace:*",
-    "drizzle-kit": "0.31.1"
+    "drizzle-kit": "0.31.4"
   }
 }
