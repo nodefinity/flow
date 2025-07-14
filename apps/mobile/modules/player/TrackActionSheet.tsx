@@ -2,11 +2,10 @@ import type { Track } from '@flow/core'
 import { useTrackStore } from '@flow/store'
 import BottomSheet, { BottomSheetBackdrop, BottomSheetFooter, BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet'
 import { FlashList } from '@shopify/flash-list'
-import React, { useCallback, useMemo, useRef } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native'
 import { IconButton, Text, useTheme } from 'react-native-paper'
 import { Easing, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useTrackActionSheet } from '@/hooks/useTrackActionSheet'
 
 const actionItems = [
@@ -22,13 +21,16 @@ const actionItems = [
 
 export default function TrackActionSheet() {
   const { colors } = useTheme()
-  const { bottom } = useSafeAreaInsets()
   const localTracks = useTrackStore.use.localTracks()
   const remoteTracks = useTrackStore.use.remoteTracks()
   const tracks = [...localTracks, ...remoteTracks]
   const { visible, currentTrack, hide } = useTrackActionSheet()
 
   const bottomSheetRef = useRef<BottomSheet>(null)
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  // 设置 snapPoints：50% 和 90%
+  const snapPoints = useMemo(() => ['50%', '95%'], [])
 
   // 动画配置
   const animationConfigs = useMemo(
@@ -44,13 +46,15 @@ export default function TrackActionSheet() {
 
   React.useEffect(() => {
     if (visible) {
+      // 重置展开状态
+      setIsExpanded(false)
       // 使用 withSpring 创建弹性动画
       animatedIndex.value = withSpring(0, {
         damping: 18,
         stiffness: 250,
         mass: 0.9,
       })
-      // 稍微延迟一下确保动画效果
+      // 初始展开到第一个 snapPoint (50%)
       setTimeout(() => {
         bottomSheetRef.current?.snapToIndex(0)
       }, 50)
@@ -68,6 +72,14 @@ export default function TrackActionSheet() {
   const handleSheetChanges = useCallback((index: number) => {
     if (index === -1) {
       hide()
+    }
+    else if (index === 1) {
+      // 当用户手动拖拽到 90% 时，更新状态
+      setIsExpanded(true)
+    }
+    else if (index === 0) {
+      // 当用户手动拖拽回 50% 时，更新状态
+      setIsExpanded(false)
     }
   }, [hide])
 
@@ -97,6 +109,19 @@ export default function TrackActionSheet() {
     hide()
   }
 
+  // 处理滚动事件，当用户向下滚动时自动展开
+  const handleScroll = useCallback((event: any) => {
+    const { contentOffset } = event.nativeEvent
+    console.log('滚动位置:', contentOffset.y, '是否已展开:', isExpanded)
+
+    // 当用户向下滚动超过 50px 且当前是 50% 高度时，自动展开到 90%
+    if (contentOffset.y > 50 && !isExpanded) {
+      console.log('触发自动展开到 90%')
+      setIsExpanded(true)
+      bottomSheetRef.current?.snapToIndex(1) // 展开到第二个 snapPoint (90%)
+    }
+  }, [isExpanded])
+
   const renderQueueItem = ({ item }: { item: Track }) => (
     <View style={styles.queueItem}>
       <Image source={{ uri: item.artwork }} style={styles.queueItemImage} />
@@ -117,7 +142,7 @@ export default function TrackActionSheet() {
   const renderFooter = useCallback(
     (props: any) => (
       <BottomSheetFooter {...props} bottomInset={24}>
-        <View style={[styles.actionsContainer, { paddingBottom: bottom }]}>
+        <View style={[styles.actionsContainer]}>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -147,10 +172,12 @@ export default function TrackActionSheet() {
     <BottomSheet
       ref={bottomSheetRef}
       index={-1}
-      snapPoints={['70%', '90%']}
+      snapPoints={snapPoints}
       onChange={handleSheetChanges}
       backdropComponent={renderBackdrop}
       enablePanDownToClose
+      enableDynamicSizing={false}
+      maxDynamicContentSize={Dimensions.get('window').height * 0.95}
       backgroundStyle={{
         backgroundColor: colors.surface,
         borderTopLeftRadius: 20,
@@ -166,28 +193,27 @@ export default function TrackActionSheet() {
         width: 40,
         height: 4,
       }}
-      maxDynamicContentSize={Dimensions.get('window').height * 0.9}
       animationConfigs={animationConfigs}
       animateOnMount={true}
       keyboardBehavior="interactive"
       keyboardBlurBehavior="restore"
       footerComponent={renderFooter}
     >
-      <BottomSheetView style={[styles.contentContainer]}>
-        <View style={styles.header}>
-          <Text style={[styles.title, { color: colors.onSurface }]}>正在播放</Text>
-        </View>
-        <BottomSheetScrollView style={styles.queueContainer}>
-          <FlashList
-            data={tracks}
-            renderItem={renderQueueItem}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false}
-            estimatedItemSize={60}
-          />
-        </BottomSheetScrollView>
+      <BottomSheetView style={[styles.header, { backgroundColor: colors.surface }]}>
+        <Text style={[styles.title, { color: colors.onSurface }]}>正在播放</Text>
       </BottomSheetView>
-
+      <BottomSheetScrollView style={[styles.queueContainer]}>
+        <FlashList
+          data={tracks}
+          renderItem={renderQueueItem}
+          keyExtractor={item => item.id}
+          showsVerticalScrollIndicator={false}
+          estimatedItemSize={60}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          style={styles.queueContainer}
+        />
+      </BottomSheetScrollView>
     </BottomSheet>
   )
 }
@@ -202,7 +228,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: 'rgba(0,0,0,0.1)',
     height: 40,
-
+    justifyContent: 'center',
+    zIndex: 1,
   },
   title: {
     fontSize: 14,
@@ -211,8 +238,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 8,
-    backgroundColor: 'red',
-    marginBottom: 128,
+    marginBottom: 120,
+    marginTop: 40,
   },
   queueItem: {
     flexDirection: 'row',

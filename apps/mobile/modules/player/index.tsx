@@ -22,7 +22,7 @@ import MiniPlayer from './MiniPlayer'
 import PlayerBackground from './PlayerBackground'
 // import QueueList from './QueueList'
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window')
+const { height: SCREEN_HEIGHT } = Dimensions.get('screen')
 const MIN_VELOCITY = 500 // Velocity Threshold
 const MIN_DISTANCE = 50 // Distance Threshold
 
