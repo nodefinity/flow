@@ -1,5 +1,7 @@
+import { logger } from '@flow/core'
 import TrackPlayer, { Event } from 'react-native-track-player'
 import { playerController } from '../playerController'
+import { usePlayerStore } from '../playerStore'
 
 export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.RemotePlay, () => {
@@ -19,8 +21,16 @@ export async function PlaybackService() {
   })
 
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, (event) => {
+    logger.info('PlaybackActiveTrackChanged', event)
     if (event.index !== undefined) {
       playerController.syncCurrentIndex(event.index)
     }
+  })
+
+  TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, (event) => {
+    const { position } = event
+    const setPosition = usePlayerStore.getState().setPosition
+
+    setPosition(position)
   })
 }

@@ -23,10 +23,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   artwork: {
-    width: screenWidth - 48,
+    width: screenWidth - 56,
     aspectRatio: 1,
     borderRadius: 16,
     marginBottom: 40,
@@ -37,6 +36,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 8,
-    elevation: 8,
+    elevation: 2,
   },
 })

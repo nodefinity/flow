@@ -16,6 +16,7 @@ interface PlayerStore {
   currentIndex: number
   mode: PlayMode
   isPlaying: boolean
+  position: number
 }
 
 interface PlayerStoreActions {
@@ -38,6 +39,9 @@ interface PlayerStoreActions {
 
   // sync
   setCurrentIndex: (index: number) => void
+
+  // progress
+  setPosition: (position: number) => void
 }
 
 function shuffle<T>(array: T[]): T[] {
@@ -57,6 +61,7 @@ const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
       currentIndex: 0,
       mode: PlayMode.ORDERED,
       isPlaying: false,
+      position: 0,
 
       // Add a track to the queue's end
       addToQueue: (track) => {
@@ -202,6 +207,10 @@ const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
 
       setCurrentIndex: (index) => {
         set({ currentIndex: index })
+      },
+
+      setPosition: (position) => {
+        set({ position })
       },
     }),
     {

@@ -18,6 +18,8 @@ export interface PlayerController {
   setMode: (mode: PlayMode) => void
 
   syncCurrentIndex: (index: number) => void
+
+  seekTo: (position: number) => void
 }
 
 export declare const playerController: PlayerController

@@ -192,5 +192,16 @@ export const playerController: PlayerController = {
       logger.error('syncCurrentIndex error:', error)
     }
   },
+
+  async seekTo(position: number) {
+    try {
+      await TrackPlayer.seekTo(position)
+      const setPosition = usePlayerStore.getState().setPosition
+      setPosition(position)
+    }
+    catch (error) {
+      logger.error('seekTo error:', error)
+    }
+  },
   // #endregion
 }

@@ -1,14 +1,20 @@
-import { playerController, PlayMode, usePlayerStore } from '@flow/player'
+import { formatDuration } from '@flow/core'
+import { playerController, PlayMode, useDisplayTrack, usePlayerStore } from '@flow/player'
+import Slider from '@react-native-community/slider'
 import { useCallback } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { IconButton, Text, useTheme } from 'react-native-paper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+const { width: screenWidth } = Dimensions.get('screen')
 
 export default function FullPlayerControl() {
   const { bottom } = useSafeAreaInsets()
   const { colors } = useTheme()
+  const displayTrack = useDisplayTrack()
   const isPlaying = usePlayerStore.use.isPlaying()
   const mode = usePlayerStore.use.mode()
+  const position = usePlayerStore.use.position()
 
   const handlePlayPause = useCallback(() => {
     if (isPlaying) {
@@ -27,8 +33,37 @@ export default function FullPlayerControl() {
     playerController.prev()
   }, [])
 
+  const handleSliderSlidingComplete = useCallback((value: number) => {
+    if (displayTrack?.duration && displayTrack.duration > 0) {
+      playerController.seekTo(value)
+    }
+  }, [displayTrack?.duration])
+
+  console.log(position)
+
   return (
     <View style={[styles.container, { paddingBottom: bottom + 36 }]}>
+      <View>
+        <Slider
+          style={styles.slider}
+          minimumValue={0}
+          maximumValue={displayTrack?.duration ?? 0}
+          value={position}
+          minimumTrackTintColor={colors.primary}
+          maximumTrackTintColor={colors.outline}
+          thumbTintColor={colors.primary}
+          onSlidingComplete={handleSliderSlidingComplete}
+        />
+        <View style={styles.timeTextContainer}>
+          <Text style={[styles.timeText, { color: colors.onSurfaceVariant }]}>
+            {formatDuration(position)}
+          </Text>
+          <Text style={[styles.timeText, { color: colors.onSurfaceVariant }]}>
+            {formatDuration(displayTrack?.duration ?? 0)}
+          </Text>
+        </View>
+      </View>
+
       <View style={styles.controls}>
         <IconButton
           icon="skip-previous"
@@ -61,6 +96,18 @@ export default function FullPlayerControl() {
 const styles = StyleSheet.create({
   container: {
     gap: 20,
+  },
+  slider: {
+    alignSelf: 'center',
+    width: screenWidth - 24,
+  },
+  timeTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  timeText: {
+    fontSize: 12,
+    textAlign: 'center',
   },
   controls: {
     flexDirection: 'row',
