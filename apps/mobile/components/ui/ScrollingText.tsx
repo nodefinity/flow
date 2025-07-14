@@ -112,7 +112,11 @@ export function ScrollingText({
           {/* 第二个文本 - 用于循环效果 */}
           {
             shouldScroll && (
-              <Text {...textProps} style={[{ marginLeft: loopGap }]} numberOfLines={1}>
+              <Text
+                {...textProps}
+                style={[textProps.style, { marginLeft: loopGap }]}
+                numberOfLines={1}
+              >
                 {children}
               </Text>
             )
