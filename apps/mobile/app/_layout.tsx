@@ -1,6 +1,7 @@
 import { useAppearanceSetting } from '@flow/hooks'
 import { PlaybackService, setupPlayer } from '@flow/player'
 import { useSettingStore, useTrackStore } from '@flow/store'
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider } from '@react-navigation/native'
 import { ErrorBoundary, Slot } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
@@ -12,6 +13,7 @@ import { ThemedView } from '@/components/ui/ThemedView'
 import Themes from '@/constants/Themes'
 import { useInitLocalTracks } from '@/hooks/useInitLocalTracks'
 import { Player } from '@/modules/player'
+import TrackActionSheet from '@/modules/player/TrackActionSheet'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -47,11 +49,14 @@ export default function RootLayout() {
     <PaperProvider theme={paperTheme}>
       <ThemeProvider value={effectiveColorScheme === 'dark' ? DarkTheme : LightTheme}>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <ThemedView style={{ flex: 1 }} testID="root-surface">
-            <StatusBar style={statusBarStyle} />
-            <Slot />
-            <Player />
-          </ThemedView>
+          <BottomSheetModalProvider>
+            <ThemedView style={{ flex: 1 }} testID="root-surface">
+              <StatusBar style={statusBarStyle} />
+              <Slot />
+              <Player />
+              <TrackActionSheet />
+            </ThemedView>
+          </BottomSheetModalProvider>
         </GestureHandlerRootView>
       </ThemeProvider>
     </PaperProvider>

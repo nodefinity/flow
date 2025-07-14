@@ -1,17 +1,23 @@
+import { AntDesign } from '@expo/vector-icons'
 import { playerController, useDisplayTrack, usePlayerStore } from '@flow/player'
 import { useCallback } from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { IconButton, Text, useTheme } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { ScrollingText } from '@/components/ui/ScrollingText'
 import { MINI_HEIGHT } from '@/constants/Player'
+import { useTrackActionSheet } from '@/hooks/useTrackActionSheet'
 import { usePlayerAnimation } from './Context'
 
 export default function MiniPlayer({ onPress }: { onPress: () => void }) {
   const { colors } = useTheme()
+  const { bottom } = useSafeAreaInsets()
+  console.log('bottom', bottom)
   const { thresholdPercent } = usePlayerAnimation()
   const isPlaying = usePlayerStore.use.isPlaying()
   const displayTrack = useDisplayTrack()
+  const { show } = useTrackActionSheet()
 
   const opacity = useDerivedValue(() => {
     return interpolate(thresholdPercent.value, [0, 1], [1, 0], Extrapolation.CLAMP)
@@ -32,9 +38,9 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
     }
   }, [isPlaying])
 
-  const handleNext = useCallback(() => {
-    playerController.next()
-  }, [])
+  // const handleNext = useCallback(() => {
+  //   playerController.next()
+  // }, [])
 
   if (!displayTrack)
     return null
@@ -43,7 +49,7 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
     <Animated.View style={
       [
         styles.container,
-        { height: MINI_HEIGHT, backgroundColor: colors.elevation.level1 },
+        { height: MINI_HEIGHT, backgroundColor: colors.elevation.level1, paddingBottom: bottom },
         animatedStyle,
       ]
     }
@@ -68,11 +74,16 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
             size={24}
             onPress={handlePlayPause}
           />
-          <IconButton
-            icon="skip-next"
-            size={24}
-            onPress={handleNext}
-          />
+          <Pressable
+            style={styles.menuButton}
+            onPress={() => show(displayTrack)}
+          >
+            <AntDesign
+              name="menu-unfold"
+              size={20}
+              color={colors.onSurface}
+            />
+          </Pressable>
         </View>
       </Pressable>
     </Animated.View>
@@ -109,6 +120,13 @@ const styles = StyleSheet.create({
   },
   controls: {
     flexDirection: 'row',
+    alignItems: 'center',
+  },
+  menuButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
     alignItems: 'center',
   },
 })

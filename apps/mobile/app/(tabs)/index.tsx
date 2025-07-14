@@ -1,5 +1,5 @@
 import type { Track } from '@flow/core'
-import { playerController } from '@flow/player'
+import { playerController, usePlayerStore } from '@flow/player'
 import { useTrackStore } from '@flow/store'
 import { FlashList } from '@shopify/flash-list'
 import { useCallback } from 'react'
@@ -17,6 +17,9 @@ export default function HomeScreen() {
 
   const onTrackPress = useCallback((track: Track) => {
     if (activeTrack?.id === track.id) {
+      if (!usePlayerStore.getState().isPlaying) {
+        playerController.play()
+      }
       return
     }
     playerController.playQueue(tracks, track)

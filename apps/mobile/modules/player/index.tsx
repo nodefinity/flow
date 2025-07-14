@@ -36,6 +36,8 @@ export function Player() {
   const [page, setPage] = useState(0)
   const pagerRef = useRef<PagerView>(null)
 
+  // 移除 showActionSheet 相关的状态和代码
+
   // Init: show mini player
   const translateY = useSharedValue(SNAP_MINI)
   const prevTranslationY = useSharedValue(SNAP_MINI)

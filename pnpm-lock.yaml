@@ -182,8 +182,8 @@ importers:
         specifier: ^4.1.1
         version: 4.1.2(react-native-pager-view@6.8.1(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-track-player:
-        specifier: github:dribble-njr/react-native-track-player
-        version: https://codeload.github.com/dribble-njr/react-native-track-player/tar.gz/ad5f79e03497394fe339f419dc98400811e2dbbb(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        specifier: 4.1.1
+        version: 4.1.1(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
     devDependencies:
       '@babel/core':
         specifier: ^7.25.2
@@ -4730,9 +4730,8 @@ packages:
       react-native: '*'
       react-native-pager-view: '>= 6.0.0'
 
-  react-native-track-player@https://codeload.github.com/dribble-njr/react-native-track-player/tar.gz/ad5f79e03497394fe339f419dc98400811e2dbbb:
-    resolution: {tarball: https://codeload.github.com/dribble-njr/react-native-track-player/tar.gz/ad5f79e03497394fe339f419dc98400811e2dbbb}
-    version: 4.1.1
+  react-native-track-player@4.1.1:
+    resolution: {integrity: sha512-E5N/eK/+HtAVJUAzXpm1cWz8ROheV9jb0TI6h2bM+333U+DWibTTnT2T1122FkCoXLXIYavtm2FR2if+5jH8cA==}
     peerDependencies:
       react: '>=16.8.6'
       react-native: '>=0.60.0-rc.2'
@@ -10864,7 +10863,7 @@ snapshots:
       react-native-pager-view: 6.8.1(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       use-latest-callback: 0.2.4(react@19.0.0)
 
-  react-native-track-player@https://codeload.github.com/dribble-njr/react-native-track-player/tar.gz/ad5f79e03497394fe339f419dc98400811e2dbbb(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+  react-native-track-player@4.1.1(patch_hash=00df1835e1fc4bcea6bf6bb0aa978c7082f87cfa71c8b73fa9aea4877452fecf)(react-native@0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
       react-native: 0.79.4(@babel/core@7.27.4)(@types/react@19.0.14)(react@19.0.0)
