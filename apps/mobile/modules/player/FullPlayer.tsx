@@ -36,36 +36,6 @@ export default function FullPlayer() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  page: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  pageTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  pageSubtitle: {
-    fontSize: 16,
-    opacity: 0.7,
-  },
-  trackInfo: {
-    alignItems: 'center',
-    marginBottom: 40,
-    width: '100%',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  artist: {
-    fontSize: 18,
-    textAlign: 'center',
-    opacity: 0.7,
+    paddingHorizontal: 28,
   },
 })

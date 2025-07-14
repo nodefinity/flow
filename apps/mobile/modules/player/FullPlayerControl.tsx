@@ -1,14 +1,22 @@
-import { playerController, PlayMode, usePlayerStore } from '@flow/player'
-import { useCallback } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { formatDuration } from '@flow/core'
+import { playerController, PlayMode, useDisplayTrack, usePlayerStore } from '@flow/player'
+import Slider from '@react-native-community/slider'
+import { useCallback, useState } from 'react'
+import { Dimensions, StyleSheet, View } from 'react-native'
 import { IconButton, Text, useTheme } from 'react-native-paper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+const { width: screenWidth } = Dimensions.get('screen')
 
 export default function FullPlayerControl() {
   const { bottom } = useSafeAreaInsets()
   const { colors } = useTheme()
+  const displayTrack = useDisplayTrack()
   const isPlaying = usePlayerStore.use.isPlaying()
   const mode = usePlayerStore.use.mode()
+  const position = usePlayerStore.use.position()
+  const [isSliding, setIsSliding] = useState(false)
+  const [sliderValue, setSliderValue] = useState(0)
 
   const handlePlayPause = useCallback(() => {
     if (isPlaying) {
@@ -27,8 +35,48 @@ export default function FullPlayerControl() {
     playerController.prev()
   }, [])
 
+  const handleSliderChange = useCallback((value: number) => {
+    setSliderValue(value)
+  }, [])
+
+  const handleSliderSlidingComplete = useCallback((value: number) => {
+    setIsSliding(false)
+    if (displayTrack?.duration && displayTrack.duration > 0) {
+      const newPosition = value * displayTrack.duration
+      playerController.seekTo(newPosition)
+    }
+  }, [displayTrack?.duration])
+
+  const handleSliderSlidingStart = useCallback(() => {
+    setIsSliding(true)
+  }, [])
+
+  // 更新滑块值
+  const currentSliderValue = isSliding ? sliderValue : (displayTrack?.duration && displayTrack.duration > 0 ? position / displayTrack.duration : 0)
+
   return (
     <View style={[styles.container, { paddingBottom: bottom + 36 }]}>
+      <View>
+        <Slider
+          style={styles.slider}
+          value={currentSliderValue}
+          minimumTrackTintColor={colors.primary}
+          maximumTrackTintColor={colors.outline}
+          thumbTintColor={colors.primary}
+          onValueChange={handleSliderChange}
+          onSlidingComplete={handleSliderSlidingComplete}
+          onSlidingStart={handleSliderSlidingStart}
+        />
+        <View style={styles.timeTextContainer}>
+          <Text style={[styles.timeText, { color: colors.onSurfaceVariant }]}>
+            {formatDuration(position)}
+          </Text>
+          <Text style={[styles.timeText, { color: colors.onSurfaceVariant }]}>
+            {formatDuration(displayTrack?.duration ?? 0)}
+          </Text>
+        </View>
+      </View>
+
       <View style={styles.controls}>
         <IconButton
           icon="skip-previous"
@@ -61,6 +109,18 @@ export default function FullPlayerControl() {
 const styles = StyleSheet.create({
   container: {
     gap: 20,
+  },
+  slider: {
+    alignSelf: 'center',
+    width: screenWidth - 24,
+  },
+  timeTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  timeText: {
+    fontSize: 12,
+    textAlign: 'center',
   },
   controls: {
     flexDirection: 'row',

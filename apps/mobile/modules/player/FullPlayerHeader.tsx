@@ -19,7 +19,6 @@ export default function FullPlayerHeader() {
 const styles = StyleSheet.create({
   container: {
     marginTop: -16,
-    paddingHorizontal: 24,
   },
   artist: {
     opacity: 0.7,

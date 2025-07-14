@@ -31,6 +31,7 @@ export function getTrackPlayerOptions(options?: UpdateOptions) {
       Capability.SkipToNext,
       Capability.SkipToPrevious,
     ],
+    progressUpdateEventInterval: 1,
     ...options,
   }
 }
