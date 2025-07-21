@@ -39,8 +39,6 @@ export default function FullPlayerControl() {
     }
   }, [displayTrack?.duration])
 
-  console.log(position)
-
   return (
     <View style={[styles.container, { paddingBottom: bottom + 36 }]}>
       <View>
@@ -53,6 +51,9 @@ export default function FullPlayerControl() {
           maximumTrackTintColor={colors.outline}
           thumbTintColor={colors.primary}
           onSlidingComplete={handleSliderSlidingComplete}
+          // Fix outer pan gesture conflict
+          // https://github.com/callstack/react-native-slider/issues/296#issuecomment-1001085596
+          onResponderGrant={() => true}
         />
         <View style={styles.timeTextContainer}>
           <Text style={[styles.timeText, { color: colors.onSurfaceVariant }]}>
