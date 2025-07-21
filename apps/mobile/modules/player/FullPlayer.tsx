@@ -5,7 +5,6 @@ import { usePlayerAnimation } from './Context'
 import FullPlayerArtwork from './FullPlayerArtwork'
 import FullPlayerControl from './FullPlayerControl'
 import FullPlayerHeader from './FullPlayerHeader'
-import FullPlayerTrackInfo from './FullPlayerTrackInfo'
 import LyricsView from './LyricsView'
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView)
@@ -27,7 +26,6 @@ export default function FullPlayer() {
       <FullPlayerHeader />
 
       <AnimatedPagerView style={styles.pagerContainer} initialPage={1} orientation="horizontal">
-        <FullPlayerTrackInfo />
         <FullPlayerArtwork />
         <LyricsView />
       </AnimatedPagerView>
