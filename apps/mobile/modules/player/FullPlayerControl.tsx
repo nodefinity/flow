@@ -97,6 +97,7 @@ export default function FullPlayerControl() {
 const styles = StyleSheet.create({
   container: {
     gap: 20,
+    paddingHorizontal: 28,
   },
   slider: {
     alignSelf: 'center',
