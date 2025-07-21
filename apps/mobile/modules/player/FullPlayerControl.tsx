@@ -1,9 +1,10 @@
 import { formatDuration } from '@flow/core'
 import { playerController, PlayMode, useDisplayTrack, usePlayerStore } from '@flow/player'
 import Slider from '@react-native-community/slider'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
 import { IconButton, Text, useTheme } from 'react-native-paper'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const { width: screenWidth } = Dimensions.get('screen')
@@ -15,6 +16,14 @@ export default function FullPlayerControl() {
   const isPlaying = usePlayerStore.use.isPlaying()
   const mode = usePlayerStore.use.mode()
   const position = usePlayerStore.use.position()
+
+  const [slidingValue, setSlidingValue] = useState(0)
+
+  // Slider animation values
+  const isSliding = useSharedValue(false)
+  const timeTextOpacity = useSharedValue(1)
+  const timeTextScale = useSharedValue(1)
+  const sliderElevation = useSharedValue(0)
 
   const handlePlayPause = useCallback(() => {
     if (isPlaying) {
@@ -33,15 +42,40 @@ export default function FullPlayerControl() {
     playerController.prev()
   }, [])
 
+  const handleSliderValueChange = useCallback((value: number) => {
+    setSlidingValue(value)
+    if (!isSliding.value) {
+      isSliding.value = true
+      timeTextOpacity.value = withTiming(0.6, { duration: 200 })
+      timeTextScale.value = withTiming(0.95, { duration: 200 })
+      sliderElevation.value = withTiming(4, { duration: 200 })
+    }
+  }, [isSliding, timeTextOpacity, timeTextScale, sliderElevation])
+
   const handleSliderSlidingComplete = useCallback((value: number) => {
+    isSliding.value = false
+    timeTextOpacity.value = withTiming(1, { duration: 300 })
+    timeTextScale.value = withTiming(1, { duration: 300 })
+    sliderElevation.value = withTiming(0, { duration: 300 })
+    setSlidingValue(0)
+
     if (displayTrack?.duration && displayTrack.duration > 0) {
       playerController.seekTo(value)
     }
-  }, [displayTrack?.duration])
+  }, [displayTrack?.duration, isSliding, timeTextOpacity, timeTextScale, sliderElevation])
+
+  const timeTextAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: timeTextOpacity.value,
+    transform: [{ scale: timeTextScale.value }],
+  }))
+
+  const sliderAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: 1 + sliderElevation.value * 0.02 }],
+  }))
 
   return (
     <View style={[styles.container, { paddingBottom: bottom + 36 }]}>
-      <View>
+      <Animated.View style={sliderAnimatedStyle}>
         <Slider
           style={styles.slider}
           minimumValue={0}
@@ -49,21 +83,23 @@ export default function FullPlayerControl() {
           value={position}
           minimumTrackTintColor={colors.primary}
           maximumTrackTintColor={colors.outline}
-          thumbTintColor={colors.primary}
+          thumbTintColor="transparent"
+          onValueChange={handleSliderValueChange}
           onSlidingComplete={handleSliderSlidingComplete}
           // Fix outer pan gesture conflict
           // https://github.com/callstack/react-native-slider/issues/296#issuecomment-1001085596
           onResponderGrant={() => true}
         />
-        <View style={styles.timeTextContainer}>
+        <Animated.View style={[styles.timeTextContainer, timeTextAnimatedStyle]}>
           <Text style={[styles.timeText, { color: colors.onSurfaceVariant }]}>
             {formatDuration(position)}
+            {slidingValue > 0 && ` / ${formatDuration(slidingValue)}`}
           </Text>
           <Text style={[styles.timeText, { color: colors.onSurfaceVariant }]}>
             {formatDuration(displayTrack?.duration ?? 0)}
           </Text>
-        </View>
-      </View>
+        </Animated.View>
+      </Animated.View>
 
       <View style={styles.controls}>
         <IconButton
