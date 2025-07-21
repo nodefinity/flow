@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
   target: {
     position: 'absolute',
     bottom: 16 + MINI_HEIGHT,
-    right: 16,
+    right: 6,
   },
 })
