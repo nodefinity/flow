@@ -40,3 +40,14 @@ export function formatTime(date: Date | null, format = 'YYYY-MM-DD HH:mm:ss'): s
     format,
   )
 }
+
+/**
+ * Parse a lyric time string to seconds
+ * @param time mm:ss.ms (e.g., "01:23.45")
+ * @returns seconds as float number
+ */
+export function parseLyricTime(time: string): number {
+  const [minutes, secondsStr] = time.split(':')
+  const seconds = Number.parseFloat(secondsStr ?? '0')
+  return Number.parseInt(minutes ?? '0') * 60 + seconds
+}

@@ -2,6 +2,7 @@ import type { Track } from '@flow/core'
 import type { PlayerController } from './playerController'
 import { logger } from '@flow/core'
 import TrackPlayer, { RepeatMode } from 'react-native-track-player'
+import { usePlaybackStore } from './playbackStore'
 import { PlayMode, usePlayerStore } from './playerStore'
 
 export const playerController: PlayerController = {
@@ -177,7 +178,7 @@ export const playerController: PlayerController = {
   },
   // #endregion
 
-  // #region sync
+  // #region sync store with track player
   async syncCurrentIndex(index: number) {
     try {
       const { queue } = usePlayerStore.getState()
@@ -196,7 +197,7 @@ export const playerController: PlayerController = {
   async seekTo(position: number) {
     try {
       await TrackPlayer.seekTo(position)
-      const setPosition = usePlayerStore.getState().setPosition
+      const setPosition = usePlaybackStore.getState().setPosition
       setPosition(position)
     }
     catch (error) {

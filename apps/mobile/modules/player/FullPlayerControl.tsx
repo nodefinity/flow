@@ -1,5 +1,5 @@
 import { formatDuration } from '@flow/core'
-import { playerController, PlayMode, useDisplayTrack, usePlayerStore } from '@flow/player'
+import { playerController, PlayMode, useDisplayTrack, usePlaybackStore, usePlayerStore } from '@flow/player'
 import Slider from '@react-native-community/slider'
 import { useCallback, useState } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
@@ -15,7 +15,7 @@ export default function FullPlayerControl() {
   const displayTrack = useDisplayTrack()
   const isPlaying = usePlayerStore.use.isPlaying()
   const mode = usePlayerStore.use.mode()
-  const position = usePlayerStore.use.position()
+  const position = usePlaybackStore.use.position()
 
   const [slidingValue, setSlidingValue] = useState(0)
 

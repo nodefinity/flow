@@ -1,5 +1,7 @@
 export * from './hooks/useDisplayTrack'
+export * from './playbackStore'
 export * from './playerController'
 export * from './playerStore'
 export * from './services/playbackService'
 export * from './services/setupService'
+export * from './utils/parseLyrics'

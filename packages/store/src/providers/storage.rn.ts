@@ -20,7 +20,6 @@ export const getStorage = {
       }
       else {
         storage.set(key, value)
-        console.log('MMKV setItem:', { key, valueLength: value.length })
       }
     }
     catch (error) {

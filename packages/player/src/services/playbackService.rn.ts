@@ -1,7 +1,7 @@
 import { logger } from '@flow/core'
 import TrackPlayer, { Event } from 'react-native-track-player'
+import { usePlaybackStore } from '../playbackStore'
 import { playerController } from '../playerController'
-import { usePlayerStore } from '../playerStore'
 
 export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.RemotePlay, () => {
@@ -29,7 +29,7 @@ export async function PlaybackService() {
 
   TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, (event) => {
     const { position } = event
-    const setPosition = usePlayerStore.getState().setPosition
+    const setPosition = usePlaybackStore.getState().setPosition
 
     setPosition(position)
   })
