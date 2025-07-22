@@ -10,6 +10,7 @@ export default function LyricsView() {
   const activeTrack = useDisplayTrack()
   const position = usePlaybackStore.use.position()
   const [lyrics, setLyrics] = useState<LyricLine[]>([])
+  const [isFlashListReady, setIsFlashListReady] = useState(false)
   const activeLyricLineIndex = findLyricLine(lyrics, position)
   const scrollViewRef = useRef<FlashList<LyricLine>>(null)
 
@@ -18,10 +19,19 @@ export default function LyricsView() {
   }, [activeTrack])
 
   useEffect(() => {
-    if (scrollViewRef.current && activeLyricLineIndex !== null) {
-      scrollViewRef.current.scrollToIndex({ index: activeLyricLineIndex, animated: true, viewPosition: 0.5 })
+    if (scrollViewRef.current && activeLyricLineIndex !== null && isFlashListReady) {
+      // ensure the FlashList is ready
+      const timeoutId = setTimeout(() => {
+        scrollViewRef.current?.scrollToIndex({
+          index: activeLyricLineIndex,
+          animated: true,
+          viewPosition: 0.5,
+        })
+      }, 100)
+
+      return () => clearTimeout(timeoutId)
     }
-  }, [activeLyricLineIndex])
+  }, [activeLyricLineIndex, isFlashListReady])
 
   const renderItem = useCallback(({ item: line, index }: { item: LyricLine, index: number }) => {
     const isActive = activeLyricLineIndex === index
@@ -50,6 +60,7 @@ export default function LyricsView() {
         extraData={activeLyricLineIndex}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => `${item.time}-${index}`}
+        onLayout={() => setIsFlashListReady(true)}
       />
     </View>
   )
