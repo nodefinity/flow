@@ -6,6 +6,7 @@ import TrackPlayer, {
   // Capability,
   RepeatMode,
 } from 'react-native-track-player'
+import { usePlaybackStore } from '../playbackStore'
 import { usePlayerStore } from '../playerStore'
 
 /**
@@ -66,6 +67,7 @@ export async function setupPlayer() {
   // Sync queue to TrackPlayer
   try {
     const { queue, currentIndex } = usePlayerStore.getState()
+    const { position } = usePlaybackStore.getState()
 
     if (queue.length > 0) {
       logger.info(`Setting up TrackPlayer with ${queue.length} tracks, current index: ${currentIndex}`)
@@ -76,7 +78,7 @@ export async function setupPlayer() {
 
       // Set current track
       if (currentIndex >= 0 && currentIndex < queue.length) {
-        await TrackPlayer.skip(currentIndex)
+        await TrackPlayer.skip(currentIndex, position)
       }
     }
     else {
