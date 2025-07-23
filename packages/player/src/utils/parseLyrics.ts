@@ -2,17 +2,84 @@ import { parseLyricTime } from '@flow/core'
 
 export interface LyricLine {
   time: string
-  text: string
+  originalText: string
+  translation?: string
 }
 
 export function parseLyrics(lyrics: string): LyricLine[] {
-  return lyrics.split('\n').filter(line => line.trim() !== '').map((line) => {
-    const [time, text] = line.split(']')
-    if (time && text) {
-      return { time: time.slice(1).trim(), text: text.trim() }
+  if (!lyrics.trim()) {
+    return []
+  }
+
+  const lines = lyrics.split('\n').filter(line => line.trim() !== '')
+  const timeRegex = /^\[(\d{2}:\d{2}\.\d{3})\]/
+
+  // find start of translation
+  const translationStartIndex = lines.findIndex(line =>
+    line.includes('[by:') || line.includes('[offset:') || line.includes('[ar:') || line.includes('[ti:'),
+  )
+
+  let originalLines: string[]
+  let translatedLines: string[] = []
+
+  if (translationStartIndex !== -1) {
+    // found translation marker, separate original and translation
+    originalLines = lines.slice(0, translationStartIndex)
+
+    // skip marker line, get translation content
+    const afterMarker = lines.slice(translationStartIndex + 1)
+    translatedLines = afterMarker.filter(line => timeRegex.test(line))
+  }
+  else {
+    // no translation marker, only original lyrics
+    originalLines = lines.filter(line => timeRegex.test(line))
+  }
+
+  // parse original lyrics
+  const originalMap = new Map<string, string>()
+  for (const line of originalLines) {
+    const match = line.match(timeRegex)
+    if (match && match[1]) {
+      const time = match[1]
+      const text = line.slice(match[0].length).trim()
+      if (text) {
+        originalMap.set(time, text)
+      }
     }
-    return { time: '', text: '' }
-  }).filter(line => line.time !== '')
+  }
+
+  // parse translation lyrics
+  const translationMap = new Map<string, string>()
+  for (const line of translatedLines) {
+    const match = line.match(timeRegex)
+    if (match && match[1]) {
+      const time = match[1]
+      const text = line.slice(match[0].length).trim()
+      if (text) {
+        translationMap.set(time, text)
+      }
+    }
+  }
+
+  // merge original and translation, sort by time
+  const result: LyricLine[] = []
+  const allTimes = Array.from(new Set([...originalMap.keys(), ...translationMap.keys()]))
+    .sort((a, b) => parseLyricTime(a) - parseLyricTime(b))
+
+  for (const time of allTimes) {
+    const originalText = originalMap.get(time)
+    const translation = translationMap.get(time)
+
+    if (originalText || translation) {
+      result.push({
+        time,
+        originalText: originalText || '',
+        translation: translation || undefined,
+      })
+    }
+  }
+
+  return result
 }
 
 /**

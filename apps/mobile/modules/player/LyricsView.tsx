@@ -2,7 +2,7 @@ import type { LyricLine } from '@flow/player'
 import { findLyricLine, parseLyrics, useDisplayTrack, usePlaybackStore } from '@flow/player'
 import { FlashList } from '@shopify/flash-list'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Text, useTheme } from 'react-native-paper'
 
 export default function LyricsView({ mode = 'mini' }: { mode?: 'mini' | 'full' }) {
@@ -38,18 +38,36 @@ export default function LyricsView({ mode = 'mini' }: { mode?: 'mini' | 'full' }
     const isMiniMode = mode === 'mini'
 
     return (
-      <Text
-        style={[
-          isMiniMode ? styles.miniLyricLine : styles.fullLyricLine,
-          { color: colors.onSurface },
-          isActive && (isMiniMode ? styles.miniActiveLyricLine : styles.fullActiveLyricLine),
-          isActive && { color: colors.primary },
-        ]}
-      >
-        {line.text}
-      </Text>
+      <View style={isMiniMode ? styles.miniLyricContainer : styles.fullLyricContainer}>
+        {/* 原文歌词 */}
+        {line.originalText && (
+          <Text
+            style={[
+              isMiniMode ? styles.miniOriginalText : styles.fullOriginalText,
+              { color: colors.onSurface },
+              isActive && (isMiniMode ? styles.miniActiveOriginalText : styles.fullActiveOriginalText),
+              isActive && { color: colors.primary },
+            ]}
+          >
+            {line.originalText}
+          </Text>
+        )}
+
+        {line.translation && (
+          <Text
+            style={[
+              isMiniMode ? styles.miniTranslationText : styles.fullTranslationText,
+              { color: colors.onSurfaceVariant },
+              isActive && (isMiniMode ? styles.miniActiveTranslationText : styles.fullActiveTranslationText),
+              isActive && { color: colors.primary },
+            ]}
+          >
+            {line.translation}
+          </Text>
+        )}
+      </View>
     )
-  }, [activeLyricLineIndex, colors.primary, colors.onSurface, mode])
+  }, [activeLyricLineIndex, colors.primary, colors.onSurface, colors.onSurfaceVariant, mode])
 
   const containerStyle = mode === 'mini' ? styles.miniContentContainer : styles.fullContentContainer
   const estimatedSize = mode === 'mini' ? 20 : 30
@@ -75,37 +93,66 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 16,
   },
-  miniLyricLine: {
+  miniLyricContainer: {
+    marginVertical: 6,
+  },
+  miniOriginalText: {
     fontSize: 14,
     lineHeight: 18,
-    marginVertical: 6,
     fontWeight: '400',
-    opacity: 0.6,
-    textAlign: 'left',
+    opacity: 0.8,
   },
-  miniActiveLyricLine: {
-    fontSize: 16,
-    lineHeight: 20,
+  miniActiveOriginalText: {
+    fontSize: 15,
+    lineHeight: 19,
     fontWeight: '500',
     opacity: 1,
   },
+  miniTranslationText: {
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: '400',
+    opacity: 0.6,
+    marginTop: 2,
+  },
+  miniActiveTranslationText: {
+    fontSize: 13,
+    lineHeight: 17,
+    fontWeight: '500',
+    opacity: 0.8,
+  },
 
-  // full
+  // full 模式容器
   fullContentContainer: {
     paddingHorizontal: 32,
     paddingVertical: 40,
   },
-  fullLyricLine: {
+  fullLyricContainer: {
+    marginVertical: 12,
+  },
+  fullOriginalText: {
     fontSize: 18,
     lineHeight: 24,
-    marginVertical: 16,
     fontWeight: '500',
-    opacity: 0.7,
+    opacity: 0.8,
   },
-  fullActiveLyricLine: {
-    fontSize: 22,
-    lineHeight: 28,
+  fullActiveOriginalText: {
+    fontSize: 20,
+    lineHeight: 26,
     fontWeight: '600',
     opacity: 1,
+  },
+  fullTranslationText: {
+    fontSize: 14,
+    lineHeight: 18,
+    fontWeight: '400',
+    opacity: 0.6,
+    marginTop: 4,
+  },
+  fullActiveTranslationText: {
+    fontSize: 16,
+    lineHeight: 20,
+    fontWeight: '500',
+    opacity: 0.8,
   },
 })
