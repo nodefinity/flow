@@ -2,7 +2,7 @@ import type { Track } from '@flow/core'
 import { playerController, useDisplayTrack } from '@flow/player'
 import { useTrackStore } from '@flow/store'
 import { FlashList } from '@shopify/flash-list'
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
 import { MINI_HEIGHT } from '@/constants/Player'
@@ -32,6 +32,12 @@ export default function HomeScreen() {
       }
     }
   }, [activeTrack, tracks])
+
+  useEffect(() => {
+    if (activeTrack) {
+      handleTargetPress()
+    }
+  }, [activeTrack, handleTargetPress])
 
   return (
     <>
