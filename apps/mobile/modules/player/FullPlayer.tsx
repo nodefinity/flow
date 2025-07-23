@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
 import { usePlayerAnimation } from './Context'
@@ -25,9 +25,17 @@ export default function FullPlayer() {
     <Animated.View style={[styles.container, animatedStyle]}>
       <FullPlayerHeader />
 
-      <AnimatedPagerView style={styles.pagerContainer} initialPage={1} orientation="horizontal">
-        <FullPlayerArtwork />
-        <LyricsView />
+      <AnimatedPagerView style={styles.pagerContainer} initialPage={0} orientation="horizontal">
+        <View style={styles.artworkPage}>
+          <FullPlayerArtwork />
+          <View style={styles.artworkPageLyrics}>
+            <LyricsView mode="mini" />
+          </View>
+        </View>
+
+        <View style={styles.lyricsPage}>
+          <LyricsView mode="full" />
+        </View>
       </AnimatedPagerView>
 
       <FullPlayerControl />
@@ -41,5 +49,16 @@ const styles = StyleSheet.create({
   },
   pagerContainer: {
     flex: 1,
+  },
+  artworkPage: {
+    flex: 1,
+  },
+  artworkPageLyrics: {
+    flex: 1,
+    marginVertical: 10,
+  },
+  lyricsPage: {
+    flex: 1,
+    paddingVertical: 20,
   },
 })

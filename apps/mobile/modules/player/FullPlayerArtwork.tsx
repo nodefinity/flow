@@ -21,15 +21,16 @@ export default function FullPlayerArtwork() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 28,
+    paddingTop: 50,
+    paddingBottom: 20,
   },
   artwork: {
     width: screenWidth - 56,
     aspectRatio: 1,
-    borderRadius: 16,
-    marginBottom: 40,
+    borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

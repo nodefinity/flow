@@ -2,10 +2,10 @@ import type { LyricLine } from '@flow/player'
 import { findLyricLine, parseLyrics, useDisplayTrack, usePlaybackStore } from '@flow/player'
 import { FlashList } from '@shopify/flash-list'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Text, useTheme } from 'react-native-paper'
 
-export default function LyricsView() {
+export default function LyricsView({ mode = 'mini' }: { mode?: 'mini' | 'full' }) {
   const { colors } = useTheme()
   const activeTrack = useDisplayTrack()
   const position = usePlaybackStore.use.position()
@@ -35,51 +35,77 @@ export default function LyricsView() {
 
   const renderItem = useCallback(({ item: line, index }: { item: LyricLine, index: number }) => {
     const isActive = activeLyricLineIndex === index
+    const isMiniMode = mode === 'mini'
 
     return (
       <Text
         style={[
-          styles.lyricLine,
-          isActive && styles.activeLyricLine,
+          isMiniMode ? styles.miniLyricLine : styles.fullLyricLine,
+          { color: colors.onSurface },
+          isActive && (isMiniMode ? styles.miniActiveLyricLine : styles.fullActiveLyricLine),
           isActive && { color: colors.primary },
         ]}
       >
         {line.text}
       </Text>
     )
-  }, [activeLyricLineIndex, colors.primary])
+  }, [activeLyricLineIndex, colors.primary, colors.onSurface, mode])
+
+  const containerStyle = mode === 'mini' ? styles.miniContentContainer : styles.fullContentContainer
+  const estimatedSize = mode === 'mini' ? 20 : 30
 
   return (
-    <View style={styles.container}>
-      <FlashList
-        data={lyrics}
-        renderItem={renderItem}
-        contentContainerStyle={styles.contentContainer}
-        ref={scrollViewRef}
-        estimatedItemSize={20}
-        extraData={activeLyricLineIndex}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) => `${item.time}-${index}`}
-        onLayout={() => setIsFlashListReady(true)}
-      />
-    </View>
+    <FlashList
+      data={lyrics}
+      renderItem={renderItem}
+      contentContainerStyle={containerStyle}
+      ref={scrollViewRef}
+      estimatedItemSize={estimatedSize}
+      extraData={activeLyricLineIndex}
+      showsVerticalScrollIndicator={false}
+      keyExtractor={(item, index) => `${item.time}-${index}`}
+      onLayout={() => setIsFlashListReady(true)}
+    />
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginVertical: 20,
+  // mini
+  miniContentContainer: {
+    paddingHorizontal: 24,
+    paddingVertical: 16,
   },
-  contentContainer: {
-    paddingHorizontal: 28,
+  miniLyricLine: {
+    fontSize: 14,
+    lineHeight: 18,
+    marginVertical: 6,
+    fontWeight: '400',
+    opacity: 0.6,
+    textAlign: 'left',
   },
-  lyricLine: {
-    fontSize: 18,
-    marginVertical: 12,
+  miniActiveLyricLine: {
+    fontSize: 16,
+    lineHeight: 20,
     fontWeight: '500',
+    opacity: 1,
   },
-  activeLyricLine: {
-    fontSize: 20,
+
+  // full
+  fullContentContainer: {
+    paddingHorizontal: 32,
+    paddingVertical: 40,
+  },
+  fullLyricLine: {
+    fontSize: 18,
+    lineHeight: 24,
+    marginVertical: 16,
+    fontWeight: '500',
+    opacity: 0.7,
+  },
+  fullActiveLyricLine: {
+    fontSize: 22,
+    lineHeight: 28,
+    fontWeight: '600',
+    opacity: 1,
   },
 })
