@@ -44,6 +44,7 @@ function TrackItem({ item, isActive, ...props }: TrackItemProps) {
       style={{ paddingLeft: 16, paddingRight: 8 }}
       left={renderLeft}
       right={renderRight}
+      unstable_pressDelay={50}
     />
   )
 }

@@ -28,7 +28,7 @@ export default function HomeScreen() {
     if (activeTrack) {
       const currentTrackIndex = tracks.findIndex(track => track.id === activeTrack.id)
       if (currentTrackIndex !== -1) {
-        listRef.current?.scrollToIndex({ index: currentTrackIndex, animated: true })
+        listRef.current?.scrollToIndex({ index: currentTrackIndex })
       }
     }
   }, [activeTrack, tracks])
