@@ -4,11 +4,12 @@ import { useTrackStore } from '@flow/store'
 import { FlashList } from '@shopify/flash-list'
 import { useCallback, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { IconButton, Text } from 'react-native-paper'
+import { IconButton, Text, useTheme } from 'react-native-paper'
 import { MINI_HEIGHT } from '@/constants/Player'
 import TrackItem from '@/modules/track/TrackItem'
 
 export default function HomeScreen() {
+  const { colors } = useTheme()
   const localTracks = useTrackStore.use.localTracks()
   const remoteTracks = useTrackStore.use.remoteTracks()
   const tracks = [...localTracks, ...remoteTracks]
@@ -52,6 +53,7 @@ export default function HomeScreen() {
                   size={20}
                   mode="contained"
                   icon="crosshairs-gps"
+                  iconColor={colors.onSurfaceVariant}
                   onPress={handleTargetPress}
                   style={styles.target}
                 />
