@@ -71,10 +71,8 @@ export async function setupPlayer() {
     if (queue.length > 0) {
       logger.info(`Setting up TrackPlayer with ${queue.length} tracks, current index: ${currentIndex}`)
 
-      // This will cause the player to restart from the beginning
-      // Reset TrackPlayer and add queue
-      // await TrackPlayer.reset()
-      // await TrackPlayer.add(queue)
+      // Should init the queue
+      await TrackPlayer.setQueue(queue)
 
       // Set current track
       if (currentIndex >= 0 && currentIndex < queue.length) {
