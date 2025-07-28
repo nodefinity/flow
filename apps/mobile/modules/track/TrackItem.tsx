@@ -1,9 +1,11 @@
 import type { Track } from '@flow/core'
 import type { ListItemProps } from 'react-native-paper'
+import { usePlayerStore } from '@flow/player'
 import { Image } from 'expo-image'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { IconButton, List, useTheme } from 'react-native-paper'
+import { useToast } from '@/hooks/useToast'
 
 interface TrackItemProps extends Partial<ListItemProps> {
   item: Track
@@ -12,17 +14,24 @@ interface TrackItemProps extends Partial<ListItemProps> {
 
 function TrackItem({ item, isActive, ...props }: TrackItemProps) {
   const { colors } = useTheme()
+  const insertNext = usePlayerStore.use.insertNext()
+  const toast = useToast()
 
-  const renderLeft = useCallback(() => (
+  const insertToNext = () => {
+    insertNext(item)
+    toast.success(`成功添加到下一首播放`, 'top')
+  }
+
+  const renderLeft = () => (
     <Image source={{ uri: item.artwork }} style={{ aspectRatio: 1, borderRadius: 10 }} />
-  ), [item.artwork])
+  )
 
-  const renderRight = useCallback(() => (
+  const renderRight = () => (
     <View style={styles.rightContent}>
       <IconButton
         icon="plus"
         size={14}
-        onPress={() => console.log('Pressed')}
+        onPress={insertToNext}
       />
 
       <IconButton
@@ -31,7 +40,7 @@ function TrackItem({ item, isActive, ...props }: TrackItemProps) {
         onPress={() => console.log('Pressed')}
       />
     </View>
-  ), [])
+  )
 
   return (
     <List.Item

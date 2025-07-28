@@ -70,10 +70,35 @@ const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
         // Insert a track after the current track
         insertNext: (track) => {
           set((draft) => {
-            // Remove the track if it already exists
-            draft.queue = draft.queue.filter(t => t.id !== track.id)
-            // Insert after current track
-            draft.queue.splice(draft.currentIndex + 1, 0, track)
+            // 如果是当前正在播放的歌曲，直接在后面插入一份副本
+            if (track.id === draft.queue[draft.currentIndex]?.id) {
+              draft.queue.splice(draft.currentIndex + 1, 0, track)
+              return
+            }
+
+            // 记录当前播放的歌曲 ID
+            const currentTrackId = draft.queue[draft.currentIndex]?.id
+
+            // 找到要移除的歌曲在队列中的位置
+            const existingIndex = draft.queue.findIndex(t => t.id === track.id)
+
+            // 移除已存在的歌曲（非当前播放歌曲）
+            if (existingIndex >= 0) {
+              draft.queue = draft.queue.filter(t => t.id !== track.id)
+
+              // 如果移除的歌曲在当前播放歌曲之前，需要调整 currentIndex
+              if (existingIndex < draft.currentIndex) {
+                draft.currentIndex = draft.currentIndex - 1
+              }
+            }
+
+            // 重新找到当前播放歌曲的位置（因为可能已经变化）
+            const newCurrentIndex = draft.queue.findIndex(t => t.id === currentTrackId)
+            if (newCurrentIndex >= 0) {
+              draft.currentIndex = newCurrentIndex
+              // 在当前播放歌曲后面插入新歌曲
+              draft.queue.splice(draft.currentIndex + 1, 0, track)
+            }
           })
         },
 
