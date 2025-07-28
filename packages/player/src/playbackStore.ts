@@ -1,7 +1,7 @@
-import { getStorage } from '@flow/store/providers/storage'
+import { storage } from '@flow/store/providers/storage'
 import { createSelectors } from '@flow/store/utils/createSelectors'
 import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
+import { persist } from 'zustand/middleware'
 
 interface PlaybackStore {
   position: number // seconds
@@ -50,7 +50,7 @@ const playbackStoreBase = create<PlaybackStore & PlaybackStoreActions>()(persist
   }),
   {
     name: 'playback-store',
-    storage: createJSONStorage(() => getStorage),
+    storage,
   },
 ))
 

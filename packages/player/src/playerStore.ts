@@ -1,8 +1,9 @@
 import type { Track } from '@flow/core'
-import { getStorage } from '@flow/store/providers/storage'
+import { storage } from '@flow/store/providers/storage'
 import { createSelectors } from '@flow/store/utils/createSelectors'
 import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
+import { persist } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
 
 export enum PlayMode {
   SINGLE = 'single',
@@ -50,170 +51,172 @@ function shuffle<T>(array: T[]): T[] {
 }
 
 const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
-  persist(
-    (set, get) => ({
-      queue: [],
-      originalQueue: [],
-      currentIndex: 0,
-      mode: PlayMode.ORDERED,
-      isPlaying: false,
+  immer(
+    persist(
+      set => ({
+        queue: [],
+        originalQueue: [],
+        currentIndex: 0,
+        mode: PlayMode.ORDERED,
+        isPlaying: false,
 
-      // Add a track to the queue's end
-      addToQueue: (track) => {
-        const { queue } = get()
-        set({
-          queue: [...queue, track],
-        })
-      },
-
-      // Insert a track after the current track
-      insertNext: (track) => {
-        const { queue, currentIndex } = get()
-        const newQueue = queue.filter(t => t.id !== track.id)
-        newQueue.splice(currentIndex + 1, 0, track)
-        set({ queue: newQueue })
-      },
-
-      removeFromQueue: (trackId) => {
-        const { queue, currentIndex } = get()
-        const newQueue = queue.filter(t => t.id !== trackId)
-        const removedIndex = queue.findIndex(t => t.id === trackId)
-
-        let newCurrentIndex = currentIndex
-        if (removedIndex <= currentIndex && currentIndex > 0) {
-          newCurrentIndex = currentIndex - 1
-        }
-
-        set({
-          queue: newQueue,
-          currentIndex: newCurrentIndex,
-        })
-      },
-
-      clearQueue: () => {
-        set({
-          queue: [],
-          originalQueue: [],
-          currentIndex: 0,
-          isPlaying: false,
-        })
-      },
-
-      play: () => {
-        set({ isPlaying: true })
-      },
-
-      pause: () => {
-        set({ isPlaying: false })
-      },
-
-      playTrack: (track) => {
-        const { queue } = get()
-        const existingIndex = queue.findIndex(t => t.id === track.id)
-
-        if (existingIndex >= 0) {
-          // if the track is in the queue, play it
-          set({ currentIndex: existingIndex, isPlaying: true })
-        }
-        else {
-          // if the track is not in the queue, add it to the end of the queue and play it
-          const newQueue = [...queue, track]
-          set({
-            queue: newQueue,
-            currentIndex: newQueue.length - 1,
-            isPlaying: true,
+        // Add a track to the queue's end
+        addToQueue: (track) => {
+          set((draft) => {
+            draft.queue.push(track)
           })
-        }
-      },
+        },
 
-      playQueue: (tracks, startTrack) => {
-        const { mode } = get()
-        const newQueue = mode === PlayMode.SHUFFLE ? shuffle(tracks) : tracks
-
-        let startIndex = 0
-        if (startTrack) {
-          startIndex = newQueue.findIndex(t => t.id === startTrack.id)
-          if (startIndex === -1)
-            startIndex = 0
-        }
-
-        set({
-          originalQueue: tracks,
-          queue: newQueue,
-          currentIndex: startIndex,
-          isPlaying: true,
-        })
-      },
-
-      next: (userControl = false) => {
-        const { queue, currentIndex, mode } = get()
-        if (queue.length === 0)
-          return
-
-        // if the mode is single and the user is not controlling, do not switch
-        if (mode === PlayMode.SINGLE && !userControl)
-          return
-
-        let next = currentIndex + 1
-        if (next >= queue.length)
-          next = 0
-        set({ currentIndex: next })
-      },
-
-      prev: () => {
-        const { queue, currentIndex } = get()
-        if (queue.length === 0)
-          return
-
-        let prev = currentIndex - 1
-        if (prev < 0)
-          prev = queue.length - 1
-        set({ currentIndex: prev })
-      },
-
-      setMode: (mode) => {
-        const { originalQueue, queue, currentIndex } = get()
-
-        if (mode === PlayMode.SHUFFLE) {
-          const shuffled = shuffle(originalQueue)
-          const nowTrack = queue[currentIndex]
-          if (!nowTrack)
-            return
-          const newIndex = shuffled.findIndex(t => t.id === nowTrack.id)
-          set({
-            mode,
-            queue: shuffled,
-            currentIndex: newIndex >= 0 ? newIndex : 0,
+        // Insert a track after the current track
+        insertNext: (track) => {
+          set((draft) => {
+            // Remove the track if it already exists
+            draft.queue = draft.queue.filter(t => t.id !== track.id)
+            // Insert after current track
+            draft.queue.splice(draft.currentIndex + 1, 0, track)
           })
-        }
-        else {
-          // ordered / single: restore order
-          const nowTrack = queue[currentIndex]
-          if (!nowTrack)
-            return
-          const newIndex = originalQueue.findIndex(t => t.id === nowTrack.id)
-          set({
-            mode,
-            queue: originalQueue,
-            currentIndex: newIndex >= 0 ? newIndex : 0,
-          })
-        }
-      },
+        },
 
-      setCurrentIndex: (index) => {
-        set({ currentIndex: index })
-      },
-    }),
-    {
-      name: 'player-store',
-      storage: createJSONStorage(() => getStorage),
-      partialize: state => ({
-        queue: state.queue,
-        originalQueue: state.originalQueue,
-        currentIndex: state.currentIndex,
-        mode: state.mode,
+        removeFromQueue: (trackId) => {
+          set((draft) => {
+            const removedIndex = draft.queue.findIndex(t => t.id === trackId)
+            draft.queue = draft.queue.filter(t => t.id !== trackId)
+
+            if (removedIndex <= draft.currentIndex && draft.currentIndex > 0) {
+              draft.currentIndex = draft.currentIndex - 1
+            }
+          })
+        },
+
+        clearQueue: () => {
+          set((draft) => {
+            draft.queue = []
+            draft.originalQueue = []
+            draft.currentIndex = 0
+            draft.isPlaying = false
+          })
+        },
+
+        play: () => {
+          set((draft) => {
+            draft.isPlaying = true
+          })
+        },
+
+        pause: () => {
+          set((draft) => {
+            draft.isPlaying = false
+          })
+        },
+
+        playTrack: (track) => {
+          set((draft) => {
+            const existingIndex = draft.queue.findIndex(t => t.id === track.id)
+
+            if (existingIndex >= 0) {
+              // if the track is in the queue, play it
+              draft.currentIndex = existingIndex
+              draft.isPlaying = true
+            }
+            else {
+              // if the track is not in the queue, add it to the end of the queue and play it
+              draft.queue.push(track)
+              draft.currentIndex = draft.queue.length - 1
+              draft.isPlaying = true
+            }
+          })
+        },
+
+        playQueue: (tracks, startTrack) => {
+          set((draft) => {
+            const newQueue = draft.mode === PlayMode.SHUFFLE ? shuffle(tracks) : tracks
+
+            let startIndex = 0
+            if (startTrack) {
+              startIndex = newQueue.findIndex(t => t.id === startTrack.id)
+              if (startIndex === -1)
+                startIndex = 0
+            }
+
+            draft.originalQueue = tracks
+            draft.queue = newQueue
+            draft.currentIndex = startIndex
+            draft.isPlaying = true
+          })
+        },
+
+        next: (userControl = false) => {
+          set((draft) => {
+            if (draft.queue.length === 0)
+              return
+
+            // if the mode is single and the user is not controlling, do not switch
+            if (draft.mode === PlayMode.SINGLE && !userControl)
+              return
+
+            let next = draft.currentIndex + 1
+            if (next >= draft.queue.length)
+              next = 0
+            draft.currentIndex = next
+          })
+        },
+
+        prev: () => {
+          set((draft) => {
+            if (draft.queue.length === 0)
+              return
+
+            let prev = draft.currentIndex - 1
+            if (prev < 0)
+              prev = draft.queue.length - 1
+            draft.currentIndex = prev
+          })
+        },
+
+        setMode: (mode) => {
+          set((draft) => {
+            if (mode === PlayMode.SHUFFLE) {
+              const shuffled = shuffle(draft.originalQueue)
+              const nowTrack = draft.queue[draft.currentIndex]
+              if (!nowTrack)
+                return
+              const newIndex = shuffled.findIndex(t => t.id === nowTrack.id)
+
+              draft.mode = mode
+              draft.queue = shuffled
+              draft.currentIndex = newIndex >= 0 ? newIndex : 0
+            }
+            else {
+              // ordered / single: restore order
+              const nowTrack = draft.queue[draft.currentIndex]
+              if (!nowTrack)
+                return
+              const newIndex = draft.originalQueue.findIndex(t => t.id === nowTrack.id)
+
+              draft.mode = mode
+              draft.queue = draft.originalQueue
+              draft.currentIndex = newIndex >= 0 ? newIndex : 0
+            }
+          })
+        },
+
+        setCurrentIndex: (index) => {
+          set((draft) => {
+            draft.currentIndex = index
+          })
+        },
       }),
-    },
+      {
+        name: 'player-store',
+        storage,
+        partialize: state => ({
+          queue: state.queue,
+          originalQueue: state.originalQueue,
+          currentIndex: state.currentIndex,
+          mode: state.mode,
+        }),
+      },
+    ),
   ),
 )
 

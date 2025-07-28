@@ -1,7 +1,8 @@
 import type { Language, Theme } from '@flow/core'
 import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
-import { getStorage } from './providers/storage'
+import { persist } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
+import { storage } from './providers/storage.rn'
 import { createSelectors } from './utils/createSelectors'
 
 interface SettingStore {
@@ -15,25 +16,29 @@ interface SettingStore {
 }
 
 const settingStoreBase = create<SettingStore>()(
-  persist(
-    set => ({
-      hasHydrated: false,
-      setHasHydrated: (state: boolean) => {
-        set({
-          hasHydrated: state,
-        })
+  immer(
+    persist(
+      set => ({
+        hasHydrated: false,
+        setHasHydrated: (state: boolean) => {
+          set((draft) => {
+            draft.hasHydrated = state
+          })
+        },
+
+        theme: 'auto',
+        language: 'auto',
+
+        updateSetting: partial => set((draft) => {
+          Object.assign(draft, partial)
+        }),
+      }),
+      {
+        name: 'setting-store',
+        storage,
+        onRehydrateStorage: () => state => state?.setHasHydrated(true),
       },
-
-      theme: 'auto',
-      language: 'auto',
-
-      updateSetting: partial => set(partial),
-    }),
-    {
-      name: 'setting-store',
-      storage: createJSONStorage(() => getStorage),
-      onRehydrateStorage: () => state => state?.setHasHydrated(true),
-    },
+    ),
   ),
 )
 

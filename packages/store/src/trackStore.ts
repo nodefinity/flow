@@ -1,7 +1,8 @@
 import type { Track } from '@flow/core'
 import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
-import { getStorage } from './providers/storage'
+import { persist } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
+import { storage } from './providers/storage'
 import { createSelectors } from './utils/createSelectors'
 
 interface TrackStore {
@@ -16,33 +17,36 @@ interface TrackStore {
 }
 
 const trackStoreBase = create<TrackStore>()(
-  persist(
-    set => ({
-      hasHydrated: false,
-      setHasHydrated: (state: boolean) => {
-        set({
-          hasHydrated: state,
-        })
-      },
+  immer(
+    persist(
+      set => ({
+        hasHydrated: false,
+        setHasHydrated: (state: boolean) => {
+          set((draft) => {
+            draft.hasHydrated = state
+          })
+        },
 
-      localTracks: [],
-      remoteTracks: [],
+        localTracks: [],
+        remoteTracks: [],
 
-      setLocalTracks: tracks => set({ localTracks: tracks }),
-      addRemoteTrack: track =>
-        set(state => ({
-          remoteTracks: [...state.remoteTracks, track],
-        })),
-    }),
-    {
-      name: 'track-store',
-      storage: createJSONStorage(() => getStorage),
-      onRehydrateStorage: () => state => state?.setHasHydrated(true),
-      // only persist remoteTracks, get localTracks in runtime
-      partialize: state => ({
-        remoteTracks: state.remoteTracks,
+        setLocalTracks: tracks => set((draft) => {
+          draft.localTracks = tracks
+        }),
+        addRemoteTrack: track => set((draft) => {
+          draft.remoteTracks.push(track)
+        }),
       }),
-    },
+      {
+        name: 'track-store',
+        storage,
+        onRehydrateStorage: () => state => state?.setHasHydrated(true),
+        // only persist remoteTracks, get localTracks in runtime
+        partialize: state => ({
+          remoteTracks: state.remoteTracks,
+        }),
+      },
+    ),
   ),
 )
 
