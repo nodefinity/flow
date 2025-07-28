@@ -9,6 +9,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
 import TrackPlayer from 'react-native-track-player'
 import { ThemedView } from '@/components/ui/ThemedView'
+import { ToastProvider } from '@/components/ui/Toast'
 import Themes from '@/constants/Themes'
 import { useInitLocalTracks } from '@/hooks/useInitLocalTracks'
 import { Player } from '@/modules/player'
@@ -47,11 +48,13 @@ export default function RootLayout() {
     <PaperProvider theme={paperTheme}>
       <ThemeProvider value={effectiveColorScheme === 'dark' ? DarkTheme : LightTheme}>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <ThemedView style={{ flex: 1 }} testID="root-surface">
-            <StatusBar style={statusBarStyle} />
-            <Slot />
-            <Player />
-          </ThemedView>
+          <ToastProvider>
+            <ThemedView style={{ flex: 1 }} testID="root-surface">
+              <StatusBar style={statusBarStyle} />
+              <Slot />
+              <Player />
+            </ThemedView>
+          </ToastProvider>
         </GestureHandlerRootView>
       </ThemeProvider>
     </PaperProvider>

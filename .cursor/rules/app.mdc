@@ -12,6 +12,8 @@ This project is a monorepo for cross-platform development.
 
 Before starting, you need to know the current technical stack structure and the construction of the monorepo.
 
+When you are writing code, you should adapt the dark/light mode of the system.
+
 ## For React Native
 
 - React 19

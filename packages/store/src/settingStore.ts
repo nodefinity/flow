@@ -2,7 +2,7 @@ import type { Language, Theme } from '@flow/core'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
-import { storage } from './providers/storage.rn'
+import { storage } from './providers/storage'
 import { createSelectors } from './utils/createSelectors'
 
 interface SettingStore {
