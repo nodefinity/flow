@@ -42,6 +42,28 @@ export default function FullPlayerControl() {
     playerController.prev()
   }, [])
 
+  const handleModeChange = useCallback(() => {
+    const nextMode = mode === PlayMode.SINGLE
+      ? PlayMode.ORDERED
+      : mode === PlayMode.ORDERED
+        ? PlayMode.SHUFFLE
+        : PlayMode.SINGLE
+
+    playerController.setMode(nextMode)
+  }, [mode])
+
+  const getModeIcon = useCallback(() => {
+    switch (mode) {
+      case PlayMode.SINGLE:
+        return 'repeat-once'
+      case PlayMode.SHUFFLE:
+        return 'shuffle'
+      case PlayMode.ORDERED:
+      default:
+        return 'repeat'
+    }
+  }, [mode])
+
   const handleSliderValueChange = useCallback((value: number) => {
     setSlidingValue(value)
     if (!isSliding.value) {
@@ -119,12 +141,12 @@ export default function FullPlayerControl() {
         />
       </View>
 
-      <View style={styles.modeInfo}>
-        <Text style={[styles.modeText, { color: colors.onSurfaceVariant }]}>
-          Play mode:
-          {' '}
-          {mode === PlayMode.SINGLE ? 'Single' : mode === PlayMode.ORDERED ? 'Ordered' : 'Shuffle'}
-        </Text>
+      <View style={styles.subControls}>
+        <IconButton
+          icon={getModeIcon()}
+          size={24}
+          onPress={handleModeChange}
+        />
       </View>
     </View>
   )
@@ -132,7 +154,6 @@ export default function FullPlayerControl() {
 
 const styles = StyleSheet.create({
   container: {
-    gap: 20,
     paddingHorizontal: 28,
   },
   slider: {
@@ -153,11 +174,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 20,
   },
-  modeInfo: {
+  subControls: {
     alignItems: 'center',
-  },
-  modeText: {
-    fontSize: 14,
-    opacity: 0.6,
   },
 })

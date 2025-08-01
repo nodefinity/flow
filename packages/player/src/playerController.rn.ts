@@ -155,21 +155,42 @@ export const playerController: PlayerController = {
   // #region play mode
   async setMode(mode: PlayMode) {
     try {
+      const currentMode = usePlayerStore.getState().mode
+
+      if (currentMode === mode) {
+        return
+      }
+
       const setMode = usePlayerStore.getState().setMode
+      const currentQueue = usePlayerStore.getState().queue
+      const oldCurrentIndex = usePlayerStore.getState().currentIndex
+
+      console.log('oldCurrentIndex', oldCurrentIndex)
+
+      // Get current track
+      const currentTrack = currentQueue[oldCurrentIndex]
+
+      // Update repeat mode
       await TrackPlayer.setRepeatMode(mode === PlayMode.SINGLE ? RepeatMode.Track : RepeatMode.Queue)
 
+      // Update store mode, this will recalculate the queue and current index
       setMode(mode)
 
       const updatedQueue = usePlayerStore.getState().queue
-      const currentIndex = usePlayerStore.getState().currentIndex
+      const newCurrentIndex = usePlayerStore.getState().currentIndex
 
-      await TrackPlayer.reset()
-      if (updatedQueue.length > 0) {
-        await TrackPlayer.add(updatedQueue)
-      }
+      console.log('newCurrentIndex', newCurrentIndex)
 
-      if (updatedQueue.length > 0 && currentIndex >= 0) {
-        await TrackPlayer.skip(currentIndex)
+      const needsQueueUpdate
+        = (currentMode === PlayMode.SHUFFLE || mode === PlayMode.SHUFFLE)
+
+      if (needsQueueUpdate && updatedQueue.length > 0 && currentTrack) {
+        // TODO: setQueue will clearMediaItems in rntp
+        await TrackPlayer.setQueue(updatedQueue)
+
+        // if (newCurrentIndex >= 0 && newCurrentIndex < updatedQueue.length) {
+        //   await TrackPlayer.skip(newCurrentIndex, position)
+        // }
       }
     }
     catch (error) {
