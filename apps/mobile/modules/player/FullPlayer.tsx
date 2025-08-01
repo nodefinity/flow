@@ -1,16 +1,17 @@
 import { StyleSheet, View } from 'react-native'
 import PagerView from 'react-native-pager-view'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
-import { usePlayerAnimation } from './Context'
+import { usePlayerContext } from './Context'
 import FullPlayerArtwork from './FullPlayerArtwork'
 import FullPlayerControl from './FullPlayerControl'
 import FullPlayerHeader from './FullPlayerHeader'
 import LyricsView from './LyricsView'
+import TrackInfo from './TrackInfo'
 
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView)
 
 export default function FullPlayer() {
-  const { thresholdPercent } = usePlayerAnimation()
+  const { thresholdPercent } = usePlayerContext()
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -25,7 +26,11 @@ export default function FullPlayer() {
     <Animated.View style={[styles.container, animatedStyle]}>
       <FullPlayerHeader />
 
-      <AnimatedPagerView style={styles.pagerContainer} initialPage={0} orientation="horizontal">
+      <AnimatedPagerView style={styles.pagerContainer} initialPage={1} orientation="horizontal">
+        <View style={styles.trackInfoPage}>
+          <TrackInfo />
+        </View>
+
         <View style={styles.artworkPage}>
           <FullPlayerArtwork />
           <View style={styles.artworkPageLyrics}>
@@ -48,6 +53,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   pagerContainer: {
+    flex: 1,
+  },
+  trackInfoPage: {
     flex: 1,
   },
   artworkPage: {

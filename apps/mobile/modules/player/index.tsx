@@ -1,5 +1,5 @@
 import { useDisplayTrack } from '@flow/player'
-import { useMemo, useRef, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Dimensions, StyleSheet } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import PagerView from 'react-native-pager-view'
@@ -15,12 +15,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import { MINI_HEIGHT } from '@/constants/Player'
+import { useArtworkColors } from '@/hooks/useArtworkColors'
 import { useBackHandler } from '@/hooks/useBackHandler'
 import { Context } from './Context'
 import FullPlayer from './FullPlayer'
 import MiniPlayer from './MiniPlayer'
 import PlayerBackground from './PlayerBackground'
-// import QueueList from './QueueList'
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window')
 const MIN_VELOCITY = 500 // Velocity Threshold
@@ -33,8 +33,6 @@ export function Player() {
   const SNAP_FULL = 0
 
   const [isFull, setIsFull] = useState(false)
-  const [page, setPage] = useState(0)
-  const pagerRef = useRef<PagerView>(null)
 
   // Init: show mini player
   const translateY = useSharedValue(SNAP_MINI)
@@ -105,8 +103,6 @@ export function Player() {
     transform: [{ translateY: translateY.value }],
   }))
 
-  const contextValue = useMemo(() => ({ percent, thresholdPercent }), [percent, thresholdPercent])
-
   useAnimatedReaction(
     () => thresholdPercent.value,
     (value) => {
@@ -118,38 +114,38 @@ export function Player() {
     [isFull],
   )
 
-  useBackHandler(isFull || page === 1, () => {
-    if (page === 1) {
-      pagerRef.current?.setPage(0)
-    }
-    else if (isFull) {
-      animateToPosition('MINI')
-    }
+  useBackHandler(isFull, () => {
+    animateToPosition('MINI')
   })
 
   const displayTrack = useDisplayTrack()
 
+  const artworkColors = useArtworkColors(displayTrack?.artwork ?? '')
+
+  const contextValue = useMemo(
+    () => ({
+      percent,
+      thresholdPercent,
+      artworkColors,
+    }),
+    [percent, thresholdPercent, artworkColors],
+  )
+
   return (
     <Context value={contextValue}>
       <AnimatedPagerView
-        ref={pagerRef}
         initialPage={0}
         style={[styles.container, animatedStyle]}
         orientation="vertical"
-        onPageSelected={event => setPage(event.nativeEvent.position)}
         overScrollMode="never"
       >
         <GestureDetector gesture={pan}>
           <Animated.View style={{ flex: 1 }}>
-            <PlayerBackground artworkUrl={displayTrack?.artwork ?? ''} />
+            <PlayerBackground />
             <MiniPlayer onPress={() => animateToPosition('FULL')} />
             <FullPlayer />
           </Animated.View>
         </GestureDetector>
-
-        {/* <AnimatedPagerView style={{ flex: 1, backgroundColor: 'red', paddingVertical: 50 }}>
-          <QueueList />
-        </AnimatedPagerView> */}
       </AnimatedPagerView>
     </Context>
   )

@@ -21,9 +21,13 @@ export function formatDuration(duration: number) {
  * ss   - seconds (00-59)
  * SSS  - milliseconds (000-999)
  */
-export function formatTime(date: Date | null, format = 'YYYY-MM-DD HH:mm:ss'): string {
+export function formatTime(date: Date | number | undefined, format = 'YYYY-MM-DD HH:mm:ss'): string {
   if (!date)
     return ''
+
+  if (typeof date === 'number') {
+    date = new Date(date)
+  }
 
   const map: Record<string, string> = {
     YYYY: String(date.getFullYear()),

@@ -1,4 +1,5 @@
 export * from './debugger'
+export * from './file'
 export * from './logger'
 export * from './merge'
 export * from './time'

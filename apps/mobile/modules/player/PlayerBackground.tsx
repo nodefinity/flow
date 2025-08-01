@@ -2,22 +2,16 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { View } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
-import { useArtworkColors } from '@/hooks/useArtworkColors'
-import { usePlayerAnimation } from './Context'
+import { usePlayerContext } from './Context'
 
-interface PlayerBackgroundProps {
-  artworkUrl?: string
-}
-
-export default function PlayerBackground({ artworkUrl }: PlayerBackgroundProps) {
-  const { dominant, vibrant, muted } = useArtworkColors(artworkUrl)
+export default function PlayerBackground() {
   const { colors } = useTheme()
-  const { thresholdPercent } = usePlayerAnimation()
+  const { thresholdPercent, artworkColors } = usePlayerContext()
 
   // 确保颜色值有效
-  const safeVibrant = vibrant || colors.primary
-  const safeDominant = dominant || colors.secondary
-  const safeMuted = muted || colors.outline
+  const safeVibrant = artworkColors.vibrant || colors.primary
+  const safeDominant = artworkColors.dominant || colors.secondary
+  const safeMuted = artworkColors.muted || colors.outline
 
   const baseStyle = {
     flex: 1,
