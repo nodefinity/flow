@@ -29,8 +29,11 @@ async function release() {
     console.log(`🚀 Start building ${releaseType} version for ${platform} platform...`)
 
     const appJsonPath = path.join(process.cwd(), 'apps/mobile/app.json')
+    const packageJsonPath = path.join(process.cwd(), 'package.json')
     const appJson = await fs.readFile(appJsonPath, 'utf8')
     const appConfig = JSON.parse(appJson)
+    const packageJson = await fs.readFile(packageJsonPath, 'utf8')
+    const packageConfig = JSON.parse(packageJson)
     const currentVersion = appConfig.expo.version
 
     const newVersion = semver.inc(currentVersion, releaseType as ReleaseType)
@@ -41,7 +44,10 @@ async function release() {
     console.log(`📦 Current version: ${currentVersion} -> New version: ${newVersion}`)
 
     appConfig.expo.version = newVersion
+    packageConfig.version = newVersion
+
     await fs.writeFile(appJsonPath, JSON.stringify(appConfig, null, 2))
+    await fs.writeFile(packageJsonPath, JSON.stringify(packageConfig, null, 2))
 
     console.log(`🔨 Start building ${platform} application...`)
     const buildCommand = `eas build --profile production --platform ${platform} --local`
