@@ -5,11 +5,11 @@ import { IconButton, Text, useTheme } from 'react-native-paper'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated'
 import { ScrollingText } from '@/components/ui/ScrollingText'
 import { MINI_HEIGHT } from '@/constants/Player'
-import { usePlayerAnimation } from './Context'
+import { usePlayerContext } from './Context'
 
 export default function MiniPlayer({ onPress }: { onPress: () => void }) {
   const { colors } = useTheme()
-  const { thresholdPercent } = usePlayerAnimation()
+  const { thresholdPercent } = usePlayerContext()
   const isPlaying = usePlayerStore.use.isPlaying()
   const displayTrack = useDisplayTrack()
 
