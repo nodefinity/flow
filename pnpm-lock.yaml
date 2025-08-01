@@ -101,8 +101,8 @@ importers:
         specifier: ^7.1.14
         version: 7.1.14(react-native@0.79.4(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.0.0))(react@19.0.0)
       '@shopify/flash-list':
-        specifier: ^1.8.3
-        version: 1.8.3(@babel/runtime@7.28.2)(react-native@0.79.4(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.0.0))(react@19.0.0)
+        specifier: ^2.0.0
+        version: 2.0.0(@babel/runtime@7.28.2)(react-native@0.79.4(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.0.0))(react@19.0.0)
       expo:
         specifier: ~53.0.12
         version: 53.0.12(@babel/core@7.28.0)(@expo/metro-runtime@5.0.4(react-native@0.79.4(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.0.0)))(react-native@0.79.4(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.0.0))(react@19.0.0)
@@ -2008,8 +2008,8 @@ packages:
   '@react-navigation/routers@7.4.1':
     resolution: {integrity: sha512-42mZrMzQ0LfKxUb5OHIurYrPYyRsXFLolucILrvm21f0O40Sw0Ufh1bnn/jRqnxZZu7wvpUGIGYM8nS9zVE1Aw==}
 
-  '@shopify/flash-list@1.8.3':
-    resolution: {integrity: sha512-vXuj6JyuMjONVOXjEhWFeaONPuWN/53Cl2LeyeM8TZ0JzUcNU+BE6iyga1/yyJeDf0K7YPgAE/PcUX2+DM1LiA==}
+  '@shopify/flash-list@2.0.0':
+    resolution: {integrity: sha512-N04dXZq4wgrXx3nGytchR4FUN/hBO9PmvpcqMXvy4841zTL8GKLPbdwsFe8UdLsaM5n++mBPWft0wqEddW5Q/w==}
     peerDependencies:
       '@babel/runtime': '*'
       react: '*'
@@ -4774,9 +4774,6 @@ packages:
     resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
     engines: {node: '>= 6'}
 
-  prop-types@15.8.1:
-    resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
-
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
@@ -4980,12 +4977,6 @@ packages:
   readable-web-to-node-stream@3.0.4:
     resolution: {integrity: sha512-9nX56alTf5bwXQ3ZDipHJhusu9NTQJ/CVPtb/XHAJCXihZeitfJvIRS4GqQ/mfIoOE3IelHMrpayVrosdHBuLw==}
     engines: {node: '>=8'}
-
-  recyclerlistview@4.2.3:
-    resolution: {integrity: sha512-STR/wj/FyT8EMsBzzhZ1l2goYirMkIgfV3gYEPxI3Kf3lOnu6f7Dryhyw7/IkQrgX5xtTcDrZMqytvteH9rL3g==}
-    peerDependencies:
-      react: '>= 15.2.1'
-      react-native: '>= 0.30.0'
 
   refa@0.12.1:
     resolution: {integrity: sha512-J8rn6v4DBb2nnFqkqwy6/NnTYMcgLA+sLr0iIO41qpv0n+ngb7ksag2tMRl0inb1bbO/esUwzW1vbJi7K0sI0g==}
@@ -5436,9 +5427,6 @@ packages:
 
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
-
-  ts-object-utils@0.0.5:
-    resolution: {integrity: sha512-iV0GvHqOmilbIKJsfyfJY9/dNHCs969z3so90dQWsO1eMMozvTpnB1MEaUbb3FYtZTGjv5sIy/xmslEz0Rg2TA==}
 
   ts-pattern@5.7.1:
     resolution: {integrity: sha512-EGs8PguQqAAUIcQfK4E9xdXxB6s2GK4sJfT/vcc9V1ELIvC4LH/zXu2t/5fajtv6oiRCxdv7BgtVK3vWgROxag==}
@@ -7899,13 +7887,11 @@ snapshots:
     dependencies:
       nanoid: 3.3.11
 
-  '@shopify/flash-list@1.8.3(@babel/runtime@7.28.2)(react-native@0.79.4(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.0.0))(react@19.0.0)':
+  '@shopify/flash-list@2.0.0(@babel/runtime@7.28.2)(react-native@0.79.4(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@babel/runtime': 7.28.2
       react: 19.0.0
       react-native: 0.79.4(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.0.0)
-      recyclerlistview: 4.2.3(react-native@0.79.4(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.0.0))(react@19.0.0)
-      tslib: 2.8.1
 
   '@sinclair/typebox@0.27.8': {}
 
@@ -11175,12 +11161,6 @@ snapshots:
       kleur: 3.0.3
       sisteransi: 1.0.5
 
-  prop-types@15.8.1:
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      react-is: 16.13.1
-
   punycode@2.3.1: {}
 
   qrcode-terminal@0.11.0: {}
@@ -11465,14 +11445,6 @@ snapshots:
   readable-web-to-node-stream@3.0.4:
     dependencies:
       readable-stream: 4.7.0
-
-  recyclerlistview@4.2.3(react-native@0.79.4(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.0.0))(react@19.0.0):
-    dependencies:
-      lodash.debounce: 4.0.8
-      prop-types: 15.8.1
-      react: 19.0.0
-      react-native: 0.79.4(@babel/core@7.28.0)(@types/react@19.1.8)(react@19.0.0)
-      ts-object-utils: 0.0.5
 
   refa@0.12.1:
     dependencies:
@@ -11907,8 +11879,6 @@ snapshots:
       typescript: 5.8.3
 
   ts-interface-checker@0.1.13: {}
-
-  ts-object-utils@0.0.5: {}
 
   ts-pattern@5.7.1: {}
 
