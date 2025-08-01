@@ -125,27 +125,33 @@ export default function FullPlayerControl() {
 
       <View style={styles.controls}>
         <IconButton
+          icon={getModeIcon()}
+          size={20}
+          onPress={handleModeChange}
+        />
+
+        <IconButton
           icon="skip-previous"
-          size={32}
+          size={24}
           onPress={handlePrevious}
         />
         <IconButton
           icon={isPlaying ? 'pause' : 'play'}
-          size={40}
+          size={24}
           onPress={handlePlayPause}
         />
         <IconButton
           icon="skip-next"
-          size={32}
+          size={24}
           onPress={handleNext}
         />
-      </View>
 
-      <View style={styles.subControls}>
         <IconButton
-          icon={getModeIcon()}
+          icon="playlist-music"
           size={24}
-          onPress={handleModeChange}
+          onPress={() => {
+            console.log('Pressed')
+          }}
         />
       </View>
     </View>
@@ -158,7 +164,7 @@ const styles = StyleSheet.create({
   },
   slider: {
     alignSelf: 'center',
-    width: screenWidth - 24,
+    width: screenWidth - 26,
   },
   timeTextContainer: {
     flexDirection: 'row',
@@ -171,10 +177,7 @@ const styles = StyleSheet.create({
   controls: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 20,
-  },
-  subControls: {
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: -14,
   },
 })

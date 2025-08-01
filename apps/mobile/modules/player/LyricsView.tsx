@@ -90,7 +90,7 @@ export default function LyricsView({ mode = 'mini' }: { mode?: 'mini' | 'full' }
 const styles = StyleSheet.create({
   // mini
   miniContentContainer: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 28,
     paddingVertical: 16,
   },
   miniLyricContainer: {
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
 
   // full 模式容器
   fullContentContainer: {
-    paddingHorizontal: 32,
+    paddingHorizontal: 28,
     paddingVertical: 40,
   },
   fullLyricContainer: {
