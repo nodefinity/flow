@@ -12,10 +12,6 @@ patchedDependencies:
 importers:
 
   .:
-    dependencies:
-      immer:
-        specifier: 10.1.1
-        version: 10.1.1
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^4.17.0
@@ -262,6 +258,9 @@ importers:
       '@flow/core':
         specifier: workspace:*
         version: link:../core
+      immer:
+        specifier: 10.1.1
+        version: 10.1.1
       zustand:
         specifier: ^5.0.6
         version: 5.0.6(@types/react@19.1.8)(immer@10.1.1)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0))

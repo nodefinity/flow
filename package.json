@@ -61,8 +61,5 @@
     "*.{js,jsx,ts,tsx}": [
       "pnpm lint:fix"
     ]
-  },
-  "dependencies": {
-    "immer": "10.1.1"
   }
 }

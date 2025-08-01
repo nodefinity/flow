@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@flow/core": "workspace:*",
+    "immer": "10.1.1",
     "zustand": "^5.0.6"
   },
   "devDependencies": {
