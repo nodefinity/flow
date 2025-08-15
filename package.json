@@ -52,11 +52,6 @@
     "turbo": "2.5.5",
     "typescript": "^5.9.2"
   },
-  "pnpm": {
-    "patchedDependencies": {
-      "react-native-track-player": "patches/react-native-track-player.patch"
-    }
-  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "pnpm lint:fix"
