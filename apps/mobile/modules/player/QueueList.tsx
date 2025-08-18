@@ -1,4 +1,4 @@
-import type { Track } from '@flow/core'
+import type { Track } from '@flow/shared'
 import { usePlayerStore } from '@flow/player'
 import { FlashList } from '@shopify/flash-list'
 import { Image, StyleSheet, View } from 'react-native'

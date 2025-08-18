@@ -1,4 +1,4 @@
-import type { TrackMetadata } from '@flow/core'
+import type { TrackMetadata } from '@flow/shared'
 import { getTrackMetadataAsync } from '@nodefinity/react-native-music-library'
 import { useEffect, useState } from 'react'
 import { usePlayerStore } from '../playerStore'

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-mutable-exports */
 import type { ExpoSQLiteDatabase } from 'drizzle-orm/expo-sqlite'
-import { logger } from '@flow/core'
+import { logger } from '@flow/shared'
 import { drizzle } from 'drizzle-orm/expo-sqlite'
 import { migrate } from 'drizzle-orm/expo-sqlite/migrator'
 import * as SQLite from 'expo-sqlite'

@@ -1,5 +1,5 @@
 import type { ToastConfig } from '@/context/ToastContext'
-import { merge } from '@flow/core'
+import { merge } from '@flow/shared'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native'
 import { useTheme } from 'react-native-paper'

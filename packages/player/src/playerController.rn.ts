@@ -1,6 +1,6 @@
-import type { Track } from '@flow/core'
+import type { Track } from '@flow/shared'
 import type { PlayerController } from './playerController'
-import { logger } from '@flow/core'
+import { logger } from '@flow/shared'
 import TrackPlayer, { RepeatMode } from 'react-native-track-player'
 import { usePlaybackStore } from './playbackStore'
 import { PlayMode, usePlayerStore } from './playerStore'

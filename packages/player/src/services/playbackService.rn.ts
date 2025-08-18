@@ -1,4 +1,4 @@
-import { logger } from '@flow/core'
+import { logger } from '@flow/shared'
 import TrackPlayer, { Event } from 'react-native-track-player'
 import { usePlaybackStore } from '../playbackStore'
 import { playerController } from '../playerController'

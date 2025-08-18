@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@flow/config": "workspace:*",
-    "@flow/core": "workspace:*",
+    "@flow/shared": "workspace:*",
     "drizzle-kit": "0.31.4"
   }
 }

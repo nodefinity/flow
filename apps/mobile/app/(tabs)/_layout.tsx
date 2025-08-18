@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { useTranslation } from '@flow/core'
+import { useTranslation } from '@flow/shared'
 import { DeviceType, deviceType } from 'expo-device'
 import { Drawer } from 'expo-router/drawer'
 import { useWindowDimensions } from 'react-native'

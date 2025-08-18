@@ -64,9 +64,6 @@ importers:
       '@expo/vector-icons':
         specifier: ^14.1.0
         version: 14.1.0(expo-font@13.3.1(expo@53.0.12(@babel/core@7.28.3)(@expo/metro-runtime@5.0.4(react-native@0.79.4(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.0.0)))(react-native@0.79.4(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.0.0))(react@19.0.0))(react@19.0.0))(react-native@0.79.4(@babel/core@7.28.3)(@types/react@19.1.8)(react@19.0.0))(react@19.0.0)
-      '@flow/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       '@flow/database':
         specifier: workspace:*
         version: link:../../packages/database
@@ -76,6 +73,9 @@ importers:
       '@flow/player':
         specifier: workspace:*
         version: link:../../packages/player
+      '@flow/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@flow/store':
         specifier: workspace:*
         version: link:../../packages/store
@@ -197,12 +197,6 @@ importers:
 
   packages/config: {}
 
-  packages/core:
-    devDependencies:
-      '@flow/config':
-        specifier: workspace:*
-        version: link:../config
-
   packages/database:
     dependencies:
       drizzle-orm:
@@ -215,18 +209,18 @@ importers:
       '@flow/config':
         specifier: workspace:*
         version: link:../config
-      '@flow/core':
+      '@flow/shared':
         specifier: workspace:*
-        version: link:../core
+        version: link:../shared
       drizzle-kit:
         specifier: 0.31.4
         version: 0.31.4
 
   packages/hooks:
     dependencies:
-      '@flow/core':
+      '@flow/shared':
         specifier: workspace:*
-        version: link:../core
+        version: link:../shared
       '@flow/store':
         specifier: workspace:*
         version: link:../store
@@ -246,18 +240,24 @@ importers:
       '@flow/config':
         specifier: workspace:*
         version: link:../config
-      '@flow/core':
+      '@flow/shared':
         specifier: workspace:*
-        version: link:../core
+        version: link:../shared
       '@flow/store':
         specifier: workspace:*
         version: link:../store
 
+  packages/shared:
+    devDependencies:
+      '@flow/config':
+        specifier: workspace:*
+        version: link:../config
+
   packages/store:
     dependencies:
-      '@flow/core':
+      '@flow/shared':
         specifier: workspace:*
-        version: link:../core
+        version: link:../shared
       immer:
         specifier: 10.1.1
         version: 10.1.1

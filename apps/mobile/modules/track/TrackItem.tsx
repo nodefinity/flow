@@ -1,4 +1,4 @@
-import type { Track } from '@flow/core'
+import type { Track } from '@flow/shared'
 import type { ListItemProps } from 'react-native-paper'
 import { usePlayerStore } from '@flow/player'
 import { Image } from 'expo-image'

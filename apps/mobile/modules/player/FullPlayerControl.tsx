@@ -1,5 +1,5 @@
-import { formatDuration } from '@flow/core'
 import { playerController, PlayMode, useDisplayTrack, usePlaybackStore, usePlayerStore } from '@flow/player'
+import { formatDuration } from '@flow/shared'
 import Slider from '@react-native-community/slider'
 import { useCallback, useState } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'

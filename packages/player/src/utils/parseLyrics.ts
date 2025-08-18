@@ -1,4 +1,4 @@
-import { parseLyricTime } from '@flow/core'
+import { parseLyricTime } from '@flow/shared'
 
 export interface LyricLine {
   time: string

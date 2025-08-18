@@ -1,4 +1,4 @@
-import type { Track } from '@flow/core'
+import type { Track } from '@flow/shared'
 import type { PlayMode } from './playerStore'
 
 export interface PlayerController {

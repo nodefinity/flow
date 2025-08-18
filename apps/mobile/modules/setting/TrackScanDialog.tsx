@@ -1,6 +1,6 @@
-import type { Track } from '@flow/core'
+import type { Track } from '@flow/shared'
 import type { PaginatedResult } from '@nodefinity/react-native-music-library'
-import { formatTime, useTranslation } from '@flow/core'
+import { formatTime, useTranslation } from '@flow/shared'
 import { useTrackStore } from '@flow/store'
 import { getTracksAsync } from '@nodefinity/react-native-music-library'
 import { useEffect, useRef, useState } from 'react'

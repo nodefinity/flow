@@ -1,4 +1,4 @@
-import type { Track } from '@flow/core'
+import type { Track } from '@flow/shared'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'

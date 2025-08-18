@@ -1,5 +1,5 @@
-import type { Language, Theme } from '@flow/core'
-import { useTranslation } from '@flow/core'
+import type { Language, Theme } from '@flow/shared'
+import { useTranslation } from '@flow/shared'
 import { useSettingStore } from '@flow/store'
 import { ScrollView, StyleSheet } from 'react-native'
 import { List, Surface } from 'react-native-paper'

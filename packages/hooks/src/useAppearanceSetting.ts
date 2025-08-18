@@ -1,4 +1,4 @@
-import type { Language } from '@flow/core'
+import type { Language } from '@flow/shared'
 import { useSettingStore } from '@flow/store'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'

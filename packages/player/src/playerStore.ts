@@ -1,4 +1,4 @@
-import type { Track } from '@flow/core'
+import type { Track } from '@flow/shared'
 import { storage } from '@flow/store/providers/storage'
 import { createSelectors } from '@flow/store/utils/createSelectors'
 import { create } from 'zustand'

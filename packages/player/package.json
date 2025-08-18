@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@flow/config": "workspace:*",
-    "@flow/core": "workspace:*",
+    "@flow/shared": "workspace:*",
     "@flow/store": "workspace:*"
   }
 }

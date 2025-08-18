@@ -12,10 +12,10 @@ flow/
 │   ├── mobile/          # React Native
 │   └── desktop/         # Electron (planning)
 ├── packages/
-│   ├── core/            # Shared
+│   ├── shared/          # Shared
 │   ├── database/        # Database (planning)
 │   ├── hooks/           # Custom React Hooks
-│   ├── player/          # Player core logic
+│   ├── player/          # Player
 │   └── store/           # State
 ```
 

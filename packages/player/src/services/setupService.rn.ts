@@ -1,5 +1,5 @@
 import type { UpdateOptions } from 'react-native-track-player'
-import { logger } from '@flow/core'
+import { logger } from '@flow/shared'
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
