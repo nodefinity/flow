@@ -1,12 +1,17 @@
 import type { Track } from '@flow/shared'
 import { usePlayerStore } from '@flow/player'
-import { FlashList } from '@shopify/flash-list'
-import { Image, StyleSheet, View } from 'react-native'
-import { IconButton, List, Text } from 'react-native-paper'
-import { ThemedView } from '@/components/ui/ThemedView'
+import { BottomSheetFlashList } from '@gorhom/bottom-sheet'
+import { StyleSheet, View } from 'react-native'
+import { Appbar, IconButton, List, Text } from 'react-native-paper'
+import { ThemedBottomSheetModal } from '@/components/ui/ThemedBottomSheetModal'
 
-export default function QueueList() {
-  const { queue } = usePlayerStore()
+interface QueueListProps {
+  visible: boolean
+  onDismiss: () => void
+}
+
+export function QueueList({ visible, onDismiss }: QueueListProps) {
+  const { queue, removeFromQueue } = usePlayerStore()
 
   const renderItem = ({ item }: { item: Track }) => (
     <List.Item
@@ -14,20 +19,13 @@ export default function QueueList() {
       title={item.title}
       description={`${item.artist} - ${item.album}`}
       descriptionNumberOfLines={1}
-      style={{ paddingLeft: 16, paddingRight: 8 }}
-      left={() => <Image source={{ uri: item.artwork }} style={{ aspectRatio: 1, borderRadius: 10 }} />}
+      style={{ paddingRight: 8 }}
       right={() => (
         <View style={styles.rightContent}>
           <IconButton
-            icon="plus"
+            icon="minus"
             size={14}
-            onPress={() => console.log('Pressed')}
-          />
-
-          <IconButton
-            icon="dots-vertical"
-            size={14}
-            onPress={() => console.log('Pressed')}
+            onPress={() => removeFromQueue(item.id)}
           />
         </View>
       )}
@@ -38,33 +36,58 @@ export default function QueueList() {
   )
 
   return (
-    <ThemedView style={styles.container}>
-      {
-        queue.length > 0
-          ? (
-              <FlashList
-                data={queue}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-                showsVerticalScrollIndicator={false}
-                extraData={queue}
-                estimatedItemSize={70}
-              />
-            )
-          : (
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text>No songs</Text>
-              </View>
-            )
-      }
-    </ThemedView>
+    <ThemedBottomSheetModal
+      visible={visible}
+      snapPoints={['60%', '90%']}
+      onDismiss={onDismiss}
+    >
+      <View style={styles.header}>
+        <Appbar.Content title="播放队列" />
+        <Appbar.Action
+          icon="close"
+          onPress={onDismiss}
+        />
+      </View>
+
+      <View style={styles.content}>
+        {
+          queue.length > 0
+            ? (
+                <BottomSheetFlashList
+                  data={queue}
+                  renderItem={renderItem}
+                  keyExtractor={item => item.id}
+                  showsVerticalScrollIndicator={false}
+                  extraData={queue}
+                  estimatedItemSize={70}
+                />
+              )
+            : (
+                <View style={styles.emptyContainer}>
+                  <Text>暂无歌曲</Text>
+                </View>
+              )
+        }
+      </View>
+    </ThemedBottomSheetModal>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  content: {
     flex: 1,
-    paddingVertical: 150,
+    marginTop: 8,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   rightContent: {
     flexDirection: 'row',
@@ -74,3 +97,5 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
 })
+
+export default QueueList

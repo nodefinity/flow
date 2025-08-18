@@ -6,6 +6,7 @@ import { Dimensions, StyleSheet, View } from 'react-native'
 import { IconButton, Text, useTheme } from 'react-native-paper'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { QueueList } from './QueueList'
 
 const { width: screenWidth } = Dimensions.get('screen')
 
@@ -16,7 +17,7 @@ export default function FullPlayerControl() {
   const isPlaying = usePlayerStore.use.isPlaying()
   const mode = usePlayerStore.use.mode()
   const position = usePlaybackStore.use.position()
-
+  const [queueListVisible, setQueueListVisible] = useState(false)
   const [slidingValue, setSlidingValue] = useState(0)
 
   // Slider animation values
@@ -149,11 +150,14 @@ export default function FullPlayerControl() {
         <IconButton
           icon="playlist-music"
           size={24}
-          onPress={() => {
-            console.log('Pressed')
-          }}
+          onPress={() => setQueueListVisible(true)}
         />
       </View>
+
+      <QueueList
+        visible={queueListVisible}
+        onDismiss={() => setQueueListVisible(false)}
+      />
     </View>
   )
 }
