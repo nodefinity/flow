@@ -1,6 +1,7 @@
 import { useAppearanceSetting } from '@flow/hooks'
 import { PlaybackService, setupPlayer } from '@flow/player'
 import { useSettingStore, useTrackStore } from '@flow/store'
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider } from '@react-navigation/native'
 import { ErrorBoundary, Slot } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
@@ -48,13 +49,15 @@ export default function RootLayout() {
     <PaperProvider theme={paperTheme}>
       <ThemeProvider value={effectiveColorScheme === 'dark' ? DarkTheme : LightTheme}>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <ToastProvider>
-            <ThemedView style={{ flex: 1 }} testID="root-surface">
-              <StatusBar style={statusBarStyle} />
-              <Slot />
-              <Player />
-            </ThemedView>
-          </ToastProvider>
+          <BottomSheetModalProvider>
+            <ToastProvider>
+              <ThemedView style={{ flex: 1 }} testID="root-surface">
+                <StatusBar style={statusBarStyle} />
+                <Slot />
+                <Player />
+              </ThemedView>
+            </ToastProvider>
+          </BottomSheetModalProvider>
         </GestureHandlerRootView>
       </ThemeProvider>
     </PaperProvider>
