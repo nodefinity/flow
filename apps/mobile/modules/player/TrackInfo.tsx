@@ -1,11 +1,12 @@
 import { useDisplayTrack } from '@flow/player'
-import { formatFileSize, formatTime } from '@flow/shared'
+import { formatFileSize, formatTime, useTranslation } from '@flow/shared'
 import { Image, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import Animated from 'react-native-reanimated'
 import { usePlayerContext } from './Context'
 
 export default function TrackInfo() {
+  const { t } = useTranslation()
   const { artworkColors } = usePlayerContext()
   const displayTrack = useDisplayTrack()
 
@@ -16,28 +17,26 @@ export default function TrackInfo() {
       contentContainerStyle={styles.container}
     >
       <View style={[styles.group, { backgroundColor: `${artworkColors.background}20` }]}>
-        <Text style={styles.header}>音频信息</Text>
+        <Text style={styles.header}>{t('player.trackInfo.audioInfo')}</Text>
         <View style={styles.audioSingleRow}>
           <View style={styles.audioCompactCard}>
-            <Text style={styles.audioCompactLabel}>格式</Text>
+            <Text style={styles.audioCompactLabel}>{t('player.trackInfo.format')}</Text>
             <Text style={styles.audioCompactValue}>{displayTrack?.format?.toUpperCase() || '--'}</Text>
           </View>
           <View style={styles.audioCompactCard}>
-            <Text style={styles.audioCompactLabel}>声道</Text>
+            <Text style={styles.audioCompactLabel}>{t('player.trackInfo.channels')}</Text>
             <Text style={styles.audioCompactValue}>
               {displayTrack?.channels || '--'}
-              {' '}
-              channels
             </Text>
           </View>
           <View style={styles.audioCompactCard}>
-            <Text style={styles.audioCompactLabel}>比特率</Text>
+            <Text style={styles.audioCompactLabel}>{t('player.trackInfo.bitrate')}</Text>
             <Text style={styles.audioCompactValue}>
               {displayTrack?.bitrate ? `${displayTrack.bitrate} kbps` : '--'}
             </Text>
           </View>
           <View style={styles.audioCompactCard}>
-            <Text style={styles.audioCompactLabel}>采样率</Text>
+            <Text style={styles.audioCompactLabel}>{t('player.trackInfo.sampleRate')}</Text>
             <Text style={styles.audioCompactValue}>
               {displayTrack?.sampleRate ? `${displayTrack.sampleRate} hz` : '--'}
             </Text>
@@ -46,7 +45,7 @@ export default function TrackInfo() {
       </View>
 
       <View style={[styles.group, { backgroundColor: `${artworkColors.background}20` }]}>
-        <Text style={styles.header}>专辑</Text>
+        <Text style={styles.header}>{t('player.trackInfo.album')}</Text>
         <View style={styles.content}>
           <Image
             source={{ uri: displayTrack?.artwork }}
@@ -57,31 +56,31 @@ export default function TrackInfo() {
       </View>
 
       <View style={[styles.group, { backgroundColor: `${artworkColors.background}20` }]}>
-        <Text style={styles.header}>艺术家</Text>
+        <Text style={styles.header}>{t('player.trackInfo.artist')}</Text>
         <View style={styles.content}>
           <Text>{displayTrack?.artist}</Text>
         </View>
       </View>
 
       <View style={[styles.group, { backgroundColor: `${artworkColors.background}20` }]}>
-        <Text style={styles.header}>文件信息</Text>
+        <Text style={styles.header}>{t('player.trackInfo.fileInfo')}</Text>
 
         <View style={styles.fileInfoItem}>
-          <Text style={styles.label}>文件路径</Text>
+          <Text style={styles.label}>{t('player.trackInfo.filePath')}</Text>
           <Text style={styles.pathText} numberOfLines={2} ellipsizeMode="middle">
             {displayTrack?.url}
           </Text>
         </View>
         <View style={styles.fileInfoItem}>
-          <Text style={styles.label}>文件大小</Text>
+          <Text style={styles.label}>{t('player.trackInfo.fileSize')}</Text>
           <Text style={styles.value}>{formatFileSize(displayTrack?.fileSize ?? 0)}</Text>
         </View>
         <View style={styles.fileInfoItem}>
-          <Text style={styles.label}>创建时间</Text>
+          <Text style={styles.label}>{t('player.trackInfo.createdTime')}</Text>
           <Text style={styles.value}>{formatTime(displayTrack?.createdAt)}</Text>
         </View>
         <View style={[styles.fileInfoItem, { marginBottom: 0 }]}>
-          <Text style={styles.label}>修改时间</Text>
+          <Text style={styles.label}>{t('player.trackInfo.modifiedTime')}</Text>
           <Text style={styles.value}>{formatTime(displayTrack?.modifiedAt)}</Text>
         </View>
       </View>
