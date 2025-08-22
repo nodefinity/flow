@@ -10,7 +10,7 @@
     "prebuild": "expo prebuild"
   },
   "dependencies": {
-    "@expo/vector-icons": "^14.1.0",
+    "@expo/vector-icons": "^15.0.0",
     "@flow/database": "workspace:*",
     "@flow/hooks": "workspace:*",
     "@flow/player": "workspace:*",
