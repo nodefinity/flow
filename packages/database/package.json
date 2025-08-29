@@ -14,7 +14,7 @@
     "db:drop": "drizzle-kit drop"
   },
   "dependencies": {
-    "drizzle-orm": "0.44.4",
+    "drizzle-orm": "0.44.5",
     "expo-sqlite": "15.2.14"
   },
   "devDependencies": {
