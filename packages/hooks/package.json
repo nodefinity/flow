@@ -11,7 +11,7 @@
   "dependencies": {
     "@flow/shared": "workspace:*",
     "@flow/store": "workspace:*",
-    "i18next": "^25.4.2",
+    "i18next": "^25.5.2",
     "react-i18next": "^15.7.3"
   },
   "devDependencies": {
