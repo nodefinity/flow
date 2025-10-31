@@ -14,12 +14,12 @@
     "db:drop": "drizzle-kit drop"
   },
   "dependencies": {
-    "drizzle-orm": "0.44.5",
+    "drizzle-orm": "0.44.7",
     "expo-sqlite": "15.2.14"
   },
   "devDependencies": {
     "@flow/config": "workspace:*",
     "@flow/shared": "workspace:*",
-    "drizzle-kit": "0.31.4"
+    "drizzle-kit": "0.31.6"
   }
 }
