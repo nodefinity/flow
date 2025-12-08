@@ -2,7 +2,7 @@
   "name": "flow",
   "version": "0.0.2",
   "private": true,
-  "packageManager": "pnpm@10.12.1",
+  "packageManager": "pnpm@10.24.0",
   "description": "Cross-platform music player",
   "license": "MIT",
   "homepage": "https://github.com/nodefinity/flow#readme",
