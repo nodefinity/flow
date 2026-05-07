@@ -7,7 +7,6 @@ Flow is an AI-driven local music radio. The user tunes into a Channel; the AI Ho
 - [Radio](./apps/mobile/CONTEXT.md) — the AI radio experience: Channels, the Host, Programmes, and Interludes
 - [Player](./packages/player/CONTEXT.md) — playback engine: Programme, Segments, Now Playing, system controls
 - [Library](./packages/store/CONTEXT.md) — the local track catalogue and CandidateSet queries
-- [Audio](./packages/audio/CONTEXT.md) — native audio module: single-segment playback, OS integration (lock screen, notification, headphone, ducking)
 - [Shared](./packages/shared/CONTEXT.md) — cross-cutting types: Track, TrackMetadata
 
 ## Relationships
