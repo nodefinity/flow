@@ -2,6 +2,12 @@ export interface Track {
   id: string
 
   /**
+   * Track source — where this track originates from
+   * @default 'local'
+   */
+  source: 'local' | 'remote'
+
+  /**
    * Track title
    * @default ''
    */
