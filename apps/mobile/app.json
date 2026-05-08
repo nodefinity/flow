@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "flow",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nodefinity.flow",
@@ -23,7 +22,6 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "package": "com.nodefinity.flow",
       "permissions": [
         "android.permission.READ_EXTERNAL_STORAGE",
@@ -54,7 +52,11 @@
             "NSAppleMusicUsageDescription"
           ]
         }
-      ]
+      ],
+      "expo-image",
+      "expo-localization",
+      "expo-web-browser",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
