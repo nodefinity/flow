@@ -11,6 +11,7 @@
   "dependencies": {
     "@flow/shared": "workspace:*",
     "@flow/store": "workspace:*",
+    "expo-localization": "^55.0.13",
     "i18next": "^25.4.2",
     "react-i18next": "^15.7.3"
   },

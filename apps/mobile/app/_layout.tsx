@@ -6,6 +6,7 @@ import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider
 import { ErrorBoundary, Slot } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
+import { Platform } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
 import TrackPlayer from 'react-native-track-player'
@@ -17,8 +18,10 @@ import { Player } from '@/modules/player'
 
 SplashScreen.preventAutoHideAsync()
 
-TrackPlayer.registerPlaybackService(() => PlaybackService)
-setupPlayer()
+if (Platform.OS !== 'web') {
+  TrackPlayer.registerPlaybackService(() => PlaybackService)
+  setupPlayer()
+}
 
 export default function RootLayout() {
   const remoteTracksHydrated = useTrackStore.use.hasHydrated()
