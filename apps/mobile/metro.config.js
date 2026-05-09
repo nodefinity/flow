@@ -6,7 +6,6 @@ const config = getDefaultConfig(__dirname)
 
 const WEB_STUBS = {
   'react-native-pager-view': path.resolve(__dirname, 'stubs/react-native-pager-view.js'),
-  '@nodefinity/react-native-music-library': path.resolve(__dirname, 'stubs/react-native-music-library.js'),
 }
 
 config.resolver.resolveRequest = (context, moduleName, platform) => {
@@ -19,20 +18,9 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
     const ext = result.filePath.slice(lastDotIndex)
     const base = result.filePath.slice(0, lastDotIndex)
 
-    if (platform === 'web') {
-      // Skip if already a .web file
-      if (!base.endsWith('.web')) {
-        const webPath = `${base}.web${ext}`
-        if (context.fileSystemLookup(webPath).exists) {
-          return { ...result, filePath: webPath }
-        }
-      }
-    }
-    else {
-      const mobilePath = `${base}.rn${ext}`
-      if (context.fileSystemLookup(mobilePath).exists) {
-        return { ...result, filePath: mobilePath }
-      }
+    const mobilePath = `${base}.rn${ext}`
+    if (platform !== 'web' && context.fileSystemLookup(mobilePath).exists) {
+      return { ...result, filePath: mobilePath }
     }
   }
   return result

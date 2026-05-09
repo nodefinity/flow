@@ -18,7 +18,7 @@
     "@flow/shared": "workspace:*",
     "@flow/store": "workspace:*",
     "@gorhom/bottom-sheet": "^5.2.4",
-    "@nodefinity/react-native-music-library": "0.9.0",
+    "@nodefinity/react-native-music-library": "0.10.1",
     "@react-native-community/slider": "5.1.2",
     "@react-navigation/bottom-tabs": "^7.15.12",
     "@react-navigation/drawer": "^7.9.10",
