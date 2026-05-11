@@ -1,3 +1,7 @@
+## Output
+
+Never ever output anything other than English and Chinese.
+
 ## Agent skills
 
 ### Issue tracker

@@ -1,8 +1,7 @@
-import type { TextProps } from 'react-native-paper'
+import type { TextProps } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useEffect, useState } from 'react'
-import { StyleSheet } from 'react-native'
-import { Text } from 'react-native-paper'
+import { StyleSheet, Text } from 'react-native'
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -11,12 +10,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
-interface ScrollingTextProps extends TextProps<string> {
-  speed?: number // 滚动速度（像素/秒）
-  delay?: number // 开始滚动前的延迟（毫秒）
+interface ScrollingTextProps extends TextProps {
+  speed?: number
+  delay?: number
   shadowColor?: string
   shadowWidth?: number
-  loopGap?: number // 循环文本的间距
+  loopGap?: number
 }
 
 export function ScrollingText({
@@ -26,6 +25,7 @@ export function ScrollingText({
   shadowWidth = 32,
   loopGap = 50,
   children,
+  style,
   ...textProps
 }: ScrollingTextProps) {
   const [shouldScroll, setShouldScroll] = useState(false)
@@ -33,7 +33,6 @@ export function ScrollingText({
   const [containerWidth, setContainerWidth] = useState(0)
   const sharedValue = useSharedValue(0)
 
-  // 检测文本是否需要滚动
   useEffect(() => {
     if (textWidth > containerWidth && containerWidth > 0) {
       setShouldScroll(true)
@@ -44,34 +43,24 @@ export function ScrollingText({
     }
   }, [textWidth, containerWidth])
 
-  // 启动滚动动画
   useEffect(() => {
     if (shouldScroll) {
-      // 滚动距离是文本宽度加上间距，确保无缝循环
-      const scrollDistance = textWidth + loopGap // textWidth + marginLeft
-      const duration = (scrollDistance / speed) * 1000 // 转换为毫秒
-
-      // 延迟后开始滚动
+      const scrollDistance = textWidth + loopGap
+      const duration = (scrollDistance / speed) * 1000
       const timer = setTimeout(() => {
         sharedValue.value = withRepeat(
-          withTiming(-scrollDistance, {
-            duration,
-            easing: Easing.linear,
-          }),
+          withTiming(-scrollDistance, { duration, easing: Easing.linear }),
           -1,
-          false, // 不反向，实现循环滚动
+          false,
         )
       }, delay)
-
       return () => clearTimeout(timer)
     }
   }, [shouldScroll, textWidth, speed, delay])
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: sharedValue.value }],
-    }
-  })
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: sharedValue.value }],
+  }))
 
   return (
     <Animated.View style={{ position: 'relative', width: '100%' }}>
@@ -93,34 +82,25 @@ export function ScrollingText({
           end={{ x: 1, y: 0 }}
         />
       )}
-
-      {/* 实际显示的滚动容器 */}
       <Animated.ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         onLayout={e => setContainerWidth(e.nativeEvent.layout.width)}
       >
         <Animated.View style={[styles.contentContainer, animatedStyle]}>
-          {/* 第一个文本 */}
           <Text
             {...textProps}
+            style={style}
             onLayout={e => setTextWidth(e.nativeEvent.layout.width)}
             numberOfLines={1}
           >
             {children}
           </Text>
-          {/* 第二个文本 - 用于循环效果 */}
-          {
-            shouldScroll && (
-              <Text
-                {...textProps}
-                style={[textProps.style, { marginLeft: loopGap }]}
-                numberOfLines={1}
-              >
-                {children}
-              </Text>
-            )
-          }
+          {shouldScroll && (
+            <Text {...textProps} style={[style, { marginLeft: loopGap }]} numberOfLines={1}>
+              {children}
+            </Text>
+          )}
         </Animated.View>
       </Animated.ScrollView>
     </Animated.View>

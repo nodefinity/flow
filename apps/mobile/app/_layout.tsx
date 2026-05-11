@@ -1,20 +1,19 @@
 import { useAppearanceSetting } from '@flow/hooks'
+
 import { PlaybackService, setupPlayer } from '@flow/player'
 import { useSettingStore, useTrackStore } from '@flow/store'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
-import { DarkTheme as NavDarkTheme, DefaultTheme as NavLightTheme, ThemeProvider } from '@react-navigation/native'
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { ErrorBoundary, Slot } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
 import { Platform } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { adaptNavigationTheme, PaperProvider } from 'react-native-paper'
 import TrackPlayer from 'react-native-track-player'
-import { ThemedView } from '@/components/ui/ThemedView'
 import { ToastProvider } from '@/components/ui/Toast'
-import Themes from '@/constants/Themes'
 import { useInitLocalTracks } from '@/hooks/useInitLocalTracks'
 import { Player } from '@/modules/player'
+import '../global.css'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -37,33 +36,20 @@ export default function RootLayout() {
     return null
   }
 
-  const paperTheme = Themes[effectiveColorScheme as keyof typeof Themes] ?? Themes.light
-
-  const { DarkTheme, LightTheme } = adaptNavigationTheme({
-    reactNavigationDark: NavDarkTheme,
-    reactNavigationLight: NavLightTheme,
-    materialDark: Themes.dark,
-    materialLight: Themes.light,
-  })
-
   const statusBarStyle = effectiveColorScheme === 'dark' ? 'light' : 'dark'
 
   return (
-    <PaperProvider theme={paperTheme}>
-      <ThemeProvider value={effectiveColorScheme === 'dark' ? DarkTheme : LightTheme}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <BottomSheetModalProvider>
-            <ToastProvider>
-              <ThemedView style={{ flex: 1 }} testID="root-surface">
-                <StatusBar style={statusBarStyle} />
-                <Slot />
-                <Player />
-              </ThemedView>
-            </ToastProvider>
-          </BottomSheetModalProvider>
-        </GestureHandlerRootView>
-      </ThemeProvider>
-    </PaperProvider>
+    <ThemeProvider value={effectiveColorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <GestureHandlerRootView className="flex-1">
+        <BottomSheetModalProvider>
+          <ToastProvider>
+            <StatusBar style={statusBarStyle} />
+            <Slot />
+            <Player />
+          </ToastProvider>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    </ThemeProvider>
   )
 }
 

@@ -1,53 +1,23 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useTranslation } from '@flow/shared'
-import { DeviceType, deviceType } from 'expo-device'
-import { Drawer } from 'expo-router/drawer'
-import { useWindowDimensions } from 'react-native'
-import { Appbar, useTheme } from 'react-native-paper'
-import DrawerContent from '@/components/layout/drawer/DrawerContent'
-import DrawerHeader from '@/components/layout/drawer/DrawerHeader'
+import { Tabs } from 'expo-router'
+import { useColors } from '@/hooks/useColors'
 
-export default function DrawerLayout() {
-  const { colors } = useTheme()
+export default function TabLayout() {
+  const colors = useColors()
   const { t } = useTranslation()
 
-  const layout = useWindowDimensions()
-
   return (
-    <Drawer
-      drawerContent={props => <DrawerContent {...props} />}
+    <Tabs
       screenOptions={{
-        drawerType: deviceType === DeviceType.PHONE ? 'slide' : 'permanent',
-        drawerStyle: {
-          backgroundColor: colors.background,
-          borderRightColor: colors.outlineVariant,
-        },
-        header: props => <DrawerHeader navProps={props} children={undefined} />,
-        swipeEdgeWidth: layout.width,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.mutedForeground,
+        tabBarStyle: { backgroundColor: colors.background, borderTopColor: colors.border },
+        headerStyle: { backgroundColor: colors.background },
+        headerTintColor: colors.foreground,
       }}
     >
-      <Drawer.Screen
-        name="index"
-        options={{
-          title: t(`navigation.home`),
-          drawerIcon: ({ focused, color, size }) => {
-            const icon = (focused ? 'home' : 'home-outline')
-            return <MaterialCommunityIcons size={size} name={icon} color={color} />
-          },
-          headerRight: () => <Appbar.Action icon="magnify" onPress={() => { }} />,
-        }}
-      />
-
-      <Drawer.Screen
-        name="setting"
-        options={{
-          title: t(`navigation.setting`),
-          drawerIcon: ({ focused, color, size }) => {
-            const icon = (focused ? 'cog' : 'cog-outline')
-            return <MaterialCommunityIcons size={size} name={icon} color={color} />
-          },
-        }}
-      />
-    </Drawer>
+      <Tabs.Screen name="index" options={{ title: t('navigation.home') }} />
+      <Tabs.Screen name="setting" options={{ title: t('navigation.setting') }} />
+    </Tabs>
   )
 }

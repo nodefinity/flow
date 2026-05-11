@@ -1,6 +1,5 @@
 import { useDisplayTrack } from '@flow/player'
-import { StyleSheet, View } from 'react-native'
-import { Text } from 'react-native-paper'
+import { StyleSheet, Text, View } from 'react-native'
 import { ScrollingText } from '@/components/ui/ScrollingText'
 
 export default function FullPlayerHeader() {
@@ -8,10 +7,12 @@ export default function FullPlayerHeader() {
 
   return (
     <View style={styles.container}>
-      <ScrollingText variant="headlineSmall">
+      <ScrollingText style={styles.title}>
         {displayTrack?.title || ''}
       </ScrollingText>
-      <Text style={styles.artist}>{displayTrack?.artist || ''}</Text>
+      <Text style={styles.artist} numberOfLines={1}>
+        {displayTrack?.artist || ''}
+      </Text>
     </View>
   )
 }
@@ -21,7 +22,14 @@ const styles = StyleSheet.create({
     marginTop: -16,
     paddingHorizontal: 28,
   },
+  title: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#fff',
+  },
   artist: {
-    opacity: 0.7,
+    fontSize: 15,
+    color: 'rgba(255,255,255,0.7)',
+    marginTop: 2,
   },
 })

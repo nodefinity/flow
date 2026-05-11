@@ -1,97 +1,68 @@
 import type { Language, Theme } from '@flow/shared'
 import { useTranslation } from '@flow/shared'
 import { useSettingStore } from '@flow/store'
-import { ScrollView, StyleSheet } from 'react-native'
-import { List, Surface } from 'react-native-paper'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { useColors } from '@/hooks/useColors'
 import { SettingSelector } from '@/modules/setting/SettingSelector'
 import { TrackScanButton } from '@/modules/setting/TrackScanButton'
 
 export default function SettingScreen() {
+  const colors = useColors()
   const { t } = useTranslation()
   const theme = useSettingStore.use.theme()
   const language = useSettingStore.use.language()
   const updateSetting = useSettingStore.use.updateSetting()
 
-  const languageOptions = [
-    { value: 'auto', label: t('setting.appearance.language.auto') },
-    { value: 'zh', label: t('setting.appearance.language.chinese') },
-    { value: 'en', label: t('setting.appearance.language.english') },
-  ]
-
-  const themeOptions = [
-    { value: 'auto', label: t('setting.appearance.theme.auto') },
-    { value: 'light', label: t('setting.appearance.theme.light') },
-    { value: 'dark', label: t('setting.appearance.theme.dark') },
-  ]
-
-  const handleLanguageChange = (value: string) => {
-    updateSetting({ language: value as Language })
-  }
-
-  const handleThemeChange = (value: string) => {
-    updateSetting({ theme: value as Theme })
-  }
-
-  console.log('setting')
-
   return (
-    <ScrollView style={styles.scrollView}>
-      <Surface style={styles.surface} mode="flat">
-        <List.Section title={t('setting.appearance.title')} style={styles.listSection}>
-          <SettingSelector
-            title={t('setting.appearance.language.title')}
-            icon="translate"
-            currentValue={language}
-            options={languageOptions}
-            onValueChange={handleLanguageChange}
-          />
+    <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+      <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <Text style={[styles.sectionTitle, { color: colors.mutedForeground }]}>
+          {t('setting.appearance.title')}
+        </Text>
+        <SettingSelector
+          title={t('setting.appearance.language.title')}
+          currentValue={language}
+          options={[
+            { value: 'auto', label: t('setting.appearance.language.auto') },
+            { value: 'zh', label: t('setting.appearance.language.chinese') },
+            { value: 'en', label: t('setting.appearance.language.english') },
+          ]}
+          onValueChange={v => updateSetting({ language: v as Language })}
+        />
+        <SettingSelector
+          title={t('setting.appearance.theme.title')}
+          currentValue={theme}
+          options={[
+            { value: 'auto', label: t('setting.appearance.theme.auto') },
+            { value: 'light', label: t('setting.appearance.theme.light') },
+            { value: 'dark', label: t('setting.appearance.theme.dark') },
+          ]}
+          onValueChange={v => updateSetting({ theme: v as Theme })}
+        />
+      </View>
 
-          <SettingSelector
-            title={t('setting.appearance.theme.title')}
-            icon="theme-light-dark"
-            currentValue={theme}
-            options={themeOptions}
-            onValueChange={handleThemeChange}
-          />
-        </List.Section>
-      </Surface>
-
-      <Surface style={styles.surface} mode="flat">
-        <List.Section title={t('setting.playback.title')} style={styles.listSection}>
-          <TrackScanButton
-            title={t('setting.playback.scanTracks')}
-            description={t('setting.playback.scanTracksDescription')}
-            icon="music-box-multiple"
-            type="scan"
-          />
-
-          <TrackScanButton
-            title={t('setting.playback.pickFiles')}
-            description={t('setting.playback.pickFilesDescription')}
-            icon="file-music"
-            type="pick"
-          />
-        </List.Section>
-      </Surface>
+      <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <Text style={[styles.sectionTitle, { color: colors.mutedForeground }]}>
+          {t('setting.playback.title')}
+        </Text>
+        <TrackScanButton
+          title={t('setting.playback.scanTracks')}
+          description={t('setting.playback.scanTracksDescription')}
+          type="scan"
+        />
+        <TrackScanButton
+          title={t('setting.playback.pickFiles')}
+          description={t('setting.playback.pickFilesDescription')}
+          type="pick"
+        />
+      </View>
     </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  listSection: {
-    marginVertical: 0,
-    paddingHorizontal: 0,
-  },
-  surface: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-    borderRadius: 16,
-    overflow: 'hidden',
-  },
+  scroll: { flex: 1 },
+  content: { padding: 16, gap: 12 },
+  section: { borderRadius: 12, borderWidth: StyleSheet.hairlineWidth, overflow: 'hidden' },
+  sectionTitle: { fontSize: 12, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.5, paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 },
 })
