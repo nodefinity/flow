@@ -1,4 +1,5 @@
 import type { Track } from '@flow/shared'
+import type { FlashListRef } from '@shopify/flash-list'
 import { playerController, useDisplayTrack } from '@flow/player'
 import { useTrackStore } from '@flow/store'
 import { FlashList } from '@shopify/flash-list'
@@ -14,7 +15,7 @@ export default function HomeScreen() {
   const remoteTracks = useTrackStore.use.remoteTracks()
   const tracks = [...localTracks, ...remoteTracks]
   const activeTrack = useDisplayTrack()
-  const listRef = useRef<FlashList<Track>>(null)
+  const listRef = useRef<FlashListRef<Track>>(null)
 
   const onTrackPress = useCallback((track: Track) => {
     if (activeTrack?.id === track.id)
@@ -53,7 +54,6 @@ export default function HomeScreen() {
         keyExtractor={item => item.id}
         showsVerticalScrollIndicator={false}
         extraData={activeTrack?.id}
-        estimatedItemSize={60}
         contentContainerStyle={{ paddingBottom: MINI_HEIGHT + 16 }}
       />
       <Pressable onPress={handleScrollToActive} style={[styles.fab, { backgroundColor: colors.secondary }]}>
