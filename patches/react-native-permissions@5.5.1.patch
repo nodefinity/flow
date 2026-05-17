@@ -1,0 +1,12 @@
+diff --git a/RNPermissions.podspec b/RNPermissions.podspec
+index 994d9f58d3ba99aa50fc942dc5010d08d75ca745..a2440e3698a074288ca82b309c5ea20b49edb93a 100644
+--- a/RNPermissions.podspec
++++ b/RNPermissions.podspec
+@@ -18,7 +18,6 @@ Pod::Spec.new do |s|
+   s.resource_bundles = { 'RNPermissionsPrivacyInfo' => 'ios/PrivacyInfo.xcprivacy' }
+ 
+   s.source_files = "ios/*.{h,mm}"
+-  # s.frameworks = <frameworks>
+ 
+   if ENV['RCT_NEW_ARCH_ENABLED'] == "1" then
+     install_modules_dependencies(s)

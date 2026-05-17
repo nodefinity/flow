@@ -1,229 +1,56 @@
 import type { Track } from '@flow/shared'
 import type { PlayerController } from './playerController'
-import { logger } from '@flow/shared'
-import TrackPlayer, { RepeatMode } from 'react-native-track-player'
-import { usePlaybackStore } from './playbackStore'
-import { PlayMode, usePlayerStore } from './playerStore'
+import type { PlayMode } from './playerStore'
+import { usePlayerStore } from './playerStore'
 
 export const playerController: PlayerController = {
-  // #region queue management
   async addToQueue(track: Track) {
-    try {
-      const addToQueue = usePlayerStore.getState().addToQueue
-      await TrackPlayer.add([track])
-      addToQueue(track)
-    }
-    catch (error) {
-      logger.error('addToQueue error:', error)
-    }
+    usePlayerStore.getState().addToQueue(track)
   },
 
   async insertNext(track: Track) {
-    try {
-      const insertNext = usePlayerStore.getState().insertNext
-      const currentIndex = usePlayerStore.getState().currentIndex
-      await TrackPlayer.add([track], currentIndex + 1)
-      insertNext(track)
-    }
-    catch (error) {
-      logger.error('insertNext error:', error)
-    }
+    usePlayerStore.getState().insertNext(track)
   },
 
   async removeFromQueue(trackId: string) {
-    try {
-      const removeFromQueue = usePlayerStore.getState().removeFromQueue
-      const queue = usePlayerStore.getState().queue
-      const index = queue.findIndex((t: Track) => t.id === trackId)
-      if (index >= 0) {
-        await TrackPlayer.remove(index)
-        removeFromQueue(trackId)
-      }
-    }
-    catch (error) {
-      logger.error('removeFromQueue error:', error)
-    }
+    usePlayerStore.getState().removeFromQueue(trackId)
   },
 
   async clearQueue() {
-    try {
-      const clearQueue = usePlayerStore.use.clearQueue()
-      await TrackPlayer.reset()
-      clearQueue()
-    }
-    catch (error) {
-      logger.error('clearQueue error:', error)
-    }
+    usePlayerStore.use.clearQueue()()
   },
-  // #endregion
 
-  // #region play control
   async play() {
-    try {
-      const play = usePlayerStore.getState().play
-      await TrackPlayer.play()
-      play()
-    }
-    catch (error) {
-      logger.error('play error:', error)
-    }
+    usePlayerStore.getState().play()
   },
 
   async pause() {
-    try {
-      const pause = usePlayerStore.getState().pause
-      await TrackPlayer.pause()
-      pause()
-    }
-    catch (error) {
-      logger.error('pause error:', error)
-    }
+    usePlayerStore.getState().pause()
   },
 
   async next() {
-    try {
-      const next = usePlayerStore.getState().next
-      await TrackPlayer.skipToNext()
-      next()
-    }
-    catch (error) {
-      logger.error('next error:', error)
-    }
+    usePlayerStore.getState().next()
   },
 
   async prev() {
-    try {
-      const prev = usePlayerStore.getState().prev
-      await TrackPlayer.skipToPrevious()
-      prev()
-    }
-    catch (error) {
-      logger.error('prev error:', error)
-    }
+    usePlayerStore.getState().prev()
   },
 
   async playQueue(tracks: Track[], startTrack?: Track) {
-    try {
-      // 先更新 store 状态
-      const playQueue = usePlayerStore.getState().playQueue
-      playQueue(tracks, startTrack)
-
-      // 获取更新后的状态
-      const { queue: processedQueue, currentIndex } = usePlayerStore.getState()
-
-      // 更新 TrackPlayer
-      await TrackPlayer.reset()
-      if (processedQueue.length > 0) {
-        await TrackPlayer.add(processedQueue)
-      }
-
-      // 跳转到指定位置
-      if (currentIndex >= 0 && currentIndex < processedQueue.length) {
-        await TrackPlayer.skip(currentIndex)
-        await TrackPlayer.play()
-      }
-    }
-    catch (error) {
-      console.log('playQueue error:', error, typeof error)
-      logger.error('playQueue error:', error)
-    }
+    usePlayerStore.getState().playQueue(tracks, startTrack)
   },
 
   async playTrack(track: Track) {
-    try {
-      const playTrack = usePlayerStore.getState().playTrack
-      const queue = usePlayerStore.getState().queue
-      playTrack(track)
-
-      const trackIndex = queue.findIndex((t: Track) => t.id === track.id)
-      if (trackIndex === -1) {
-        // 如果歌曲不在队列中，添加到队列并播放
-        await TrackPlayer.add([track])
-        await TrackPlayer.skip(0)
-      }
-      else {
-        // 如果歌曲在队列中，直接跳转到该歌曲
-        await TrackPlayer.skip(trackIndex)
-      }
-    }
-    catch (error) {
-      logger.error('playTrack error:', error)
-    }
+    usePlayerStore.getState().playTrack(track)
   },
-  // #endregion
 
-  // #region play mode
   async setMode(mode: PlayMode) {
-    try {
-      const currentMode = usePlayerStore.getState().mode
-
-      if (currentMode === mode) {
-        return
-      }
-
-      const setMode = usePlayerStore.getState().setMode
-      const currentQueue = usePlayerStore.getState().queue
-      const oldCurrentIndex = usePlayerStore.getState().currentIndex
-
-      console.log('oldCurrentIndex', oldCurrentIndex)
-
-      // Get current track
-      const currentTrack = currentQueue[oldCurrentIndex]
-
-      // Update repeat mode
-      await TrackPlayer.setRepeatMode(mode === PlayMode.SINGLE ? RepeatMode.Track : RepeatMode.Queue)
-
-      // Update store mode, this will recalculate the queue and current index
-      setMode(mode)
-
-      const updatedQueue = usePlayerStore.getState().queue
-      const newCurrentIndex = usePlayerStore.getState().currentIndex
-
-      console.log('newCurrentIndex', newCurrentIndex)
-
-      const needsQueueUpdate
-        = (currentMode === PlayMode.SHUFFLE || mode === PlayMode.SHUFFLE)
-
-      if (needsQueueUpdate && updatedQueue.length > 0 && currentTrack) {
-        // TODO: setQueue will clearMediaItems in rntp
-        await TrackPlayer.setQueue(updatedQueue)
-
-        // if (newCurrentIndex >= 0 && newCurrentIndex < updatedQueue.length) {
-        //   await TrackPlayer.skip(newCurrentIndex, position)
-        // }
-      }
-    }
-    catch (error) {
-      logger.error('setMode error:', error)
-    }
+    usePlayerStore.getState().setMode(mode)
   },
-  // #endregion
 
-  // #region sync store with track player
   async syncCurrentIndex(index: number) {
-    try {
-      const { queue } = usePlayerStore.getState()
-
-      if (index >= 0 && index < queue.length) {
-        const setCurrentIndex = usePlayerStore.getState().setCurrentIndex
-        setCurrentIndex(index)
-        logger.info(`Synced current index to: ${index}`)
-      }
-    }
-    catch (error) {
-      logger.error('syncCurrentIndex error:', error)
-    }
+    usePlayerStore.getState().setCurrentIndex(index)
   },
 
-  async seekTo(position: number) {
-    try {
-      await TrackPlayer.seekTo(position)
-      const setPosition = usePlaybackStore.getState().setPosition
-      setPosition(position)
-    }
-    catch (error) {
-      logger.error('seekTo error:', error)
-    }
-  },
-  // #endregion
+  async seekTo(_position: number) {},
 }
