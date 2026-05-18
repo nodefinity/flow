@@ -1,5 +1,6 @@
 import { useTranslation } from '@flow/shared'
 import { Drawer } from 'expo-router/drawer'
+import { Dimensions } from 'react-native'
 import { useColors } from '@/hooks/useColors'
 
 export default function DrawerLayout() {
@@ -10,6 +11,7 @@ export default function DrawerLayout() {
     <Drawer
       screenOptions={{
         drawerType: 'slide',
+        swipeEdgeWidth: Dimensions.get('window').width,
         drawerActiveTintColor: colors.primary,
         drawerInactiveTintColor: colors.mutedForeground,
         drawerStyle: { backgroundColor: colors.background },
