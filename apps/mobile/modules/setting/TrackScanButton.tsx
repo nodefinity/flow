@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useColors } from '@/hooks/useColors'
-import { requestMusicPermission } from '@/utils/localTrackService'
+import { requestMusicPermission } from '@/utils/permission'
 import { TrackScanDialog } from './TrackScanDialog'
 
 interface TrackScanButtonProps {

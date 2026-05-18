@@ -2514,7 +2514,7 @@ DEPENDENCIES:
   - "ExpoModulesJSI (from `../../../node_modules/.pnpm/expo-modules-core@55.0.25_react-native-worklets@0.7.4_@babel+core@7.29.0_react-native@0_7addff8066192c3168e5f8907f51f7dd/node_modules/expo-modules-core`)"
   - "ExpoRouter (from `../../../node_modules/.pnpm/expo-router@55.0.14_8d4128b10ca748c4f0ac2863573acce2/node_modules/expo-router/ios`)"
   - "ExpoSplashScreen (from `../../../node_modules/.pnpm/expo-splash-screen@55.0.21_expo@55.0.24_typescript@5.9.2/node_modules/expo-splash-screen/ios`)"
-  - "ExpoSQLite (from `../../../node_modules/.pnpm/expo-sqlite@55.0.15_expo@55.0.23_react-native@0.83.6_@babel+core@7.29.0_@types+react@19.2.14_react@19.2.6__react@19.2.6/node_modules/expo-sqlite/ios`)"
+  - "ExpoSQLite (from `../../../node_modules/.pnpm/expo-sqlite@55.0.15_expo@55.0.24_react-native@0.83.6_@babel+core@7.29.0_@types+react@19.2.14_react@19.2.6__react@19.2.6/node_modules/expo-sqlite/ios`)"
   - "ExpoSymbols (from `../../../node_modules/.pnpm/expo-symbols@55.0.8_expo-font@55.0.7_expo@55.0.24_react-native@0.83.6_@babel+core@7.29._ab41f39d085e7f654035bb3b6f8533a7/node_modules/expo-symbols/ios`)"
   - "ExpoSystemUI (from `../../../node_modules/.pnpm/expo-system-ui@55.0.18_expo@55.0.24_react-native-web@0.21.2_react-dom@19.2.6_react@19.2_d5fbb50c3b9612e8b3fc825e162c030b/node_modules/expo-system-ui/ios`)"
   - "ExpoWebBrowser (from `../../../node_modules/.pnpm/expo-web-browser@55.0.16_expo@55.0.24_react-native@0.83.6_@babel+core@7.29.0_@types+react@19.2.14_react@19.2.6_/node_modules/expo-web-browser/ios`)"
@@ -2670,7 +2670,7 @@ EXTERNAL SOURCES:
   ExpoSplashScreen:
     :path: "../../../node_modules/.pnpm/expo-splash-screen@55.0.21_expo@55.0.24_typescript@5.9.2/node_modules/expo-splash-screen/ios"
   ExpoSQLite:
-    :path: "../../../node_modules/.pnpm/expo-sqlite@55.0.15_expo@55.0.23_react-native@0.83.6_@babel+core@7.29.0_@types+react@19.2.14_react@19.2.6__react@19.2.6/node_modules/expo-sqlite/ios"
+    :path: "../../../node_modules/.pnpm/expo-sqlite@55.0.15_expo@55.0.24_react-native@0.83.6_@babel+core@7.29.0_@types+react@19.2.14_react@19.2.6__react@19.2.6/node_modules/expo-sqlite/ios"
   ExpoSymbols:
     :path: "../../../node_modules/.pnpm/expo-symbols@55.0.8_expo-font@55.0.7_expo@55.0.24_react-native@0.83.6_@babel+core@7.29._ab41f39d085e7f654035bb3b6f8533a7/node_modules/expo-symbols/ios"
   ExpoSystemUI:
@@ -2963,7 +2963,7 @@ SPEC CHECKSUMS:
   ReactCommon: ba28cd4e7d9e24014d2772a80e32da020c732b00
   ReactNativeDependencies: f853ae952bc81051b8257c8bafede9e6049f4678
   RNGestureHandler: 0ea8153746a92b3744d4eaadade647debedf646e
-  RNPermissions: d399c7a59280e8fb790531da7f76708fe9c6fd45
+  RNPermissions: 13c0a24df865b75391877fe8ecc42c90bc0c451f
   RNReanimated: 1ef4563e43a2c89e6bc01c3d522a52e6f920c2c0
   RNScreens: 02e62f995ceb94ea465864b3bf4d4767b87f0362
   RNWorklets: dc10ed085b98d649c58f89e69c02c8acbd246f4e
@@ -2974,6 +2974,6 @@ SPEC CHECKSUMS:
   SwiftUIIntrospect: fee9aa07293ee280373a591e1824e8ddc869ba5d
   Yoga: e41d64347f52d634dd8c2f6bac33f95081959fd3
 
-PODFILE CHECKSUM: 3bd6a5be78d5f545e47ec3badc0e630131768473
+PODFILE CHECKSUM: 3afa9fb20ca236f9f4350b7dde2a4ad8fe99343b
 
 COCOAPODS: 1.16.2
