@@ -19,7 +19,8 @@ export default function DrawerLayout() {
         headerTintColor: colors.foreground,
       }}
     >
-      <Drawer.Screen name="index" options={{ title: t('navigation.home') }} />
+      <Drawer.Screen name="index" options={{ title: 'Radio' }} />
+      <Drawer.Screen name="library" options={{ title: t('navigation.home') }} />
       <Drawer.Screen name="setting" options={{ title: t('navigation.setting') }} />
     </Drawer>
   )
