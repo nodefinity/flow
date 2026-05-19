@@ -9,7 +9,8 @@ Flow is being refactored from a user-managed player (playlists, queue manipulati
 
 ## Consequences
 
-- The Queue is write-only for the Host. UI must not expose direct queue manipulation (except Track Requests, which go through the Host).
-- Interludes are first-class audio Segments in the Queue, not UI overlays. The Player must handle heterogeneous segment types (Track + Interlude).
-- The Library's primary read path is CandidateSet queries (filtered by Channel Style), not full-library browsing. Browse UX is secondary or removed.
-- TTS is a hard runtime dependency for Interludes. Network is required for the AI Host to function. Offline mode = no Host, no Interludes (music-only fallback).
+- In Radio mode, the Programme is write-only for the Host. UI does not expose queue manipulation in this mode (except Track Requests, which go through the Host as Interventions).
+- Interludes are first-class audio Segments in the Programme, not UI overlays. The Player must handle heterogeneous segment types (Track + Interlude).
+- The Library's primary read path is CandidateSet queries (filtered by Channel Style), not full-library browsing. However, Library browse remains available for Classic mode playback.
+- TTS is a hard runtime dependency for Interludes. Network is required for the AI Host to function. Offline mode = no Host, no Interludes (music-only fallback, or user switches to Classic mode).
+- Classic (queue-based) playback coexists with Radio mode. See ADR 0006.

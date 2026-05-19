@@ -7,5 +7,5 @@ We considered real-time AI generation (deciding the next Segment as each one end
 ## Consequences
 
 - Interludes must be TTS-synthesised during Programme generation, not on-demand. The Host must pre-request all TTS audio and receive URLs before handing the Programme to the Player.
-- The Player has no write access to the Programme. Interventions go to the Host, which produces a replacement Programme.
-- "Queue" as a user-visible or user-manipulable concept does not exist. The only user-facing playback concept is Now Playing.
+- The Player has no write access to the Programme in Radio mode. Interventions go to the Host, which produces a replacement Programme.
+- In Radio mode, "Queue" as a user-visible or user-manipulable concept does not exist. The only user-facing playback concept is Now Playing. However, Classic mode retains the traditional queue with full user control — see ADR 0006.

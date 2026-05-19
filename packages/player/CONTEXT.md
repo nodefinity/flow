@@ -47,6 +47,16 @@ _Avoid_: volume fade, audio focus
 > **Dev:** "Does the Player know it's playing an Interlude vs a Track?"
 > **Domain expert:** "No. It has a URL and metadata. It plays it. That's all."
 
+## Dual Playback Modes
+
+The Player supports two coexisting modes (see ADR 0006):
+
+- **Radio mode**: consumes a Programme (Segment[]) from the Host. No user queue manipulation. The concepts above (Programme, Segment, Lookahead, Intervention) apply.
+- **Classic mode**: consumes a queue (Track[]) with full user control (add, insert next, remove, shuffle, play mode). The traditional playback model, preserved as-is.
+
+A `playbackMode: 'radio' | 'classic'` discriminator determines which is active. Only one mode plays at a time. Mode switching is implicit: `loadProgramme()` enters radio mode; `playTrack()`/`playQueue()` enters classic mode.
+
 ## Flagged ambiguities
 
-- "Queue" was the previous term for what is now **Programme**. Queue implied user-visible, user-managed ordering. Programme is Host-generated and opaque to the user. These are not the same concept.
+- "Queue" in Classic mode is user-visible and user-managed. "Programme" in Radio mode is Host-generated and opaque. These are distinct concepts that coexist — not a rename.
+- The Player Controller layer treats both uniformly as "an ordered list of audio items to play". The mode distinction lives at the store level.

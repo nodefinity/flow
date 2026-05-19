@@ -71,7 +71,16 @@ _Avoid_: filtered list, recommendations, search results
 > **Dev:** "Does the user see the Programme — like a tracklist of what's coming?"
 > **Domain expert:** "No. They see Now Playing only. The Programme is the Host's internal plan, not a user-facing list."
 
+## Dual Mode Coexistence
+
+Radio mode is the primary experience, but Classic (queue-based) playback coexists (see ADR 0006):
+
+- Users can exit radio by manually selecting a track from the Library → enters Classic mode
+- Classic mode retains full queue control (add, insert next, shuffle, reorder)
+- This is especially important offline where the AI Host is unavailable
+- Only one mode is active at a time; switching is implicit
+
 ## Flagged ambiguities
 
 - "Radio" is used colloquially to describe the whole product, but the domain term for what the user tunes into is **Channel**. "Radio" does not appear in code.
-- "Queue" was the previous term. It is replaced by **Programme** throughout. Queue implied user-managed ordering; Programme is Host-generated and opaque to the user.
+- "Queue" in Classic mode is the traditional user-managed concept. "Programme" in Radio mode is Host-generated and opaque. Both exist — "Queue" is not deprecated, it is scoped to Classic mode.
