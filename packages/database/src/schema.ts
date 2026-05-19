@@ -1,66 +1,12 @@
 import { relations } from 'drizzle-orm'
-import { index, integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 
-export const artists = sqliteTable('artists', {
-  id: text('id').primaryKey(),
-  name: text('name').notNull(),
-  artwork: text('artwork'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
-}, table => [
-  index('artist_name_idx').on(table.name),
-])
-
-export const albums = sqliteTable('albums', {
-  id: text('id').primaryKey(),
-  title: text('title').notNull(),
-  artistId: text('artist_id').references(() => artists.id),
-  artwork: text('artwork'),
-  year: integer('year'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
-}, table => [
-  index('album_title_idx').on(table.title),
-  index('album_artist_idx').on(table.artistId),
-])
-
-export const tracks = sqliteTable('tracks', {
-  id: text('id').primaryKey(),
-  title: text('title').notNull(),
-  artistId: text('artist_id').references(() => artists.id),
-  albumId: text('album_id').references(() => albums.id),
-  duration: integer('duration'), // 秒
-  url: text('url').notNull(),
-  artwork: text('artwork'),
-  source: text('source').notNull(), // 'local' | 'remote'
-  localId: text('local_id'), // 系统媒体库的原始ID
-  filePath: text('file_path'), // 本地文件路径
-  fileSize: integer('file_size'), // 文件大小（字节）
-  bitrate: integer('bitrate'),
-  sampleRate: integer('sample_rate'),
-  channels: integer('channels'),
-  format: text('format'),
-  year: integer('year'),
-  genre: text('genre'),
-  trackNumber: integer('track_number'),
-  discNumber: integer('disc_number'),
-  composer: text('composer'),
-  lyricist: text('lyricist'),
-  lyrics: text('lyrics'),
-  albumArtist: text('album_artist'),
-  comment: text('comment'),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
-}, table => [
-  index('track_title_idx').on(table.title),
-  index('track_artist_idx').on(table.artistId),
-  index('track_album_idx').on(table.albumId),
-  index('track_source_idx').on(table.source),
-  index('track_local_id_idx').on(table.localId),
-])
+// ---------------------------------------------------------------------------
+// Playlists (classic mode)
+// ---------------------------------------------------------------------------
 
 export const playlists = sqliteTable('playlists', {
-  id: text('id').primaryKey(),
+  id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name').notNull(),
   description: text('description'),
   artwork: text('artwork'),
@@ -71,41 +17,68 @@ export const playlists = sqliteTable('playlists', {
 ])
 
 export const playlistTracks = sqliteTable('playlist_tracks', {
-  playlistId: text('playlist_id').notNull().references(() => playlists.id, { onDelete: 'cascade' }),
-  trackId: text('track_id').notNull().references(() => tracks.id, { onDelete: 'cascade' }),
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  playlistId: integer('playlist_id').notNull().references(() => playlists.id, { onDelete: 'cascade' }),
+  trackLocalId: text('track_local_id').notNull(),
   position: integer('position').notNull(),
-  addedAt: integer('added_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 }, table => [
-  primaryKey({ columns: [table.playlistId, table.trackId] }),
   index('playlist_tracks_playlist_idx').on(table.playlistId),
-  index('playlist_tracks_track_idx').on(table.trackId),
+  index('playlist_tracks_local_id_idx').on(table.trackLocalId),
   index('playlist_tracks_position_idx').on(table.position),
 ])
 
-export const artistsRelations = relations(artists, ({ many }) => ({
-  tracks: many(tracks),
-  albums: many(albums),
-}))
+// ---------------------------------------------------------------------------
+// Radio
+// ---------------------------------------------------------------------------
 
-export const albumsRelations = relations(albums, ({ one, many }) => ({
-  artist: one(artists, {
-    fields: [albums.artistId],
-    references: [artists.id],
-  }),
-  tracks: many(tracks),
-}))
+export const channels = sqliteTable('channels', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull(),
+  descriptor: text('descriptor').notNull(),
+  styleJson: text('style_json', { mode: 'json' }).notNull().$type<import('@flow/shared').ChannelStyle>(),
+  isBuiltin: integer('is_builtin', { mode: 'boolean' }).notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+})
 
-export const tracksRelations = relations(tracks, ({ one, many }) => ({
-  artist: one(artists, {
-    fields: [tracks.artistId],
-    references: [artists.id],
-  }),
-  album: one(albums, {
-    fields: [tracks.albumId],
-    references: [albums.id],
-  }),
-  playlistTracks: many(playlistTracks),
-}))
+export const sessions = sqliteTable('sessions', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  channelId: integer('channel_id').notNull().references(() => channels.id),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+}, table => [
+  index('session_channel_idx').on(table.channelId),
+])
+
+export const messages = sqliteTable('messages', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  sessionId: integer('session_id').notNull().references(() => sessions.id, { onDelete: 'cascade' }),
+  role: text('role', { enum: ['user', 'host'] }).notNull(),
+  kind: text('kind', { enum: ['text', 'voice', 'acknowledgement', 'interlude', 'announcement'] }).notNull(),
+  text: text('text').notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+}, table => [
+  index('message_session_idx').on(table.sessionId),
+])
+
+export const playbackHistory = sqliteTable('playback_history', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  sessionId: integer('session_id').references(() => sessions.id, { onDelete: 'cascade' }),
+  trackLocalId: text('track_local_id').notNull(),
+  durationPlayed: integer('duration_played'),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+}, table => [
+  index('playback_history_session_idx').on(table.sessionId),
+  index('playback_history_local_id_idx').on(table.trackLocalId),
+])
+
+// ---------------------------------------------------------------------------
+// Relations
+// ---------------------------------------------------------------------------
 
 export const playlistsRelations = relations(playlists, ({ many }) => ({
   playlistTracks: many(playlistTracks),
@@ -116,8 +89,31 @@ export const playlistTracksRelations = relations(playlistTracks, ({ one }) => ({
     fields: [playlistTracks.playlistId],
     references: [playlists.id],
   }),
-  track: one(tracks, {
-    fields: [playlistTracks.trackId],
-    references: [tracks.id],
+}))
+
+export const channelsRelations = relations(channels, ({ many }) => ({
+  sessions: many(sessions),
+}))
+
+export const sessionsRelations = relations(sessions, ({ one, many }) => ({
+  channel: one(channels, {
+    fields: [sessions.channelId],
+    references: [channels.id],
+  }),
+  messages: many(messages),
+  playbackHistory: many(playbackHistory),
+}))
+
+export const messagesRelations = relations(messages, ({ one }) => ({
+  session: one(sessions, {
+    fields: [messages.sessionId],
+    references: [sessions.id],
+  }),
+}))
+
+export const playbackHistoryRelations = relations(playbackHistory, ({ one }) => ({
+  session: one(sessions, {
+    fields: [playbackHistory.sessionId],
+    references: [sessions.id],
   }),
 }))

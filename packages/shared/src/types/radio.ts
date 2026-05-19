@@ -31,7 +31,7 @@ export interface ChannelStyle {
 }
 
 export interface Channel {
-  id: string
+  id: number
   name: string
   descriptor: string
   style: ChannelStyle

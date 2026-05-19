@@ -7,19 +7,19 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio",
-    "db:push": "drizzle-kit push",
-    "db:drop": "drizzle-kit drop"
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "studio": "drizzle-kit studio",
+    "push": "drizzle-kit push",
+    "drop": "drizzle-kit drop"
   },
   "dependencies": {
-    "drizzle-orm": "0.44.5",
+    "drizzle-orm": "0.45.2",
     "expo-sqlite": "55.0.15"
   },
   "devDependencies": {
     "@flow/config": "workspace:*",
     "@flow/shared": "workspace:*",
-    "drizzle-kit": "0.31.4"
+    "drizzle-kit": "0.31.10"
   }
 }
