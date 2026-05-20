@@ -11,15 +11,17 @@
     "migrate": "drizzle-kit migrate",
     "studio": "drizzle-kit studio",
     "push": "drizzle-kit push",
-    "drop": "drizzle-kit drop"
+    "drop": "drizzle-kit drop",
+    "test": "vitest run"
   },
   "dependencies": {
+    "@flow/shared": "workspace:*",
     "drizzle-orm": "0.45.2",
     "expo-sqlite": "55.0.15"
   },
   "devDependencies": {
     "@flow/config": "workspace:*",
-    "@flow/shared": "workspace:*",
-    "drizzle-kit": "0.31.10"
+    "drizzle-kit": "0.31.10",
+    "vitest": "4.1.7"
   }
 }

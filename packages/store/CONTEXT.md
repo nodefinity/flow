@@ -1,36 +1,20 @@
-# Library Context
+# Store Context
 
-The local track catalogue. Responsible for storing Track and TrackMetadata, scanning the device file system, and answering CandidateSet queries from the Radio context.
+Zustand-based runtime state management. Holds ephemeral and persisted UI state that does not belong in the database.
 
 ## Language
 
-**Library**:
-The complete set of Tracks available on the device. Persisted in SQLite via Drizzle. The Library is the source of truth for what can be played.
-_Avoid_: collection, catalogue, music database
+**Store**:
+A Zustand store slice that holds runtime state for a specific concern (tracks in memory, settings, future radio session state). Stores may persist selected fields via `zustand/persist` to async storage, but they are not the source of truth for relational data — that lives in `@flow/database`.
+_Avoid_: repository, model, cache
 
-**Scan**:
-The operation of reading audio files from the device file system into the Library. Produces Track records. Scan is user-initiated (from Settings) or triggered on first launch. It is one-way: device → Library.
-_Avoid_: import, sync, refresh
+**Setting Store**:
+User preferences (appearance, language, playback behaviour). Persisted via zustand/persist.
 
-**Local Track**:
-A Track whose `source` is `'local'` — it exists as a file on the device. Its `url` is a file URI.
-_Avoid_: offline track, device track, file track
-
-**Remote Track**:
-A Track whose `source` is `'remote'` — it streams from a URL. Not yet fully supported; reserved for future remote service integration.
-_Avoid_: stream, online track
-
-**CandidateSet Query**:
-A request from the Radio context for tracks matching a Channel Style. The Library answers with a filtered subset. Query parameters are rule-based (genre, mood tags, source). The Library does not rank or sequence — that is the Host's responsibility.
-_Avoid_: search, recommendation query, filter
+**Track Store**:
+Runtime track lists — local tracks loaded from the last Scan, and remote tracks added during the session. Local tracks are refreshed on each Scan; only remote tracks are persisted.
 
 ## Relationships
 
-- The **Library** contains zero or more **Local Tracks** and zero or more **Remote Tracks**
-- A **Scan** populates the **Library** with **Local Tracks**
-- A **CandidateSet Query** returns a subset of the **Library** matching the given Channel Style rules
-
-## Example dialogue
-
-> **Dev:** "When the Host needs songs for the '深夜电台' channel, does it query the Library directly?"
-> **Domain expert:** "The Host sends a CandidateSet Query with the Channel Style rules. The Library returns matching tracks. The Host then decides which ones to play and in what order — the Library just filters, it doesn't rank."
+- **Store → Shared**: Stores operate on `Track` values defined in Shared
+- **Store → Database**: Stores do NOT query the database directly; the app layer reads from Database and pushes data into Stores

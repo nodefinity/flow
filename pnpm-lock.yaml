@@ -223,6 +223,9 @@ importers:
 
   packages/database:
     dependencies:
+      '@flow/shared':
+        specifier: workspace:*
+        version: link:../shared
       drizzle-orm:
         specifier: 0.45.2
         version: 0.45.2(expo-sqlite@55.0.15(expo@55.0.24)(react-native@0.83.6(@babel/core@7.29.0)(@types/react@19.2.14)(react@19.2.6))(react@19.2.6))
@@ -233,12 +236,12 @@ importers:
       '@flow/config':
         specifier: workspace:*
         version: link:../config
-      '@flow/shared':
-        specifier: workspace:*
-        version: link:../shared
       drizzle-kit:
         specifier: 0.31.10
         version: 0.31.10
+      vitest:
+        specifier: 4.1.5
+        version: 4.1.5(@types/node@24.0.3)(vite@8.0.11(@types/node@24.0.3)(esbuild@0.28.0)(jiti@2.4.2)(terser@5.43.1)(tsx@4.22.3)(yaml@2.8.1))
 
   packages/hooks:
     dependencies:
