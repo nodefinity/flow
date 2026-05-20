@@ -1,21 +1,40 @@
+import type { TrackRow } from '@flow/database'
 import type { Track } from '@flow/shared'
 import type { FlashListRef } from '@shopify/flash-list'
+import { getAllTracks } from '@flow/database'
 import { playerController, useDisplayTrack } from '@flow/player'
-import { useTrackStore } from '@flow/store'
 import { FlashList } from '@shopify/flash-list'
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { MINI_HEIGHT } from '@/constants/Player'
 import { useColors } from '@/hooks/useColors'
 import TrackItem from '@/modules/track/TrackItem'
 
+function toTrack(row: TrackRow): Track {
+  return {
+    id: row.id,
+    source: row.source as 'local' | 'remote',
+    title: row.title,
+    artist: row.artist,
+    album: row.album,
+    artwork: row.artwork ?? '',
+    url: row.url,
+    duration: row.duration,
+    createdAt: row.createdAt,
+    modifiedAt: row.modifiedAt,
+    fileSize: row.fileSize,
+  }
+}
+
 export default function HomeScreen() {
   const colors = useColors()
-  const localTracks = useTrackStore.use.localTracks()
-  const remoteTracks = useTrackStore.use.remoteTracks()
-  const tracks = [...localTracks, ...remoteTracks]
+  const [tracks, setTracks] = useState<Track[]>([])
   const activeTrack = useDisplayTrack()
   const listRef = useRef<FlashListRef<Track>>(null)
+
+  useEffect(() => {
+    getAllTracks('sortKey').then(rows => setTracks(rows.map(toTrack)))
+  }, [])
 
   const onTrackPress = useCallback((track: Track) => {
     if (activeTrack?.id === track.id)

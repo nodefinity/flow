@@ -1,7 +1,9 @@
+import type { ChannelStyle } from '@flow/shared'
 import { playerController, useDisplayTrack, usePlayerStore } from '@flow/player'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useColors } from '@/hooks/useColors'
+import { generateProgramme, getProgrammeTracks } from '@/modules/radio/stubHost'
 
 interface ChatMessage {
   id: string
@@ -11,6 +13,8 @@ interface ChatMessage {
   timestamp: number
 }
 
+const DEFAULT_CHANNEL_STYLE: ChannelStyle = {}
+
 export default function RadioScreen() {
   const colors = useColors()
   const displayTrack = useDisplayTrack()
@@ -18,6 +22,22 @@ export default function RadioScreen() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [inputText, setInputText] = useState('')
   const listRef = useRef<FlatList<ChatMessage>>(null)
+
+  const [hasStarted, setHasStarted] = useState(false)
+
+  useEffect(() => {
+    if (hasStarted)
+      return
+    const start = async () => {
+      const programme = await generateProgramme(DEFAULT_CHANNEL_STYLE)
+      if (programme.length === 0)
+        return
+      const tracks = getProgrammeTracks(programme)
+      playerController.playQueue(tracks)
+      setHasStarted(true)
+    }
+    start()
+  }, [hasStarted])
 
   const handlePlayPause = useCallback(() => {
     isPlaying ? playerController.pause() : playerController.play()

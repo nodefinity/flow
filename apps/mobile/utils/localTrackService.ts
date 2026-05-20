@@ -1,94 +1,54 @@
-import type { Track } from '@nodefinity/react-native-music-library'
+import type { TrackInsert } from '@flow/database'
+import { removeTracksNotIn, upsertTracks } from '@flow/database'
 import { getTracksAsync } from '@nodefinity/react-native-music-library'
+import { pinyin } from 'pinyin-pro'
 
-export async function getLocalTracks() {
+function generateSortKey(title: string): string {
+  if (!title)
+    return ''
+  const py = pinyin(title, { toneType: 'none', type: 'array' })
+  return py.map(s => s[0] ?? '').join('').toLowerCase()
+}
+
+export interface ScanProgress {
+  scanned: number
+  hasMore: boolean
+}
+
+export async function scanLocalTracks(
+  onProgress?: (progress: ScanProgress) => void,
+): Promise<string[]> {
   let hasMore = true
-  let cursor
-  const localTracks: Track[] = []
+  let cursor: string | undefined
+  const allIds: string[] = []
 
   while (hasMore) {
-    const result = await getTracksAsync({
-      first: 20,
-      after: cursor,
-    })
+    const result = await getTracksAsync({ first: 50, after: cursor })
+
+    const rows: TrackInsert[] = result.items.map(item => ({
+      id: item.id,
+      source: 'local' as const,
+      title: item.title ?? '',
+      artist: item.artist ?? '',
+      album: item.album ?? '',
+      artwork: item.artwork ?? null,
+      url: item.url,
+      duration: item.duration ?? 0,
+      fileSize: item.fileSize ?? 0,
+      createdAt: item.createdAt ?? 0,
+      modifiedAt: item.modifiedAt ?? 0,
+      sortKey: generateSortKey(item.title ?? ''),
+    }))
+
+    await upsertTracks(rows)
+    allIds.push(...rows.map(r => r.id))
+
+    onProgress?.({ scanned: allIds.length, hasMore: result.hasNextPage })
 
     hasMore = result.hasNextPage
     cursor = result.endCursor
-
-    localTracks.push(...result.items)
   }
 
-  return localTracks
+  await removeTracksNotIn(allIds)
+  return allIds
 }
-
-/**
- * 扫描指定相册中的音频文件
- */
-// export async function getMusicFromAlbum(albumId: string): Promise<Track[]> {
-//   try {
-//     const assets = await MediaLibrary.getAssetsAsync({
-//       album: albumId,
-//       mediaType: MediaLibrary.MediaType.audio,
-//       first: 1000,
-//     })
-
-//     const tracks: Track[] = assets.assets.map((asset: MediaLibrary.Asset) => ({
-//       id: `album-${albumId}-${asset.id}`,
-//       url: asset.uri,
-//       title: asset.filename.replace(/\.[^/.]+$/, ''),
-//       artwork: 'https://via.placeholder.com/300x300?text=Album',
-//       artist: '专辑艺术家',
-//     }))
-
-//     return tracks
-//   }
-//   catch (error) {
-//     console.error('Get music from album error:', error)
-//     return []
-//   }
-// }
-
-// /**
-//  * 获取所有音频相册
-//  */
-// export async function getMusicAlbums(): Promise<MediaLibrary.Album[]> {
-//   try {
-//     const albums = await MediaLibrary.getAlbumsAsync()
-//     return albums
-//   }
-//   catch (error) {
-//     console.error('Get audio albums error:', error)
-//     return []
-//   }
-// }
-
-// /**
-//  * 使用文档选择器让用户选择音频文件
-//  */
-// export async function pickAudioFiles(): Promise<Track[]> {
-//   try {
-//     const result = await DocumentPicker.getDocumentAsync({
-//       type: 'audio/*',
-//       multiple: true,
-//       copyToCacheDirectory: false, // 不复制到缓存目录，直接使用原始URI
-//     })
-
-//     if (!result.canceled && result.assets) {
-//       const tracks: Track[] = result.assets.map((asset, index) => ({
-//         id: `picked-${Date.now()}-${index}`,
-//         url: asset.uri,
-//         title: asset.name.replace(/\.[^/.]+$/, ''), // 移除扩展名
-//         artwork: 'https://via.placeholder.com/300x300?text=Audio', // 默认封面
-//         artist: '用户选择',
-//       }))
-
-//       return tracks
-//     }
-
-//     return []
-//   }
-//   catch (error) {
-//     console.error('Pick audio files error:', error)
-//     return []
-//   }
-// }

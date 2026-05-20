@@ -1,5 +1,51 @@
 import { relations } from 'drizzle-orm'
-import { index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { index, integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+
+// ---------------------------------------------------------------------------
+// Tracks
+// ---------------------------------------------------------------------------
+
+export const tracks = sqliteTable('tracks', {
+  id: text('id').primaryKey(),
+  source: text('source', { enum: ['local', 'remote'] }).notNull().default('local'),
+
+  // basic info
+  title: text('title').notNull().default(''),
+  artist: text('artist').notNull().default(''),
+  album: text('album').notNull().default(''),
+  artwork: text('artwork'),
+  url: text('url').notNull(),
+  duration: real('duration').notNull().default(0),
+
+  // file info
+  fileSize: integer('file_size').notNull().default(0),
+  createdAt: integer('created_at').notNull().default(0),
+  modifiedAt: integer('modified_at').notNull().default(0),
+
+  // metadata (from tag reading)
+  bitrate: integer('bitrate'),
+  sampleRate: integer('sample_rate'),
+  channels: integer('channels'),
+  format: text('format'),
+  year: integer('year'),
+  genre: text('genre'),
+  track: integer('track'),
+  disc: integer('disc'),
+  composer: text('composer'),
+  lyricist: text('lyricist'),
+  lyrics: text('lyrics'),
+  albumArtist: text('album_artist'),
+  comment: text('comment'),
+
+  // sorting
+  sortKey: text('sort_key').notNull().default(''),
+}, table => [
+  index('tracks_title_idx').on(table.title),
+  index('tracks_artist_idx').on(table.artist),
+  index('tracks_album_idx').on(table.album),
+  index('tracks_created_at_idx').on(table.createdAt),
+  index('tracks_sort_key_idx').on(table.sortKey),
+])
 
 // ---------------------------------------------------------------------------
 // Playlists (classic mode)
@@ -79,6 +125,11 @@ export const playbackHistory = sqliteTable('playback_history', {
 // ---------------------------------------------------------------------------
 // Relations
 // ---------------------------------------------------------------------------
+
+export const tracksRelations = relations(tracks, ({ many }) => ({
+  playlistTracks: many(playlistTracks),
+  playbackHistory: many(playbackHistory),
+}))
 
 export const playlistsRelations = relations(playlists, ({ many }) => ({
   playlistTracks: many(playlistTracks),

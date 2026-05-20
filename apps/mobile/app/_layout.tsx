@@ -1,5 +1,5 @@
 import { useAppearanceSetting } from '@flow/hooks'
-import { useSettingStore, useTrackStore } from '@flow/store'
+import { useSettingStore } from '@flow/store'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { ErrorBoundary, Slot } from 'expo-router'
@@ -14,13 +14,12 @@ import '../global.css'
 SplashScreen.preventAutoHideAsync()
 
 export default function RootLayout() {
-  const remoteTracksHydrated = useTrackStore.use.hasHydrated()
   const { effectiveColorScheme } = useAppearanceSetting()
   const isSettingHydrated = useSettingStore.use.hasHydrated()
 
   const localTracksHydrated = useInitLocalTracks()
 
-  if (remoteTracksHydrated && isSettingHydrated && localTracksHydrated) {
+  if (isSettingHydrated && localTracksHydrated) {
     SplashScreen.hideAsync()
   }
   else {
