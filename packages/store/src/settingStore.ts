@@ -1,4 +1,4 @@
-import type { Language, Theme } from '@flow/shared'
+import { Language, Theme } from '@flow/shared'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
@@ -26,8 +26,8 @@ const settingStoreBase = create<SettingStore>()(
           })
         },
 
-        theme: 'auto',
-        language: 'auto',
+        theme: Theme.AUTO,
+        language: Language.AUTO,
 
         updateSetting: partial => set((draft) => {
           Object.assign(draft, partial)

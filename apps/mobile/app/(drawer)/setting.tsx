@@ -1,5 +1,4 @@
-import type { Language, Theme } from '@flow/shared'
-import { useTranslation } from '@flow/shared'
+import { Language, Theme, useTranslation } from '@flow/shared'
 import { useSettingStore } from '@flow/store'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useColors } from '@/hooks/useColors'
@@ -23,9 +22,9 @@ export default function SettingScreen() {
           title={t('setting.appearance.language.title')}
           currentValue={language}
           options={[
-            { value: 'auto', label: t('setting.appearance.language.auto') },
-            { value: 'zh', label: t('setting.appearance.language.chinese') },
-            { value: 'en', label: t('setting.appearance.language.english') },
+            { value: Language.AUTO, label: t('setting.appearance.language.auto') },
+            { value: Language.ZH, label: t('setting.appearance.language.chinese') },
+            { value: Language.EN, label: t('setting.appearance.language.english') },
           ]}
           onValueChange={v => updateSetting({ language: v as Language })}
         />
@@ -33,9 +32,9 @@ export default function SettingScreen() {
           title={t('setting.appearance.theme.title')}
           currentValue={theme}
           options={[
-            { value: 'auto', label: t('setting.appearance.theme.auto') },
-            { value: 'light', label: t('setting.appearance.theme.light') },
-            { value: 'dark', label: t('setting.appearance.theme.dark') },
+            { value: Theme.AUTO, label: t('setting.appearance.theme.auto') },
+            { value: Theme.LIGHT, label: t('setting.appearance.theme.light') },
+            { value: Theme.DARK, label: t('setting.appearance.theme.dark') },
           ]}
           onValueChange={v => updateSetting({ theme: v as Theme })}
         />

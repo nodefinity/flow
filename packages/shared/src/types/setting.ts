@@ -3,6 +3,14 @@ export enum Languages {
   zh = '中文',
 }
 
-export type Language = 'en' | 'zh' | 'auto'
+export enum Language {
+  EN = 'en',
+  ZH = 'zh',
+  AUTO = 'auto',
+}
 
-export type Theme = 'light' | 'dark' | 'auto'
+export enum Theme {
+  LIGHT = 'light',
+  DARK = 'dark',
+  AUTO = 'auto',
+}

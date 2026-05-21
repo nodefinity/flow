@@ -1,7 +1,8 @@
-import type { Track } from '@flow/shared'
+import type { Programme, Segment, Track } from '@flow/shared'
 import type { PlayMode } from './playerStore'
 
 export interface PlayerController {
+  // classic queue
   addToQueue: (track: Track) => void
   insertNext: (track: Track) => void
   removeFromQueue: (trackId: string) => void
@@ -20,6 +21,11 @@ export interface PlayerController {
   syncCurrentIndex: (index: number) => void
 
   seekTo: (position: number) => void
+
+  // radio mode
+  loadProgramme: (programme: Programme) => void
+  nextSegment: () => void
+  onSegmentEnd: (listener: (segment: Segment, index: number) => void) => () => void
 }
 
 export declare const playerController: PlayerController

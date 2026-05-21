@@ -1,7 +1,7 @@
-import type { Track } from '@flow/shared'
+import type { Programme, Segment, Track } from '@flow/shared'
 import type { PlayerController } from './playerController'
 import type { PlayMode } from './playerStore'
-import { usePlayerStore } from './playerStore'
+import { onSegmentEnd, usePlayerStore } from './playerStore'
 
 export const playerController: PlayerController = {
   async addToQueue(track: Track) {
@@ -17,7 +17,7 @@ export const playerController: PlayerController = {
   },
 
   async clearQueue() {
-    usePlayerStore.use.clearQueue()()
+    usePlayerStore.getState().clearQueue()
   },
 
   async play() {
@@ -53,4 +53,16 @@ export const playerController: PlayerController = {
   },
 
   async seekTo(_position: number) {},
+
+  async loadProgramme(programme: Programme) {
+    usePlayerStore.getState().loadProgramme(programme)
+  },
+
+  async nextSegment() {
+    usePlayerStore.getState().nextSegment()
+  },
+
+  onSegmentEnd(listener: (segment: Segment, index: number) => void) {
+    return onSegmentEnd(listener)
+  },
 }

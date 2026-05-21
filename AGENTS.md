@@ -2,6 +2,13 @@
 
 Never ever output anything other than English and Chinese.
 
+## Code style
+
+String literal unions — choose by usage pattern:
+
+- **State / mode values** (compared in multiple places): use `enum`. Avoids magic strings, gives IDE autocomplete. E.g. `PlaybackMode`, `Language`, `Theme`.
+- **Discriminated union `kind` / `type` fields** (written once in object construction): use `type`. E.g. `SegmentKind`, `InterventionKind`, `ChatMessage.type`.
+
 ## Agent skills
 
 ### Issue tracker

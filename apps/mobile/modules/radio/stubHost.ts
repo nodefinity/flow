@@ -38,9 +38,3 @@ export async function generateProgramme(style: ChannelStyle = {}): Promise<Progr
   const selected = shuffle(candidates).slice(0, DEFAULT_PROGRAMME_SIZE)
   return selected.map(row => ({ kind: 'track', track: toTrack(row) }))
 }
-
-export function getProgrammeTracks(programme: Programme): Track[] {
-  return programme
-    .filter(seg => seg.kind === 'track')
-    .map(seg => seg.track)
-}

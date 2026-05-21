@@ -1,4 +1,4 @@
-import type { Language } from '@flow/shared'
+import { Language, Theme } from '@flow/shared'
 import { useSettingStore } from '@flow/store'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -15,14 +15,14 @@ export function useAppearanceSetting() {
 
   useEffect(() => {
     if (language) {
-      const targetLang = language === 'auto' ? systemLanguage : language
+      const targetLang = language === Language.AUTO ? systemLanguage : language
       if (i18n.language !== targetLang) {
         i18n.changeLanguage(targetLang)
       }
     }
   }, [language, systemLanguage, i18n])
 
-  const effectiveColorScheme = currentTheme === 'auto' ? systemColorScheme : currentTheme
+  const effectiveColorScheme = currentTheme === Theme.AUTO ? systemColorScheme : currentTheme
 
   return {
     effectiveColorScheme,

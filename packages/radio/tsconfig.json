@@ -1,0 +1,10 @@
+{
+  "extends": "@flow/config/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@flow/radio/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*"]
+}

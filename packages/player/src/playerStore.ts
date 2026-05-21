@@ -1,4 +1,4 @@
-import type { Track } from '@flow/shared'
+import type { Programme, Segment, Track } from '@flow/shared'
 import { storage } from '@flow/store/providers/storage'
 import { createSelectors } from '@flow/store/utils/createSelectors'
 import { create } from 'zustand'
@@ -11,34 +11,68 @@ export enum PlayMode {
   SHUFFLE = 'shuffle',
 }
 
+export enum PlaybackMode {
+  CLASSIC = 'classic',
+  RADIO = 'radio',
+}
+
+type SegmentEndListener = (finishedSegment: Segment, index: number) => void
+
+const segmentEndListeners = new Set<SegmentEndListener>()
+
+export function onSegmentEnd(listener: SegmentEndListener): () => void {
+  segmentEndListeners.add(listener)
+  return () => {
+    segmentEndListeners.delete(listener)
+  }
+}
+
+export function emitSegmentEnd(segment: Segment, index: number) {
+  for (const listener of segmentEndListeners) {
+    listener(segment, index)
+  }
+}
+
 interface PlayerStore {
+  // shared
+  playbackMode: PlaybackMode
+  isPlaying: boolean
+
+  // classic mode
   queue: Track[]
   originalQueue: Track[]
   currentIndex: number
   mode: PlayMode
-  isPlaying: boolean
+
+  // radio mode
+  programme: Programme
+  nowPlayingSegmentIndex: number
 }
 
 interface PlayerStoreActions {
-  // queue management
+  // queue management (classic)
   addToQueue: (track: Track) => void
   insertNext: (track: Track) => void
   removeFromQueue: (trackId: string) => void
   clearQueue: () => void
 
   // play control
-  play: () => void // play current track
-  pause: () => void // pause current track
-  playTrack: (track: Track) => void // // Jump to track, then play
-  playQueue: (tracks: Track[], startTrack?: Track) => void // Replace queue + optional jump
-  next: (userControl?: boolean) => void // Next track
-  prev: () => void // Previous track
+  play: () => void
+  pause: () => void
+  playTrack: (track: Track) => void
+  playQueue: (tracks: Track[], startTrack?: Track) => void
+  next: (userControl?: boolean) => void
+  prev: () => void
 
-  // play mode
+  // play mode (classic)
   setMode: (mode: PlayMode) => void
 
   // sync
   setCurrentIndex: (index: number) => void
+
+  // radio mode
+  loadProgramme: (programme: Programme) => void
+  nextSegment: () => void
 }
 
 function shuffle<T>(array: T[]): T[] {
@@ -54,11 +88,18 @@ const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
   immer(
     persist(
       set => ({
+        playbackMode: PlaybackMode.CLASSIC,
+        isPlaying: false,
+
+        // classic
         queue: [],
         originalQueue: [],
         currentIndex: 0,
         mode: PlayMode.ORDERED,
-        isPlaying: false,
+
+        // radio
+        programme: [] as Programme,
+        nowPlayingSegmentIndex: 0,
 
         // Add a track to the queue's end
         addToQueue: (track) => {
@@ -136,15 +177,17 @@ const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
 
         playTrack: (track) => {
           set((draft) => {
+            draft.playbackMode = PlaybackMode.CLASSIC
+            draft.programme = []
+            draft.nowPlayingSegmentIndex = 0
+
             const existingIndex = draft.queue.findIndex(t => t.id === track.id)
 
             if (existingIndex >= 0) {
-              // if the track is in the queue, play it
               draft.currentIndex = existingIndex
               draft.isPlaying = true
             }
             else {
-              // if the track is not in the queue, add it to the end of the queue and play it
               draft.queue.push(track)
               draft.currentIndex = draft.queue.length - 1
               draft.isPlaying = true
@@ -154,6 +197,10 @@ const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
 
         playQueue: (tracks, startTrack) => {
           set((draft) => {
+            draft.playbackMode = PlaybackMode.CLASSIC
+            draft.programme = []
+            draft.nowPlayingSegmentIndex = 0
+
             const newQueue = draft.mode === PlayMode.SHUFFLE ? shuffle(tracks) : tracks
 
             let startIndex = 0
@@ -230,11 +277,44 @@ const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
             draft.currentIndex = index
           })
         },
+
+        loadProgramme: (programme) => {
+          set((draft) => {
+            draft.playbackMode = PlaybackMode.RADIO
+            draft.programme = programme
+            draft.nowPlayingSegmentIndex = 0
+            draft.isPlaying = true
+          })
+        },
+
+        nextSegment: () => {
+          set((draft) => {
+            if (draft.playbackMode !== PlaybackMode.RADIO)
+              return
+            if (draft.programme.length === 0)
+              return
+
+            const finishedIndex = draft.nowPlayingSegmentIndex
+            const finishedSegment = draft.programme[finishedIndex]
+
+            let next = finishedIndex + 1
+            if (next >= draft.programme.length) {
+              draft.isPlaying = false
+              next = draft.programme.length - 1
+            }
+            draft.nowPlayingSegmentIndex = next
+
+            if (finishedSegment) {
+              queueMicrotask(() => emitSegmentEnd(finishedSegment, finishedIndex))
+            }
+          })
+        },
       }),
       {
         name: 'player-store',
         storage,
         partialize: state => ({
+          playbackMode: state.playbackMode,
           queue: state.queue,
           originalQueue: state.originalQueue,
           currentIndex: state.currentIndex,

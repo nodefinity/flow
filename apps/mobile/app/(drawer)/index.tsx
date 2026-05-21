@@ -1,17 +1,10 @@
-import type { ChannelStyle } from '@flow/shared'
-import { playerController, useDisplayTrack, usePlayerStore } from '@flow/player'
+import type { ChannelStyle, ChatMessage } from '@flow/shared'
+import { PlaybackMode, playerController, useDisplayTrack, usePlayerStore } from '@flow/player'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useColors } from '@/hooks/useColors'
-import { generateProgramme, getProgrammeTracks } from '@/modules/radio/stubHost'
-
-interface ChatMessage {
-  id: string
-  role: 'user' | 'host'
-  text: string
-  kind: string
-  timestamp: number
-}
+import { useChatTimelineStore } from '@/modules/radio/chatTimelineStore'
+import { generateProgramme } from '@/modules/radio/stubHost'
 
 const DEFAULT_CHANNEL_STYLE: ChannelStyle = {}
 
@@ -19,25 +12,58 @@ export default function RadioScreen() {
   const colors = useColors()
   const displayTrack = useDisplayTrack()
   const isPlaying = usePlayerStore.use.isPlaying()
-  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const playbackMode = usePlayerStore.use.playbackMode()
+  const nowPlayingSegmentIndex = usePlayerStore.use.nowPlayingSegmentIndex()
+  const programme = usePlayerStore.use.programme()
+
+  const messages = useChatTimelineStore(state => state.messages)
+  const appendMessage = useChatTimelineStore(state => state.appendMessage)
+  const clearTimeline = useChatTimelineStore(state => state.clearTimeline)
+
   const [inputText, setInputText] = useState('')
   const listRef = useRef<FlatList<ChatMessage>>(null)
-
   const [hasStarted, setHasStarted] = useState(false)
 
   useEffect(() => {
     if (hasStarted)
       return
     const start = async () => {
-      const programme = await generateProgramme(DEFAULT_CHANNEL_STYLE)
-      if (programme.length === 0)
+      const prog = await generateProgramme(DEFAULT_CHANNEL_STYLE)
+      if (prog.length === 0)
         return
-      const tracks = getProgrammeTracks(programme)
-      playerController.playQueue(tracks)
+      clearTimeline()
+      playerController.loadProgramme(prog)
       setHasStarted(true)
     }
     start()
-  }, [hasStarted])
+  }, [hasStarted, clearTimeline])
+
+  useEffect(() => {
+    if (playbackMode !== PlaybackMode.RADIO)
+      return
+    const segment = programme[nowPlayingSegmentIndex]
+    if (!segment || segment.kind !== 'track')
+      return
+
+    appendMessage({
+      type: 'now-playing',
+      track: segment.track,
+      timestamp: Date.now(),
+    })
+  }, [playbackMode, nowPlayingSegmentIndex, programme, appendMessage])
+
+  useEffect(() => {
+    const unsub = playerController.onSegmentEnd((segment) => {
+      if (segment.kind === 'interlude') {
+        appendMessage({
+          type: 'interlude',
+          script: segment.script,
+          timestamp: Date.now(),
+        })
+      }
+    })
+    return unsub
+  }, [appendMessage])
 
   const handlePlayPause = useCallback(() => {
     isPlaying ? playerController.pause() : playerController.play()
@@ -47,31 +73,43 @@ export default function RadioScreen() {
     if (!inputText.trim())
       return
 
-    const userMsg: ChatMessage = {
-      id: Date.now().toString(),
-      role: 'user',
+    appendMessage({
+      type: 'user-turn',
       text: inputText.trim(),
-      kind: 'text',
       timestamp: Date.now(),
-    }
-    setMessages(prev => [...prev, userMsg])
+    })
     setInputText('')
 
-    // Stub: host acknowledgement
+    // TODO: (#48): replace stub with real Host Service intervention
     setTimeout(() => {
-      const hostMsg: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'host',
+      appendMessage({
+        type: 'host-turn',
         text: '好的，我来为你调整。',
-        kind: 'acknowledgement',
         timestamp: Date.now(),
-      }
-      setMessages(prev => [...prev, hostMsg])
+      })
     }, 1000)
-  }, [inputText])
+  }, [inputText, appendMessage])
 
   const renderMessage = useCallback(({ item }: { item: ChatMessage }) => {
-    const isUser = item.role === 'user'
+    if (item.type === 'now-playing') {
+      return (
+        <View style={[styles.nowPlayingCard, { backgroundColor: colors.secondary }]}>
+          <Text style={[styles.nowPlayingLabel, { color: colors.mutedForeground }]}>Now Playing</Text>
+          <Text style={[styles.nowPlayingTitle, { color: colors.foreground }]}>{item.track.title}</Text>
+          <Text style={[styles.nowPlayingArtist, { color: colors.mutedForeground }]}>{item.track.artist}</Text>
+        </View>
+      )
+    }
+
+    if (item.type === 'interlude') {
+      return (
+        <View style={[styles.messageBubble, styles.hostBubble]}>
+          <Text style={[styles.messageText, { color: colors.foreground }]}>{item.script}</Text>
+        </View>
+      )
+    }
+
+    const isUser = item.type === 'user-turn'
     return (
       <View style={[styles.messageBubble, isUser ? styles.userBubble : styles.hostBubble]}>
         <Text style={[styles.messageText, { color: isUser ? '#fff' : colors.foreground }]}>
@@ -79,7 +117,9 @@ export default function RadioScreen() {
         </Text>
       </View>
     )
-  }, [colors.foreground])
+  }, [colors])
+
+  const keyExtractor = useCallback((_: ChatMessage, index: number) => String(index), [])
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -95,6 +135,9 @@ export default function RadioScreen() {
                   <Text style={[styles.trackArtist, { color: colors.mutedForeground }]} numberOfLines={1}>
                     {displayTrack.artist}
                   </Text>
+                </View>
+                <View style={styles.waveformPlaceholder}>
+                  <Text style={{ color: colors.mutedForeground, fontSize: 12 }}>[~~~]</Text>
                 </View>
                 <Pressable onPress={handlePlayPause} hitSlop={8}>
                   <Text style={{ color: colors.foreground, fontSize: 24 }}>
@@ -115,7 +158,7 @@ export default function RadioScreen() {
         ref={listRef}
         data={messages}
         renderItem={renderMessage}
-        keyExtractor={item => item.id}
+        keyExtractor={keyExtractor}
         style={styles.timeline}
         contentContainerStyle={styles.timelineContent}
         onContentSizeChange={() => listRef.current?.scrollToEnd()}
@@ -159,10 +202,15 @@ const styles = StyleSheet.create({
   trackTitle: { fontSize: 16, fontWeight: '600' },
   trackArtist: { fontSize: 13, marginTop: 2 },
   noTrack: { fontSize: 14 },
+  waveformPlaceholder: { marginRight: 12 },
   // Timeline
   timeline: { flex: 1 },
   timelineContent: { padding: 16, gap: 8 },
   emptyTimeline: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 100 },
+  nowPlayingCard: { paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10 },
+  nowPlayingLabel: { fontSize: 11, fontWeight: '600', textTransform: 'uppercase', marginBottom: 2 },
+  nowPlayingTitle: { fontSize: 15, fontWeight: '600' },
+  nowPlayingArtist: { fontSize: 13, marginTop: 2 },
   messageBubble: { maxWidth: '80%', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12 },
   userBubble: { alignSelf: 'flex-end', backgroundColor: 'hsl(38 92% 50%)' },
   hostBubble: { alignSelf: 'flex-start', backgroundColor: 'hsl(30 8% 18%)' },
