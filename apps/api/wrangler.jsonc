@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "flow-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-06-25",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "vars": {
+    // Comma-separated origins allowed to submit waitlist requests.
+    // For same-origin deployment through a Worker route, this can stay local-only.
+    "ALLOWED_ORIGINS": "http://localhost:4321,http://localhost:8787,https://flow-dcx.pages.dev"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "flow-waitlist",
+      "database_id": "9a2f5763-45ba-40f3-b694-b3385f94294e"
+    }
+  ]
+}

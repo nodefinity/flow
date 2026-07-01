@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Flow app icon wordmark W</title>
+  <desc id="desc">A Flow app icon with a flowing dot-matrix W derived from the final letter of the Flow wordmark.</desc>
+  <defs>
+    <pattern id="w-bg-dot-v6" width="44" height="44" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="3.2" fill="#16c7df" opacity="0.13" />
+    </pattern>
+    <pattern id="w-letter-dot-v6" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="9.4" fill="#101010" />
+    </pattern>
+    <mask id="w-wordmark-mask-v6" maskUnits="userSpaceOnUse">
+      <rect width="1024" height="1024" fill="#000000" />
+      <path
+        d="M176 298 C216 466 232 628 278 760 C296 812 350 810 382 754 C426 676 454 506 496 394 C524 320 574 320 604 394 C648 506 674 676 720 754 C752 810 806 812 824 760 C870 628 886 466 928 298"
+        fill="none"
+        stroke="#ffffff"
+        stroke-width="128"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </mask>
+  </defs>
+
+  <rect width="1024" height="1024" rx="220" fill="#fffaf1" />
+  <rect width="1024" height="1024" rx="220" fill="url(#w-bg-dot-v6)" />
+  <rect x="110" y="118" width="804" height="788" rx="184" fill="#fffdf7" opacity="0.72" />
+  <rect x="88" y="154" width="872" height="736" fill="url(#w-letter-dot-v6)" mask="url(#w-wordmark-mask-v6)" />
+
+  <g aria-hidden="true">
+    <circle cx="474" cy="500" r="14" fill="#5ee0ad" />
+    <circle cx="512" cy="500" r="14" fill="#5ee0ad" />
+    <circle cx="550" cy="500" r="14" fill="#5ee0ad" />
+  </g>
+</svg>

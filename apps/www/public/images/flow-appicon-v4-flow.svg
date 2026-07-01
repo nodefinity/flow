@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Flow app icon compact wordmark</title>
+  <desc id="desc">A Flow app icon using a compact dot-matrix F, l, O, and w monogram.</desc>
+  <defs>
+    <pattern id="icon-bg-dot-v4" width="44" height="44" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="3.2" fill="#16c7df" opacity="0.13" />
+    </pattern>
+    <pattern id="icon-letter-dot-v4" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="9.2" fill="#101010" />
+    </pattern>
+    <mask id="flow-icon-mask-v4" maskUnits="userSpaceOnUse">
+      <rect width="1024" height="1024" fill="#000000" />
+
+      <rect x="124" y="222" width="78" height="580" rx="39" fill="#ffffff" />
+      <rect x="124" y="222" width="280" height="78" rx="39" fill="#ffffff" />
+      <rect x="124" y="462" width="224" height="78" rx="39" fill="#ffffff" />
+
+      <rect x="392" y="222" width="64" height="580" rx="32" fill="#ffffff" />
+
+      <circle cx="548" cy="528" r="128" fill="#ffffff" />
+      <circle cx="548" cy="528" r="56" fill="#000000" />
+
+      <path
+        d="M680 390 L722 802 L774 514 L824 802 L876 514 L920 802"
+        stroke="#ffffff"
+        stroke-width="70"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </mask>
+  </defs>
+
+  <rect width="1024" height="1024" rx="220" fill="#fffaf1" />
+  <rect width="1024" height="1024" rx="220" fill="url(#icon-bg-dot-v4)" />
+  <rect x="104" y="112" width="816" height="800" rx="184" fill="#fffdf7" opacity="0.78" />
+  <rect x="86" y="182" width="876" height="660" fill="url(#icon-letter-dot-v4)" mask="url(#flow-icon-mask-v4)" />
+
+  <g aria-hidden="true">
+    <circle cx="492" cy="528" r="13.6" fill="#5ee0ad" />
+    <circle cx="548" cy="528" r="13.6" fill="#5ee0ad" />
+    <circle cx="604" cy="528" r="13.6" fill="#5ee0ad" />
+  </g>
+</svg>

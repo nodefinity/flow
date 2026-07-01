@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Flow app icon solid flowing W</title>
+  <desc id="desc">A warm cream Flow app icon with a solid flowing W mark and dot signal accents.</desc>
+  <rect width="1024" height="1024" rx="220" fill="#fffaf1" />
+  <path
+    d="M160 394 C222 778 338 792 412 468 C462 250 574 250 628 468 C706 792 818 778 864 394"
+    fill="none"
+    stroke="#101010"
+    stroke-width="126"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <g aria-hidden="true">
+    <circle cx="468" cy="510" r="16" fill="#5ee0ad" />
+    <circle cx="512" cy="510" r="16" fill="#5ee0ad" />
+    <circle cx="556" cy="510" r="16" fill="#5ee0ad" />
+  </g>
+</svg>

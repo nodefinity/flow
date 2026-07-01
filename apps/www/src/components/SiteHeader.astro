@@ -1,0 +1,34 @@
+---
+import type { HeaderCopy } from '../i18n/landing'
+
+interface Props {
+  copy: HeaderCopy
+}
+
+const { copy } = Astro.props
+---
+
+<header class="site-header" data-site-header>
+  <a class="brand" href="/" aria-label={copy.brandAriaLabel} data-i18n-aria-label="header.brandAriaLabel">
+    <img
+      src="/images/flow-logo-v3-dotmatrix.svg"
+      alt=""
+      width="1280"
+      height="360"
+    />
+  </a>
+  <nav class="site-nav" aria-label={copy.navAriaLabel} data-i18n-aria-label="header.navAriaLabel">
+    <a href="#radio" data-i18n="header.nav.radio">{copy.nav.radio}</a>
+    <a href="#channels" data-i18n="header.nav.channels">{copy.nav.channels}</a>
+    <a href="#host" data-i18n="header.nav.host">{copy.nav.host}</a>
+    <a href="#programme" data-i18n="header.nav.programme">{copy.nav.programme}</a>
+  </nav>
+  <div class="header-actions">
+    <a class="header-login" href="#interface" data-i18n="header.preview">{copy.preview}</a>
+    <div class="language-switcher" role="group" aria-label={copy.languageAriaLabel} data-i18n-aria-label="header.languageAriaLabel">
+      <button class="is-active" type="button" data-language-option="en" aria-pressed="true" data-i18n="header.languageOptions.en">{copy.languageOptions.en}</button>
+      <button type="button" data-language-option="zh" aria-pressed="false" data-i18n="header.languageOptions.zh">{copy.languageOptions.zh}</button>
+    </div>
+    <a class="header-action" href="#research" data-i18n="header.joinResearch">{copy.joinResearch}</a>
+  </div>
+</header>

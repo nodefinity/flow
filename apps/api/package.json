@@ -1,0 +1,19 @@
+{
+  "name": "@flow/api",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --local --port 8787",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "cf-typegen": "wrangler types src/worker-configuration.d.ts",
+    "db:migrate:local": "wrangler d1 migrations apply flow-waitlist --local",
+    "db:migrate:remote": "wrangler d1 migrations apply flow-waitlist --remote"
+  },
+  "devDependencies": {
+    "@types/node": "26.0.1",
+    "typescript": "5.9.2",
+    "wrangler": "4.104.0"
+  }
+}

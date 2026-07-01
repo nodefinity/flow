@@ -5,6 +5,7 @@ node_modules/
 
 # Expo
 .expo/
+.astro/
 dist/
 web-build/
 expo-env.d.ts
@@ -41,3 +42,6 @@ app-example
 
 # turbo
 .turbo/
+
+# Cloudflare Wrangler local state
+.wrangler/

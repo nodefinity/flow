@@ -1,0 +1,44 @@
+---
+import type { FooterCopy } from '../i18n/landing'
+
+interface Props {
+  copy: FooterCopy
+}
+
+const { copy } = Astro.props
+
+const feedbackUrl = import.meta.env.PUBLIC_FEEDBACK_URL
+  ?? 'https://github.com/nodefinity/flow/issues/new?title=Flow%20feedback&body=What%20did%20you%20think%20about%20Flow%3F%0A%0AWhat%20felt%20unclear%20or%20useful%3F'
+---
+
+<footer class="site-footer">
+  <div>
+    <a class="footer-brand" href="/" aria-label={copy.brandAriaLabel} data-i18n-aria-label="footer.brandAriaLabel">
+      <img
+        src="/images/flow-logo-v3-dotmatrix-mono.svg"
+        alt=""
+        width="1280"
+        height="360"
+      />
+    </a>
+    <p data-i18n="footer.body">{copy.body}</p>
+  </div>
+  <nav class="footer-links" aria-label={copy.productAriaLabel} data-i18n-aria-label="footer.productAriaLabel">
+    <strong data-i18n="footer.productTitle">{copy.productTitle}</strong>
+    <a href="#radio" data-i18n="footer.productLinks.radio">{copy.productLinks.radio}</a>
+    <a href="#channels" data-i18n="footer.productLinks.channels">{copy.productLinks.channels}</a>
+    <a href="#interface" data-i18n="footer.productLinks.interface">{copy.productLinks.interface}</a>
+  </nav>
+  <nav class="footer-links" aria-label={copy.researchAriaLabel} data-i18n-aria-label="footer.researchAriaLabel">
+    <strong data-i18n="footer.researchTitle">{copy.researchTitle}</strong>
+    <a href="#host" data-i18n="footer.researchLinks.host">{copy.researchLinks.host}</a>
+    <a href="#research" data-i18n="footer.researchLinks.join">{copy.researchLinks.join}</a>
+    <a href={feedbackUrl} target="_blank" rel="noreferrer" data-i18n="footer.researchLinks.feedback">{copy.researchLinks.feedback}</a>
+  </nav>
+  <nav class="footer-links" aria-label={copy.principlesAriaLabel} data-i18n-aria-label="footer.principlesAriaLabel">
+    <strong data-i18n="footer.principlesTitle">{copy.principlesTitle}</strong>
+    <a href="#private" data-i18n="footer.principleLinks.local">{copy.principleLinks.local}</a>
+    <a href="#private" data-i18n="footer.principleLinks.private">{copy.principleLinks.private}</a>
+    <a href="#programme" data-i18n="footer.principleLinks.programme">{copy.principleLinks.programme}</a>
+  </nav>
+</footer>

@@ -1,0 +1,216 @@
+---
+import WaitlistForm from '../components/WaitlistForm.astro'
+import { defaultLanguage, landingCopy } from '../i18n/landing'
+import BaseLayout from '../layouts/BaseLayout.astro'
+
+const waveformBars = [
+  12, 24, 16, 32, 20, 38, 18, 28, 14, 34, 22, 40, 18, 30, 16,
+  26, 36, 20, 31, 15, 24, 34, 19, 28, 13, 30, 21, 26, 17, 23,
+]
+
+const copy = landingCopy[defaultLanguage]
+---
+
+<BaseLayout
+  title={copy.meta.title}
+  description={copy.meta.description}
+  bodyClass="flow-landing"
+  language={defaultLanguage}
+>
+  <main>
+    <section id="radio" class="hero" data-hero-scene>
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <div class="hero-pill" data-hero-item>
+            <span class="status-dot" aria-hidden="true"></span>
+            <span data-i18n="hero.eyebrow">{copy.hero.eyebrow}</span>
+          </div>
+
+          <h1 data-hero-item data-i18n="hero.title">{copy.hero.title}</h1>
+          <p data-hero-item data-i18n="hero.intro">{copy.hero.intro}</p>
+          <p class="hero-subcopy" data-hero-item data-i18n="hero.subcopy">{copy.hero.subcopy}</p>
+
+          <div class="hero-actions" data-hero-item>
+            <a class="button primary" href="#research">
+              <span data-i18n="hero.primaryCta">{copy.hero.primaryCta}</span>
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M7 17 17 7M9 7h8v8"></path>
+              </svg>
+            </a>
+            <a class="button secondary" href="#interface">
+              <span data-i18n="hero.secondaryCta">{copy.hero.secondaryCta}</span>
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"></path>
+              </svg>
+            </a>
+          </div>
+
+          <div class="hero-highlights" data-hero-item>
+            {copy.hero.highlights.map((item, index) => (
+              <article>
+                <strong data-i18n={`hero.highlights.${index}.title`}>{item.title}</strong>
+                <span data-i18n={`hero.highlights.${index}.body`}>{item.body}</span>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="hero-showcase image-showcase" data-hero-item data-tilt-panel>
+          <img
+            class="hero-radio-art"
+            src="/images/flow-hero-radio-tight.png"
+            alt={copy.hero.radioAlt}
+            data-i18n-alt="hero.radioAlt"
+            width="992"
+            height="893"
+            loading="eager"
+            decoding="async"
+          />
+          <img
+            class="hero-phone-art"
+            src="/images/flow-hero-app-home-tight.png"
+            alt={copy.hero.phoneAlt}
+            data-i18n-alt="hero.phoneAlt"
+            width="728"
+            height="1571"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </div>
+
+      <div class="hero-feature-row" aria-label={copy.hero.capabilityAriaLabel} data-i18n-aria-label="hero.capabilityAriaLabel">
+        {copy.hero.features.map((card, index) => (
+          <article class:list={['hero-feature', card.accent]} data-reveal>
+            <div class="dot-icon" aria-hidden="true"></div>
+            <div>
+              <h2 data-i18n={`hero.features.${index}.title`}>{card.title}</h2>
+              <p data-i18n={`hero.features.${index}.body`}>{card.body}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="channels" class="section channels-section" data-reveal-group>
+      <div class="section-heading" data-reveal>
+        <span data-i18n="channels.eyebrow">{copy.channels.eyebrow}</span>
+        <h2 data-i18n="channels.title">{copy.channels.title}</h2>
+        <p data-i18n="channels.body">{copy.channels.body}</p>
+      </div>
+
+      <div class="channel-grid">
+        {copy.channels.items.map((channel, index) => (
+          <article class="channel-card" data-reveal data-parallax-card>
+            <div class="channel-dots" aria-hidden="true"></div>
+            <span data-i18n={`channels.items.${index}.state`}>{channel.state}</span>
+            <h3 data-i18n={`channels.items.${index}.name`}>{channel.name}</h3>
+            <p data-i18n={`channels.items.${index}.body`}>{channel.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="host" class="section host-section" data-reveal-group>
+      <div class="split-copy" data-reveal>
+        <span data-i18n="host.eyebrow">{copy.host.eyebrow}</span>
+        <h2 data-i18n="host.title">{copy.host.title}</h2>
+        <p data-i18n="host.body">{copy.host.body}</p>
+      </div>
+
+      <div class="host-demo-card" data-reveal>
+        <div class="host-demo-top">
+          <span data-i18n="host.transcriptLabel">{copy.host.transcriptLabel}</span>
+          <strong data-i18n="host.transcriptTitle">{copy.host.transcriptTitle}</strong>
+        </div>
+        <div class="transcript-list">
+          {copy.host.lines.map((line, index) => (
+            <div class:list={['transcript-line', { listener: line.listener }]}>
+              <time>{line.time}</time>
+              <div>
+                <strong data-i18n={`host.lines.${index}.speaker`}>{line.speaker}</strong>
+                <p data-i18n={`host.lines.${index}.body`}>{line.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="intervention-dock large">
+          {copy.host.interventions.map((intervention, index) => (
+            <button type="button" data-i18n={`host.interventions.${index}`}>{intervention}</button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="interface" class="section interface-section" data-reveal-group>
+      <div class="section-heading centered" data-reveal>
+        <span data-i18n="interface.eyebrow">{copy.interface.eyebrow}</span>
+        <h2 data-i18n="interface.title">{copy.interface.title}</h2>
+        <p data-i18n="interface.body">{copy.interface.body}</p>
+      </div>
+
+      <div class="interface-grid">
+        {copy.interface.items.map((item, index) => (
+          <article data-reveal>
+            <strong data-i18n={`interface.items.${index}.title`}>{item.title}</strong>
+            <span data-i18n={`interface.items.${index}.body`}>{item.body}</span>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="programme" class="section programme-section" data-reveal-group>
+      <div class="section-heading" data-reveal>
+        <span data-i18n="programme.eyebrow">{copy.programme.eyebrow}</span>
+        <h2 data-i18n="programme.title">{copy.programme.title}</h2>
+        <p data-i18n="programme.body">{copy.programme.body}</p>
+      </div>
+
+      <div class="programme-grid">
+        {copy.programme.items.map((card, index) => (
+          <article class="programme-card" data-reveal>
+            <div class="programme-wave" aria-hidden="true">
+              {waveformBars.slice(0, 10).map((height, barIndex) => (
+                <i style={`--bar-height: ${Math.max(10, height - 8)}px; --i: ${barIndex}`} />
+              ))}
+            </div>
+            <h3 data-i18n={`programme.items.${index}.title`}>{card.title}</h3>
+            <p data-i18n={`programme.items.${index}.body`}>{card.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="private" class="section private-section" data-reveal-group>
+      <div class="private-panel" data-reveal>
+        <div>
+          <span data-i18n="privacy.eyebrow">{copy.privacy.eyebrow}</span>
+          <h2 data-i18n="privacy.title">{copy.privacy.title}</h2>
+          <p data-i18n="privacy.body">{copy.privacy.body}</p>
+        </div>
+        <ul>
+          {copy.privacy.principles.map((principle, index) => (
+            <li data-i18n={`privacy.principles.${index}`}>{principle}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section id="research" class="section research-section" data-reveal-group>
+      <div class="research-card">
+        <div class="research-copy" data-reveal>
+          <span data-i18n="research.eyebrow">{copy.research.eyebrow}</span>
+          <h2 data-i18n="research.title">{copy.research.title}</h2>
+          <p data-i18n="research.body">{copy.research.body}</p>
+          <div class="research-notes">
+            {copy.research.notes.map((note, index) => (
+              <span data-i18n={`research.notes.${index}`}>{note}</span>
+            ))}
+          </div>
+        </div>
+        <WaitlistForm copy={copy.form} />
+      </div>
+    </section>
+  </main>
+</BaseLayout>
