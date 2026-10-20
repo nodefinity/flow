@@ -1,7 +1,7 @@
-import { storage } from '@flow/store/providers/storage'
-import { createSelectors } from '@flow/store/utils/createSelectors'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { storage } from '../providers/storage'
+import { createSelectors } from '../utils/createSelectors'
 
 interface PlaybackStore {
   position: number // seconds

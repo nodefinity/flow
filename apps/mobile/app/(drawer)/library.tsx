@@ -2,7 +2,7 @@ import type { TrackRow } from '@flow/database'
 import type { Track } from '@flow/shared'
 import type { FlashListRef } from '@shopify/flash-list'
 import { getAllTracks } from '@flow/database'
-import { playerController, useDisplayTrack } from '@flow/player'
+import { useDisplayTrack, usePlayerStore } from '@flow/store'
 import { FlashList } from '@shopify/flash-list'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
@@ -39,7 +39,7 @@ export default function HomeScreen() {
   const onTrackPress = useCallback((track: Track) => {
     if (activeTrack?.id === track.id)
       return
-    playerController.playQueue(tracks, track)
+    usePlayerStore.getState().playQueue(tracks, track)
   }, [activeTrack?.id, tracks])
 
   const handleScrollToActive = useCallback(() => {

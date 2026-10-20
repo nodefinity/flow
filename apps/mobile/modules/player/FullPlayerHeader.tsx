@@ -1,4 +1,4 @@
-import { useDisplayTrack } from '@flow/player'
+import { useDisplayTrack } from '@flow/store'
 import { StyleSheet, Text, View } from 'react-native'
 import { ScrollingText } from '@/components/ui/ScrollingText'
 

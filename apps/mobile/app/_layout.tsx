@@ -6,9 +6,10 @@ import { ErrorBoundary, Slot } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { ToastProvider } from '@/components/ui/Toast'
 import { useInitLocalTracks } from '@/hooks/useInitLocalTracks'
-import { Player } from '@/modules/player'
+import { ExpoAudioEngine } from '@/modules/audio/ExpoAudioEngine'
 import '../global.css'
 
 SplashScreen.preventAutoHideAsync()
@@ -31,13 +32,16 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={effectiveColorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <GestureHandlerRootView className="flex-1">
-        <BottomSheetModalProvider>
-          <ToastProvider>
-            <StatusBar style={statusBarStyle} />
-            <Slot />
-            <Player />
-          </ToastProvider>
-        </BottomSheetModalProvider>
+        <KeyboardProvider>
+          <BottomSheetModalProvider>
+            <ToastProvider>
+              <StatusBar style={statusBarStyle} />
+              <ExpoAudioEngine />
+              <Slot />
+              {/* <Player /> */}
+            </ToastProvider>
+          </BottomSheetModalProvider>
+        </KeyboardProvider>
       </GestureHandlerRootView>
     </ThemeProvider>
   )

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@follow/store/*": ["./src/*"],
+      "@flow/store/*": ["./src/*"],
       "@pkg": ["../../package.json"]
     }
   },

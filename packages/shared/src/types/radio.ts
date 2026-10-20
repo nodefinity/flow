@@ -30,11 +30,16 @@ export interface ChannelStyle {
   moodTags?: string[]
 }
 
+export enum HostVoice {
+  DEFAULT = 'default',
+}
+
 export interface Channel {
   id: number
   name: string
   descriptor: string
   style: ChannelStyle
+  hostVoice: HostVoice
 }
 
 export type InterventionKind = 'track-request' | 'mood-change' | 'free-instruction'
@@ -42,4 +47,5 @@ export type InterventionKind = 'track-request' | 'mood-change' | 'free-instructi
 export interface Intervention {
   kind: InterventionKind
   text: string
+  trackId?: string
 }

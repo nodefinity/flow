@@ -1,223 +1,411 @@
-import type { ChannelStyle, ChatMessage } from '@flow/shared'
-import { PlaybackMode, playerController, useDisplayTrack, usePlayerStore } from '@flow/player'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import type { Channel, ChatMessage } from '@flow/shared'
+import type { ComponentProps } from 'react'
+import type { ListRenderItemInfo } from 'react-native'
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { formatDuration, HostVoice } from '@flow/shared'
+import { onSegmentEnd, onSegmentStart, PlaybackMode, useChatTimelineStore, useDisplayTrack, usePlaybackStore, usePlayerStore } from '@flow/store'
+import { Image } from 'expo-image'
+import { LinearGradient } from 'expo-linear-gradient'
+import { StatusBar } from 'expo-status-bar'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FlatList, Pressable, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native'
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useColors } from '@/hooks/useColors'
-import { useChatTimelineStore } from '@/modules/radio/chatTimelineStore'
-import { generateProgramme } from '@/modules/radio/stubHost'
+import { programmeManager } from '@/modules/radio/programmeManager'
 
-const DEFAULT_CHANNEL_STYLE: ChannelStyle = {}
+const DEFAULT_CHANNEL: Channel = {
+  id: 0,
+  name: 'Flow Radio',
+  descriptor: '雨夜电台',
+  style: {
+    energyLevel: 'low',
+    moodTags: ['quiet', 'night', 'rain'],
+  },
+  hostVoice: HostVoice.DEFAULT,
+}
+
+type AppColors = ReturnType<typeof useColors>
+type IconName = ComponentProps<typeof Ionicons>['name']
+
+function IconButton({
+  accessibilityLabel,
+  colors,
+  disabled = false,
+  icon,
+  onPress,
+  size = 48,
+}: {
+  accessibilityLabel: string
+  colors: AppColors
+  disabled?: boolean
+  icon: IconName
+  onPress: () => void
+  size?: number
+}) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      disabled={disabled}
+      hitSlop={6}
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.iconButton,
+        {
+          width: size,
+          height: size,
+          backgroundColor: colors.heroSurface,
+          borderColor: colors.heroBorder,
+          opacity: disabled ? 0.34 : pressed ? 0.7 : 1,
+          transform: [{ scale: pressed ? 0.95 : 1 }],
+        },
+      ]}
+    >
+      <Ionicons
+        name={icon}
+        size={21}
+        color={colors.heroForeground}
+      />
+    </Pressable>
+  )
+}
+
+function Artwork({
+  artwork,
+  colors,
+  compact,
+  size,
+}: {
+  artwork?: string
+  colors: AppColors
+  compact: boolean
+  size: number
+}) {
+  return (
+    <View
+      style={[
+        styles.artworkFrame,
+        compact && styles.compactArtworkFrame,
+        {
+          width: size,
+          height: size,
+          borderColor: colors.heroBorder,
+          boxShadow: `0 24px 60px ${colors.heroShadow}`,
+        },
+      ]}
+    >
+      {artwork
+        ? <Image source={{ uri: artwork }} contentFit="cover" style={StyleSheet.absoluteFill} transition={250} />
+        : (
+            <LinearGradient
+              colors={[colors.artworkStart, colors.artworkEnd]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.artworkFallback}
+            >
+              <View style={[styles.artworkOrbit, { borderColor: colors.heroBorder }]} />
+              <View style={[styles.artworkCore, { backgroundColor: colors.heroSurface }]}>
+                <Ionicons name="radio-outline" color={colors.heroForeground} size={compact ? 26 : 38} />
+              </View>
+            </LinearGradient>
+          )}
+      <LinearGradient
+        colors={['transparent', 'rgba(0,0,0,0.26)']}
+        style={[StyleSheet.absoluteFill, styles.pointerEventsNone]}
+      />
+    </View>
+  )
+}
 
 export default function RadioScreen() {
   const colors = useColors()
+  const insets = useSafeAreaInsets()
+  const { width } = useWindowDimensions()
   const displayTrack = useDisplayTrack()
   const isPlaying = usePlayerStore.use.isPlaying()
-  const playbackMode = usePlayerStore.use.playbackMode()
-  const nowPlayingSegmentIndex = usePlayerStore.use.nowPlayingSegmentIndex()
-  const programme = usePlayerStore.use.programme()
+  const position = usePlaybackStore.use.position()
 
   const messages = useChatTimelineStore(state => state.messages)
   const appendMessage = useChatTimelineStore(state => state.appendMessage)
   const clearTimeline = useChatTimelineStore(state => state.clearTimeline)
 
   const [inputText, setInputText] = useState('')
-  const listRef = useRef<FlatList<ChatMessage>>(null)
   const [hasStarted, setHasStarted] = useState(false)
+  const [isComposerFocused, setIsComposerFocused] = useState(false)
+  const listRef = useRef<FlatList<ChatMessage>>(null)
+  const inputRef = useRef<TextInput>(null)
+
+  useEffect(() => {
+    return onSegmentStart((segment, index) => {
+      const playerState = usePlayerStore.getState()
+      if (
+        playerState.playbackMode !== PlaybackMode.RADIO
+        || playerState.nowPlayingSegmentIndex !== index
+        || playerState.programme[index] !== segment
+      ) {
+        return
+      }
+
+      if (segment.kind === 'track') {
+        appendMessage({ type: 'now-playing', track: segment.track, timestamp: Date.now() })
+        return
+      }
+
+      appendMessage({ type: 'interlude', script: segment.script, timestamp: Date.now() })
+    })
+  }, [appendMessage])
+
+  useEffect(() => {
+    return onSegmentEnd((segment, index) => programmeManager.onSegmentEnd(segment, index))
+  }, [])
 
   useEffect(() => {
     if (hasStarted)
       return
-    const start = async () => {
-      const prog = await generateProgramme(DEFAULT_CHANNEL_STYLE)
-      if (prog.length === 0)
-        return
-      clearTimeline()
-      playerController.loadProgramme(prog)
-      setHasStarted(true)
-    }
-    start()
-  }, [hasStarted, clearTimeline])
 
-  useEffect(() => {
-    if (playbackMode !== PlaybackMode.RADIO)
-      return
-    const segment = programme[nowPlayingSegmentIndex]
-    if (!segment || segment.kind !== 'track')
-      return
+    clearTimeline()
+    void programmeManager.loadChannel(DEFAULT_CHANNEL)
+    setHasStarted(true)
+  }, [clearTimeline, hasStarted])
 
-    appendMessage({
-      type: 'now-playing',
-      track: segment.track,
-      timestamp: Date.now(),
-    })
-  }, [playbackMode, nowPlayingSegmentIndex, programme, appendMessage])
-
-  useEffect(() => {
-    const unsub = playerController.onSegmentEnd((segment) => {
-      if (segment.kind === 'interlude') {
-        appendMessage({
-          type: 'interlude',
-          script: segment.script,
-          timestamp: Date.now(),
-        })
-      }
-    })
-    return unsub
-  }, [appendMessage])
+  const trackTitle = displayTrack?.title || '正在准备今晚的节目'
+  const duration = displayTrack?.duration ?? 0
+  const playbackProgress = duration > 0 ? Math.min(position / duration, 1) : 0
+  const trackArtist = useMemo(() => {
+    if (!displayTrack)
+      return 'Host 正在从你的音乐里挑选'
+    return [displayTrack.artist, displayTrack.album].filter(Boolean).join(' · ') || DEFAULT_CHANNEL.name
+  }, [displayTrack])
 
   const handlePlayPause = useCallback(() => {
-    isPlaying ? playerController.pause() : playerController.play()
+    const { pause, play } = usePlayerStore.getState()
+    isPlaying ? pause() : play()
   }, [isPlaying])
 
-  const handleSend = useCallback(() => {
-    if (!inputText.trim())
+  const submitInstruction = useCallback((text: string) => {
+    const normalizedText = text.trim()
+    if (!normalizedText)
       return
 
-    appendMessage({
-      type: 'user-turn',
-      text: inputText.trim(),
-      timestamp: Date.now(),
-    })
+    appendMessage({ type: 'user-turn', text: normalizedText, timestamp: Date.now() })
+    appendMessage({ type: 'host-turn', text: '收到，我会从接下来的节目开始调整。', timestamp: Date.now() + 1 })
     setInputText('')
 
-    // TODO: (#48): replace stub with real Host Service intervention
-    setTimeout(() => {
-      appendMessage({
-        type: 'host-turn',
-        text: '好的，我来为你调整。',
-        timestamp: Date.now(),
-      })
-    }, 1000)
-  }, [inputText, appendMessage])
+    void programmeManager.handleIntervention({ kind: 'free-instruction', text: normalizedText })
+  }, [appendMessage])
 
-  const renderMessage = useCallback(({ item }: { item: ChatMessage }) => {
+  const renderMessage = useCallback(({ item }: ListRenderItemInfo<ChatMessage>) => {
     if (item.type === 'now-playing') {
       return (
-        <View style={[styles.nowPlayingCard, { backgroundColor: colors.secondary }]}>
-          <Text style={[styles.nowPlayingLabel, { color: colors.mutedForeground }]}>Now Playing</Text>
-          <Text style={[styles.nowPlayingTitle, { color: colors.foreground }]}>{item.track.title}</Text>
-          <Text style={[styles.nowPlayingArtist, { color: colors.mutedForeground }]}>{item.track.artist}</Text>
+        <View style={[styles.timelineTrack, { backgroundColor: colors.secondary }]}>
+          <View style={[styles.timelineIcon, { backgroundColor: colors.primarySoft }]}>
+            <Ionicons name="musical-note" size={14} color={colors.primary} />
+          </View>
+          <View style={styles.timelineCopy}>
+            <Text style={[styles.timelineTitle, { color: colors.foreground }]} numberOfLines={1}>{item.track.title}</Text>
+            <Text style={[styles.timelineArtist, { color: colors.mutedForeground }]} numberOfLines={1}>{item.track.artist}</Text>
+          </View>
         </View>
       )
     }
 
     if (item.type === 'interlude') {
       return (
-        <View style={[styles.messageBubble, styles.hostBubble]}>
-          <Text style={[styles.messageText, { color: colors.foreground }]}>{item.script}</Text>
+        <View style={styles.hostMessageRow}>
+          <View style={[styles.messageAvatar, { backgroundColor: colors.primarySoft }]}>
+            <Ionicons name="sparkles" size={14} color={colors.primary} />
+          </View>
+          <View style={styles.messageColumn}>
+            <View style={[styles.chatBubble, styles.hostBubble, { backgroundColor: colors.secondary }]}>
+              <Text style={[styles.hostMessageText, { color: colors.foreground }]}>{item.script}</Text>
+            </View>
+          </View>
         </View>
       )
     }
 
     const isUser = item.type === 'user-turn'
     return (
-      <View style={[styles.messageBubble, isUser ? styles.userBubble : styles.hostBubble]}>
-        <Text style={[styles.messageText, { color: isUser ? '#fff' : colors.foreground }]}>
-          {item.text}
-        </Text>
+      <View style={[styles.turnRow, isUser && styles.userTurnRow]}>
+        <View style={[styles.chatBubble, { backgroundColor: isUser ? colors.primarySoft : colors.secondary }]}>
+          <Text style={[styles.turnText, { color: colors.foreground }]}>{item.text}</Text>
+        </View>
       </View>
     )
   }, [colors])
 
-  const keyExtractor = useCallback((_: ChatMessage, index: number) => String(index), [])
-
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* Top: Now Playing */}
-      <View style={[styles.nowPlaying, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
-        {displayTrack
-          ? (
-              <View style={styles.nowPlayingContent}>
-                <View style={styles.trackInfo}>
-                  <Text style={[styles.trackTitle, { color: colors.foreground }]} numberOfLines={1}>
-                    {displayTrack.title}
-                  </Text>
-                  <Text style={[styles.trackArtist, { color: colors.mutedForeground }]} numberOfLines={1}>
-                    {displayTrack.artist}
-                  </Text>
-                </View>
-                <View style={styles.waveformPlaceholder}>
-                  <Text style={{ color: colors.mutedForeground, fontSize: 12 }}>[~~~]</Text>
-                </View>
-                <Pressable onPress={handlePlayPause} hitSlop={8}>
-                  <Text style={{ color: colors.foreground, fontSize: 24 }}>
-                    {isPlaying ? '⏸' : '▶'}
-                  </Text>
-                </Pressable>
-              </View>
-            )
-          : (
-              <Text style={[styles.noTrack, { color: colors.mutedForeground }]}>
-                等待播放...
-              </Text>
-            )}
-      </View>
-
-      {/* Middle: Chat Timeline */}
-      <FlatList
-        ref={listRef}
-        data={messages}
-        renderItem={renderMessage}
-        keyExtractor={keyExtractor}
-        style={styles.timeline}
-        contentContainerStyle={styles.timelineContent}
-        onContentSizeChange={() => listRef.current?.scrollToEnd()}
-        ListEmptyComponent={(
-          <View style={styles.emptyTimeline}>
-            <Text style={{ color: colors.mutedForeground }}>
-              欢迎收听 Flow Radio
-            </Text>
-          </View>
-        )}
+    <View style={[styles.root, { backgroundColor: colors.ambientBottom }]}>
+      <StatusBar style="light" />
+      <LinearGradient
+        colors={[colors.heroStart, colors.heroEnd, colors.ambientBridge, colors.ambientTop, colors.ambientBottom]}
+        locations={[0, 0.2, 0.43, 0.68, 1]}
+        style={[StyleSheet.absoluteFill, styles.pointerEventsNone]}
+      />
+      {displayTrack?.artwork && (
+        <Image
+          source={{ uri: displayTrack.artwork }}
+          blurRadius={64}
+          contentFit="cover"
+          style={[styles.playerBackdrop, { height: Math.max(width * 1.25, 480) }]}
+          transition={700}
+        />
+      )}
+      <LinearGradient
+        colors={['rgba(2, 12, 9, 0.10)', 'rgba(2, 12, 9, 0.42)', 'rgba(2, 12, 9, 0.08)', 'transparent']}
+        locations={[0, 0.2, 0.46, 0.7]}
+        style={[StyleSheet.absoluteFill, styles.pointerEventsNone]}
       />
 
-      {/* Bottom: Input Bar */}
-      <View style={[styles.inputBar, { backgroundColor: colors.card, borderTopColor: colors.border }]}>
-        <TextInput
-          value={inputText}
-          onChangeText={setInputText}
-          placeholder="说点什么..."
-          placeholderTextColor={colors.mutedForeground}
-          style={[styles.input, { color: colors.foreground, backgroundColor: colors.secondary }]}
-          returnKeyType="send"
-          onSubmitEditing={handleSend}
-        />
-        <Pressable onPress={handleSend} style={styles.sendBtn} hitSlop={8}>
-          <Text style={{ color: colors.primary, fontSize: 18 }}>↑</Text>
-        </Pressable>
-        <Pressable style={styles.micBtn} hitSlop={8}>
-          <Text style={{ color: colors.mutedForeground, fontSize: 18 }}>🎙</Text>
-        </Pressable>
-      </View>
+      <KeyboardAvoidingView
+        behavior="height"
+        keyboardVerticalOffset={0}
+        style={styles.screen}
+      >
+        <View style={styles.main}>
+          <View
+            style={[
+              styles.playerCard,
+              {
+                paddingHorizontal: width < 380 ? 14 : 18,
+                paddingTop: insets.top + 16,
+              },
+            ]}
+          >
+            <View style={styles.playerSummary}>
+              <Artwork artwork={displayTrack?.artwork} colors={colors} compact size={58} />
+              <View style={styles.playerCopy}>
+                <Text style={[styles.nowPlayingLabel, { color: colors.primary }]}>正在播放</Text>
+                <Text style={[styles.miniTrackTitle, { color: colors.heroForeground }]} numberOfLines={1}>{trackTitle}</Text>
+                <Text style={[styles.miniTrackArtist, { color: colors.heroMuted }]} numberOfLines={1}>{trackArtist}</Text>
+              </View>
+              <IconButton
+                accessibilityLabel={isPlaying ? '暂停 Channel' : '播放 Channel'}
+                colors={colors}
+                disabled={!displayTrack}
+                icon={isPlaying ? 'pause' : 'play'}
+                onPress={handlePlayPause}
+                size={42}
+              />
+            </View>
+
+            <View style={styles.miniProgressArea}>
+              <View style={[styles.progressTrack, { backgroundColor: colors.heroSurface }]}>
+                <View style={[styles.progressFill, { backgroundColor: colors.primary, width: `${playbackProgress * 100}%` }]} />
+              </View>
+              <View style={styles.timeRow}>
+                <Text style={[styles.timeText, { color: colors.heroMuted }]}>{formatDuration(position)}</Text>
+                <Text style={[styles.timeText, { color: colors.heroMuted }]}>{duration > 0 ? formatDuration(duration) : '--:--'}</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.chatPanel}>
+            <FlatList
+              ref={listRef}
+              data={messages}
+              renderItem={renderMessage}
+              keyExtractor={(item, index) => `${item.type}-${item.timestamp}-${index}`}
+              keyboardDismissMode="interactive"
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={messages.length === 0 ? styles.emptyTimeline : styles.timelineContent}
+              ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
+              onContentSizeChange={() => {
+                if (messages.length > 0)
+                  listRef.current?.scrollToEnd({ animated: true })
+              }}
+            />
+          </View>
+        </View>
+
+        <View
+          style={[
+            styles.composer,
+            {
+              paddingBottom: Math.max(insets.bottom, 12),
+              paddingHorizontal: width < 380 ? 12 : 16,
+            },
+          ]}
+        >
+          <View style={[styles.inputShell, { backgroundColor: colors.surfaceRaised, borderColor: isComposerFocused ? colors.primary : colors.border, boxShadow: `0 8px 24px ${colors.shadow}` }]}>
+            <View style={[styles.inputIcon, { backgroundColor: colors.primarySoft }]}>
+              <Ionicons name="sparkles" size={17} color={colors.primary} />
+            </View>
+            <TextInput
+              ref={inputRef}
+              value={inputText}
+              accessibilityLabel="输入你想听的内容"
+              onBlur={() => setIsComposerFocused(false)}
+              onChangeText={setInputText}
+              onFocus={() => setIsComposerFocused(true)}
+              onSubmitEditing={() => submitInstruction(inputText)}
+              placeholder="想听什么，直接说…"
+              placeholderTextColor={colors.mutedForeground}
+              returnKeyType="send"
+              selectionColor={colors.primary}
+              style={[styles.input, { color: colors.foreground }]}
+            />
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={inputText.trim() ? '发送' : '开始输入'}
+              hitSlop={4}
+              onPress={() => inputText.trim() ? submitInstruction(inputText) : inputRef.current?.focus()}
+              style={({ pressed }) => [styles.sendButton, { backgroundColor: colors.primary, opacity: pressed ? 0.72 : 1 }]}
+            >
+              <Ionicons name={inputText.trim() ? 'arrow-up' : 'mic-outline'} size={19} color={colors.primaryForeground} />
+            </Pressable>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  // Now Playing
-  nowPlaying: { paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: StyleSheet.hairlineWidth },
-  nowPlayingContent: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  trackInfo: { flex: 1, marginRight: 12 },
-  trackTitle: { fontSize: 16, fontWeight: '600' },
-  trackArtist: { fontSize: 13, marginTop: 2 },
-  noTrack: { fontSize: 14 },
-  waveformPlaceholder: { marginRight: 12 },
-  // Timeline
-  timeline: { flex: 1 },
-  timelineContent: { padding: 16, gap: 8 },
-  emptyTimeline: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 100 },
-  nowPlayingCard: { paddingHorizontal: 12, paddingVertical: 10, borderRadius: 10 },
-  nowPlayingLabel: { fontSize: 11, fontWeight: '600', textTransform: 'uppercase', marginBottom: 2 },
-  nowPlayingTitle: { fontSize: 15, fontWeight: '600' },
-  nowPlayingArtist: { fontSize: 13, marginTop: 2 },
-  messageBubble: { maxWidth: '80%', paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12 },
-  userBubble: { alignSelf: 'flex-end', backgroundColor: 'hsl(38 92% 50%)' },
-  hostBubble: { alignSelf: 'flex-start', backgroundColor: 'hsl(30 8% 18%)' },
-  messageText: { fontSize: 15, lineHeight: 20 },
-  // Input Bar
-  inputBar: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 8, borderTopWidth: StyleSheet.hairlineWidth, gap: 8 },
-  input: { flex: 1, height: 36, borderRadius: 18, paddingHorizontal: 14, fontSize: 15 },
-  sendBtn: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
-  micBtn: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  root: { flex: 1 },
+  pointerEventsNone: { pointerEvents: 'none' },
+  screen: { flex: 1, minHeight: 0 },
+  main: { flex: 1, minHeight: 0, paddingBottom: 8 },
+  playerCard: { flexShrink: 0, overflow: 'hidden', paddingBottom: 18 },
+  playerBackdrop: { position: 'absolute', top: -36, left: -48, right: -48, opacity: 0.78, transform: [{ scale: 1.12 }] },
+  playerSummary: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  playerCopy: { flex: 1, minWidth: 0 },
+  artworkFrame: { overflow: 'hidden', borderWidth: 1, borderRadius: 42, borderCurve: 'continuous' },
+  compactArtworkFrame: { borderRadius: 24 },
+  artworkFallback: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  artworkOrbit: { position: 'absolute', width: '72%', height: '72%', borderWidth: 1, borderRadius: 999 },
+  artworkCore: { width: '40%', height: '40%', borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
+  nowPlayingLabel: { fontSize: 9, lineHeight: 12, fontWeight: '700', letterSpacing: 0.8 },
+  miniTrackTitle: { marginTop: 2, fontSize: 15, lineHeight: 19, fontWeight: '700', letterSpacing: -0.2 },
+  miniTrackArtist: { marginTop: 1, fontSize: 11, lineHeight: 15 },
+  miniProgressArea: { marginTop: 12 },
+  progressTrack: { height: 3, overflow: 'hidden', borderRadius: 999 },
+  progressFill: { height: 3, borderRadius: 999 },
+  timeRow: { marginTop: 5, flexDirection: 'row', justifyContent: 'space-between' },
+  timeText: { fontSize: 8, fontWeight: '600', fontVariant: ['tabular-nums'] },
+  iconButton: { borderWidth: StyleSheet.hairlineWidth, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
+  chatPanel: { flex: 1, minHeight: 0, paddingHorizontal: 18, paddingTop: 10 },
+  timelineContent: { paddingTop: 8, paddingBottom: 18 },
+  emptyTimeline: { flexGrow: 1 },
+  timelineTrack: { minHeight: 48, paddingHorizontal: 10, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 9 },
+  timelineIcon: { width: 30, height: 30, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
+  timelineCopy: { flex: 1, minWidth: 0 },
+  timelineTitle: { fontSize: 12, lineHeight: 16, fontWeight: '600' },
+  timelineArtist: { marginTop: 1, fontSize: 10, lineHeight: 13 },
+  hostMessageRow: { maxWidth: '90%', flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
+  messageAvatar: { width: 30, height: 30, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
+  messageColumn: { flex: 1 },
+  chatBubble: { maxWidth: '88%', paddingHorizontal: 12, paddingVertical: 9, borderRadius: 17, borderCurve: 'continuous' },
+  hostBubble: { maxWidth: '100%', borderTopLeftRadius: 6 },
+  hostMessageText: { fontSize: 13, lineHeight: 20 },
+  turnRow: { maxWidth: '88%' },
+  userTurnRow: { alignItems: 'flex-end', alignSelf: 'flex-end' },
+  turnText: { fontSize: 13, lineHeight: 20 },
+  composer: { flexShrink: 0, paddingTop: 8, gap: 9 },
+  inputShell: { height: 54, paddingLeft: 7, paddingRight: 5, borderWidth: 1, borderRadius: 20, borderCurve: 'continuous', flexDirection: 'row', alignItems: 'center' },
+  inputIcon: { width: 38, height: 38, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  input: { flex: 1, height: 52, minWidth: 0, paddingHorizontal: 11, fontSize: 14 },
+  sendButton: { width: 42, height: 42, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
 })

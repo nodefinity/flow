@@ -1,5 +1,5 @@
 import type { Track } from '@flow/shared'
-import { usePlayerStore } from '@flow/player'
+import { usePlayerStore } from '@flow/store'
 import { BottomSheetFlashList } from '@gorhom/bottom-sheet'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { ThemedBottomSheetModal } from '@/components/ui/ThemedBottomSheetModal'

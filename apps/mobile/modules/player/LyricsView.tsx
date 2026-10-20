@@ -1,5 +1,6 @@
-import type { LyricLine } from '@flow/player'
-import { findLyricLine, parseLyrics, useDisplayTrack, usePlaybackStore } from '@flow/player'
+import type { LyricLine } from '@flow/store'
+import type { FlashListRef } from '@shopify/flash-list'
+import { findLyricLine, parseLyrics, useDisplayTrack, usePlaybackStore } from '@flow/store'
 import { FlashList } from '@shopify/flash-list'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
@@ -14,7 +15,7 @@ export default function LyricsView({ mode = 'mini' }: { mode?: 'mini' | 'full' }
   const [lyrics, setLyrics] = useState<LyricLine[]>([])
   const [isReady, setIsReady] = useState(false)
   const activeLyricLineIndex = findLyricLine(lyrics, position)
-  const scrollViewRef = useRef<FlashList<LyricLine>>(null)
+  const scrollViewRef = useRef<FlashListRef<LyricLine>>(null)
 
   useEffect(() => {
     setLyrics(parseLyrics(activeTrack?.lyrics ?? ''))
@@ -67,7 +68,6 @@ export default function LyricsView({ mode = 'mini' }: { mode?: 'mini' | 'full' }
       data={lyrics}
       renderItem={renderItem}
       contentContainerStyle={isMini ? styles.miniPadding : styles.fullPadding}
-      estimatedItemSize={isMini ? 20 : 30}
       extraData={activeLyricLineIndex}
       showsVerticalScrollIndicator={false}
       keyExtractor={(item, i) => `${item.time}-${i}`}

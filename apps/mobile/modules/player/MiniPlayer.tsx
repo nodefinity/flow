@@ -1,4 +1,4 @@
-import { playerController, useDisplayTrack, usePlayerStore } from '@flow/player'
+import { useDisplayTrack, usePlayerStore } from '@flow/store'
 import { useCallback } from 'react'
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import Animated, { Extrapolation, interpolate, useAnimatedStyle, useDerivedValue } from 'react-native-reanimated'
@@ -19,7 +19,8 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
   const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.value }))
 
   const handlePlayPause = useCallback(() => {
-    isPlaying ? playerController.pause() : playerController.play()
+    const { pause, play } = usePlayerStore.getState()
+    isPlaying ? pause() : play()
   }, [isPlaying])
 
   if (!displayTrack)
@@ -43,7 +44,7 @@ export default function MiniPlayer({ onPress }: { onPress: () => void }) {
           <Pressable onPress={handlePlayPause} style={styles.controlBtn} hitSlop={8}>
             <Text style={{ color: colors.foreground, fontSize: 22 }}>{isPlaying ? '⏸' : '▶'}</Text>
           </Pressable>
-          <Pressable onPress={() => playerController.next()} style={styles.controlBtn} hitSlop={8}>
+          <Pressable onPress={() => usePlayerStore.getState().next(true)} style={styles.controlBtn} hitSlop={8}>
             <Text style={{ color: colors.foreground, fontSize: 22 }}>⏭</Text>
           </Pressable>
         </View>

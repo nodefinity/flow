@@ -1,5 +1,5 @@
 import type { Track } from '@flow/shared'
-import { usePlayerStore } from '@flow/player'
+import { usePlayerStore } from '@flow/store'
 import { Image } from 'expo-image'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'

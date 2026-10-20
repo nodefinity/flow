@@ -1,5 +1,5 @@
-import { playerController, PlayMode, useDisplayTrack, usePlaybackStore, usePlayerStore } from '@flow/player'
 import { formatDuration } from '@flow/shared'
+import { PlayMode, useDisplayTrack, usePlaybackStore, usePlayerStore } from '@flow/store'
 import Slider from '@react-native-community/slider'
 import { useCallback, useState } from 'react'
 import { Dimensions, Pressable, StyleSheet, Text, View } from 'react-native'
@@ -34,12 +34,13 @@ export default function FullPlayerControl() {
   const sliderScale = useSharedValue(0)
 
   const handlePlayPause = useCallback(() => {
-    isPlaying ? playerController.pause() : playerController.play()
+    const { pause, play } = usePlayerStore.getState()
+    isPlaying ? pause() : play()
   }, [isPlaying])
 
   const handleModeChange = useCallback(() => {
     const next = mode === PlayMode.SINGLE ? PlayMode.ORDERED : mode === PlayMode.ORDERED ? PlayMode.SHUFFLE : PlayMode.SINGLE
-    playerController.setMode(next)
+    usePlayerStore.getState().setMode(next)
   }, [mode])
 
   const modeIcon = { [PlayMode.SINGLE]: '↺¹', [PlayMode.ORDERED]: '↺', [PlayMode.SHUFFLE]: '⇄' }[mode] ?? '↺'
@@ -61,7 +62,7 @@ export default function FullPlayerControl() {
     sliderScale.value = withTiming(0, { duration: 300 })
     setSlidingValue(0)
     if (displayTrack?.duration)
-      playerController.seekTo(value)
+      usePlaybackStore.getState().setPosition(value)
   }, [displayTrack?.duration, isSliding, timeOpacity, timeScale, sliderScale])
 
   const timeStyle = useAnimatedStyle(() => ({ opacity: timeOpacity.value, transform: [{ scale: timeScale.value }] }))
@@ -97,13 +98,13 @@ export default function FullPlayerControl() {
         <IconBtn onPress={handleModeChange}>
           <Text style={{ color: colors.foreground, fontSize: 18 }}>{modeIcon}</Text>
         </IconBtn>
-        <IconBtn onPress={() => playerController.prev()}>
+        <IconBtn onPress={() => usePlayerStore.getState().prev()}>
           <Text style={{ color: colors.foreground, fontSize: 28 }}>⏮</Text>
         </IconBtn>
         <IconBtn onPress={handlePlayPause}>
           <Text style={{ color: colors.foreground, fontSize: 36 }}>{isPlaying ? '⏸' : '▶'}</Text>
         </IconBtn>
-        <IconBtn onPress={() => playerController.next()}>
+        <IconBtn onPress={() => usePlayerStore.getState().next(true)}>
           <Text style={{ color: colors.foreground, fontSize: 28 }}>⏭</Text>
         </IconBtn>
         <IconBtn onPress={() => setQueueVisible(true)}>

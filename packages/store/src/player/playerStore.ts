@@ -1,9 +1,9 @@
 import type { Programme, Segment, Track } from '@flow/shared'
-import { storage } from '@flow/store/providers/storage'
-import { createSelectors } from '@flow/store/utils/createSelectors'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
+import { storage } from '../providers/storage'
+import { createSelectors } from '../utils/createSelectors'
 
 export enum PlayMode {
   SINGLE = 'single',
@@ -17,13 +17,28 @@ export enum PlaybackMode {
 }
 
 type SegmentEndListener = (finishedSegment: Segment, index: number) => void
+type SegmentStartListener = (startedSegment: Segment, index: number) => void
 
 const segmentEndListeners = new Set<SegmentEndListener>()
+const segmentStartListeners = new Set<SegmentStartListener>()
+
+export function onSegmentStart(listener: SegmentStartListener): () => void {
+  segmentStartListeners.add(listener)
+  return () => {
+    segmentStartListeners.delete(listener)
+  }
+}
 
 export function onSegmentEnd(listener: SegmentEndListener): () => void {
   segmentEndListeners.add(listener)
   return () => {
     segmentEndListeners.delete(listener)
+  }
+}
+
+export function emitSegmentStart(segment: Segment, index: number) {
+  for (const listener of segmentStartListeners) {
+    listener(segment, index)
   }
 }
 
@@ -87,7 +102,7 @@ function shuffle<T>(array: T[]): T[] {
 const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
   immer(
     persist(
-      set => ({
+      (set, get) => ({
         playbackMode: PlaybackMode.CLASSIC,
         isPlaying: false,
 
@@ -279,35 +294,46 @@ const playerStoreBase = create<PlayerStore & PlayerStoreActions>()(
         },
 
         loadProgramme: (programme) => {
+          const firstSegment = programme[0]
           set((draft) => {
             draft.playbackMode = PlaybackMode.RADIO
             draft.programme = programme
             draft.nowPlayingSegmentIndex = 0
             draft.isPlaying = true
           })
+
+          if (firstSegment) {
+            queueMicrotask(() => emitSegmentStart(firstSegment, 0))
+          }
         },
 
         nextSegment: () => {
+          const state = get()
+          if (state.playbackMode !== PlaybackMode.RADIO)
+            return
+          if (state.programme.length === 0)
+            return
+
+          const finishedIndex = state.nowPlayingSegmentIndex
+          const finishedSegment = state.programme[finishedIndex]
+          const nextIndex = finishedIndex + 1
+          const startedSegment = state.programme[nextIndex]
+
           set((draft) => {
-            if (draft.playbackMode !== PlaybackMode.RADIO)
-              return
-            if (draft.programme.length === 0)
-              return
-
-            const finishedIndex = draft.nowPlayingSegmentIndex
-            const finishedSegment = draft.programme[finishedIndex]
-
-            let next = finishedIndex + 1
+            let next = nextIndex
             if (next >= draft.programme.length) {
               draft.isPlaying = false
               next = draft.programme.length - 1
             }
             draft.nowPlayingSegmentIndex = next
-
-            if (finishedSegment) {
-              queueMicrotask(() => emitSegmentEnd(finishedSegment, finishedIndex))
-            }
           })
+
+          if (finishedSegment) {
+            queueMicrotask(() => emitSegmentEnd(finishedSegment, finishedIndex))
+          }
+          if (startedSegment) {
+            queueMicrotask(() => emitSegmentStart(startedSegment, nextIndex))
+          }
         },
       }),
       {

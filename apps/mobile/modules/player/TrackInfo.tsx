@@ -1,5 +1,5 @@
-import { useDisplayTrack } from '@flow/player'
 import { formatFileSize, formatTime, useTranslation } from '@flow/shared'
+import { useDisplayTrack } from '@flow/store'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { usePlayerContext } from './Context'
