@@ -9,26 +9,33 @@ import migrations from '../drizzle/migrations'
 import { SQLITE_DB_NAME } from './constant'
 import * as schema from './schema'
 
-export let sqlite = SQLite.openDatabaseSync(SQLITE_DB_NAME)
-
-export let db: ExpoSQLiteDatabase<typeof schema> & {
+type Database = ExpoSQLiteDatabase<typeof schema> & {
   $client: SQLite.SQLiteDatabase
 }
+
+export let sqlite = SQLite.openDatabaseSync(SQLITE_DB_NAME)
+
+export let db: Database | undefined
+
+let migrationPromise: Promise<void> | undefined
 
 export function initializeDB() {
   if (db) {
     logger.info('Database already initialized')
-    return
+    return db
   }
   db = drizzle(sqlite, {
     schema,
     logger: false,
   })
+  return db
 }
 
-export async function migrateDB(): Promise<void> {
+async function runMigrations(): Promise<void> {
+  let database = initializeDB()
+
   try {
-    await migrate(db, migrations)
+    await migrate(database, migrations)
   }
   catch (error) {
     logger.error('Failed to migrate database:', error)
@@ -40,9 +47,21 @@ export async function migrateDB(): Promise<void> {
     }
     await SQLite.deleteDatabaseAsync(SQLITE_DB_NAME)
     sqlite = SQLite.openDatabaseSync(SQLITE_DB_NAME)
-    initializeDB()
-    await migrate(db, migrations)
+    db = undefined
+    database = initializeDB()
+    await migrate(database, migrations)
   }
+}
+
+export function migrateDB(): Promise<void> {
+  if (!migrationPromise) {
+    migrationPromise = runMigrations().catch((error) => {
+      migrationPromise = undefined
+      throw error
+    })
+  }
+
+  return migrationPromise
 }
 
 export async function exportDB() {}

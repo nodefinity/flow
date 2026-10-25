@@ -5,6 +5,9 @@ const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro
 
 const config = getDefaultConfig(__dirname)
 
+// Drizzle Expo migrations import .sql files and inline them through Babel.
+config.resolver.sourceExts.push('sql')
+
 const WEB_STUBS = {
   'react-native-pager-view': path.resolve(__dirname, 'stubs/react-native-pager-view.js'),
 }
