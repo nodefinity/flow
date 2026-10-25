@@ -1,26 +1,44 @@
-import { useTrackStore } from '@flow/store'
+import { migrateDB } from '@flow/database'
 import { useEffect, useState } from 'react'
-import { getLocalTracks } from '@/utils/localTrackService'
+import { Platform } from 'react-native'
+import { scanLocalTracks } from '@/utils/localTrackService'
 import { requestMusicPermission, requestNotificationPermission } from '@/utils/permission'
 
 export function useInitLocalTracks() {
-  const setLocalTracks = useTrackStore.use.setLocalTracks()
   const [hasHydrated, setHasHydrated] = useState(false)
 
   useEffect(() => {
+    let cancelled = false
+
     const init = async () => {
-      await requestNotificationPermission()
-      const hasPermission = await requestMusicPermission()
-      if (!hasPermission) {
-        setLocalTracks([])
+      if (Platform.OS === 'web') {
+        if (!cancelled)
+          setHasHydrated(true)
+        return
       }
-      else {
-        const tracks = await getLocalTracks()
-        setLocalTracks(tracks)
+
+      try {
+        await migrateDB()
+        await requestNotificationPermission()
+        const hasPermission = await requestMusicPermission()
+        if (hasPermission) {
+          await scanLocalTracks()
+        }
       }
-      setHasHydrated(true)
+      catch (error) {
+        console.error('Failed to initialize Library:', error)
+      }
+      finally {
+        if (!cancelled)
+          setHasHydrated(true)
+      }
     }
-    init()
+
+    void init()
+
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   return hasHydrated

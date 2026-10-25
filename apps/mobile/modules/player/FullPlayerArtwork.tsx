@@ -1,4 +1,4 @@
-import { useDisplayTrack } from '@flow/player'
+import { useDisplayTrack } from '@flow/store'
 import { Image } from 'expo-image'
 import { Dimensions, StyleSheet, View } from 'react-native'
 

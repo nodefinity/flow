@@ -1,66 +1,51 @@
 import { useEffect, useState } from 'react'
 import ImageColors from 'react-native-image-colors'
-import { useTheme } from 'react-native-paper'
+import { useColors } from './useColors'
 
 export interface ArtworkGradientColors {
-  dominant: string // 主导色：从专辑封面提取的最主要颜色
-  vibrant: string // 鲜艳色：高饱和度的活力颜色
-  muted: string // 柔和色：低饱和度的温和颜色
-  background: string // 背景色：最淡的背景颜色
+  dominant: string
+  vibrant: string
+  muted: string
+  background: string
 }
 
 export function useArtworkColors(artworkUrl?: string) {
-  const [colors, setColors] = useState<ArtworkGradientColors>({
-    dominant: '',
-    vibrant: '',
-    muted: '',
-    background: '',
-  })
+  const colors = useColors()
 
-  const { colors: themeColors } = useTheme()
+  const fallback: ArtworkGradientColors = {
+    dominant: colors.primary,
+    vibrant: colors.secondary,
+    muted: colors.muted,
+    background: colors.card,
+  }
+
+  const [artworkColors, setArtworkColors] = useState<ArtworkGradientColors>(fallback)
 
   useEffect(() => {
     if (!artworkUrl) {
-      // 没有封面时使用主题默认颜色
-      setColors({
-        dominant: themeColors.primary,
-        vibrant: themeColors.secondary,
-        muted: themeColors.outline,
-        background: themeColors.elevation.level1,
-      })
+      setArtworkColors(fallback)
       return
     }
 
-    ImageColors.getColors(artworkUrl, {
-      cache: true,
-    }).then((result) => {
+    ImageColors.getColors(artworkUrl, { cache: true }).then((result) => {
       if (result.platform === 'android') {
-        setColors({
-          dominant: result.dominant || result.vibrant || themeColors.primary,
-          vibrant: result.vibrant || result.dominant || themeColors.secondary,
-          muted: result.muted || result.lightMuted || themeColors.outline,
-          background: result.lightMuted || result.average || themeColors.elevation.level1,
+        setArtworkColors({
+          dominant: result.dominant || result.vibrant || colors.primary,
+          vibrant: result.vibrant || result.dominant || colors.secondary,
+          muted: result.muted || result.lightMuted || colors.muted,
+          background: result.lightMuted || result.average || colors.card,
         })
       }
       else if (result.platform === 'ios') {
-        setColors({
-          dominant: result.primary || themeColors.primary,
-          vibrant: result.secondary || themeColors.secondary,
-          muted: result.detail || themeColors.outline,
-          background: result.background || themeColors.elevation.level1,
+        setArtworkColors({
+          dominant: result.primary || colors.primary,
+          vibrant: result.secondary || colors.secondary,
+          muted: result.detail || colors.muted,
+          background: result.background || colors.card,
         })
       }
-    }).catch((err) => {
-      console.error('Failed to get image colors:', err)
-      // 出错时使用主题默认颜色
-      setColors({
-        dominant: themeColors.primary,
-        vibrant: themeColors.secondary,
-        muted: themeColors.outline,
-        background: themeColors.elevation.level1,
-      })
-    })
-  }, [artworkUrl, themeColors])
+    }).catch(() => setArtworkColors(fallback))
+  }, [artworkUrl])
 
-  return colors
+  return artworkColors
 }

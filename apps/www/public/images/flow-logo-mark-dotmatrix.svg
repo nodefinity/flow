@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Flow dot-matrix mark</title>
+  <desc id="desc">A rounded Flow app mark built around a dot-matrix radio dial.</desc>
+  <defs>
+    <pattern id="background-dot-grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <circle cx="11" cy="11" r="3.6" fill="#16c7df" opacity="0.2" />
+    </pattern>
+    <pattern id="mark-dot-grid" width="38" height="38" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="10" fill="#101010" />
+    </pattern>
+    <mask id="mark-o-mask" maskUnits="userSpaceOnUse">
+      <rect width="1024" height="1024" fill="#000000" />
+      <circle cx="512" cy="512" r="248" fill="#ffffff" />
+    </mask>
+  </defs>
+
+  <rect width="1024" height="1024" rx="216" fill="#fffaf1" />
+  <rect width="1024" height="1024" rx="216" fill="url(#background-dot-grid)" />
+  <circle cx="512" cy="512" r="344" fill="none" stroke="#d9d4ca" stroke-width="18" />
+  <circle cx="512" cy="512" r="284" fill="none" stroke="#ede3d5" stroke-width="14" />
+  <rect x="242" y="242" width="540" height="540" fill="url(#mark-dot-grid)" mask="url(#mark-o-mask)" />
+
+  <g aria-hidden="true">
+    <circle cx="424" cy="512" r="13" fill="#5ee0ad" />
+    <circle cx="468" cy="512" r="13" fill="#5ee0ad" />
+    <circle cx="512" cy="512" r="13" fill="#5ee0ad" />
+    <circle cx="556" cy="512" r="13" fill="#ff6254" />
+    <circle cx="600" cy="512" r="13" fill="#5ee0ad" />
+  </g>
+
+  <g stroke="#5ee0ad" stroke-linecap="round" stroke-width="22">
+    <path d="M690 408 v72" />
+    <path d="M734 378 v102" />
+    <path d="M778 338 v142" />
+  </g>
+  <circle cx="666" cy="382" r="16" fill="#ff6254" />
+  <circle cx="666" cy="382" r="30" fill="none" stroke="#ff6254" stroke-width="10" opacity="0.24" />
+</svg>

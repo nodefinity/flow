@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Flow app icon O-led variant</title>
+  <desc id="desc">A Flow app icon using F, O, and w with the l fused as a signal line in the O.</desc>
+  <defs>
+    <pattern id="icon-bg-dot-v4-alt" width="44" height="44" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="3.2" fill="#16c7df" opacity="0.13" />
+    </pattern>
+    <pattern id="icon-letter-dot-v4-alt" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="9.2" fill="#101010" />
+    </pattern>
+    <mask id="flow-icon-mask-v4-alt" maskUnits="userSpaceOnUse">
+      <rect width="1024" height="1024" fill="#000000" />
+      <rect x="118" y="224" width="78" height="574" rx="39" fill="#ffffff" />
+      <rect x="118" y="224" width="280" height="78" rx="39" fill="#ffffff" />
+      <rect x="118" y="462" width="222" height="78" rx="39" fill="#ffffff" />
+      <circle cx="494" cy="528" r="138" fill="#ffffff" />
+      <circle cx="494" cy="528" r="56" fill="#000000" />
+      <path
+        d="M638 384 L684 800 L744 512 L804 800 L864 512 L916 800"
+        stroke="#ffffff"
+        stroke-width="70"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </mask>
+  </defs>
+
+  <rect width="1024" height="1024" rx="220" fill="#fffaf1" />
+  <rect width="1024" height="1024" rx="220" fill="url(#icon-bg-dot-v4-alt)" />
+  <rect x="104" y="112" width="816" height="800" rx="184" fill="#fffdf7" opacity="0.78" />
+  <rect x="78" y="184" width="870" height="658" fill="url(#icon-letter-dot-v4-alt)" mask="url(#flow-icon-mask-v4-alt)" />
+
+  <g aria-hidden="true">
+    <circle cx="494" cy="402" r="13.6" fill="#5ee0ad" />
+    <circle cx="494" cy="444" r="13.6" fill="#5ee0ad" />
+    <circle cx="494" cy="486" r="13.6" fill="#5ee0ad" />
+    <circle cx="494" cy="528" r="13.6" fill="#5ee0ad" />
+    <circle cx="494" cy="570" r="13.6" fill="#5ee0ad" />
+    <circle cx="494" cy="612" r="13.6" fill="#5ee0ad" />
+  </g>
+</svg>

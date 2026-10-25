@@ -1,4 +1,4 @@
-import { useDisplayTrack } from '@flow/player'
+import { PlaybackMode, useDisplayTrack, usePlayerStore } from '@flow/store'
 import { useMemo, useState } from 'react'
 import { Dimensions, StyleSheet } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
@@ -29,6 +29,7 @@ const MIN_DISTANCE = 50 // Distance Threshold
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView)
 
 export function Player() {
+  const playbackMode = usePlayerStore.use.playbackMode()
   const SNAP_MINI = SCREEN_HEIGHT - MINI_HEIGHT
   const SNAP_FULL = 0
 
@@ -130,6 +131,9 @@ export function Player() {
     }),
     [percent, thresholdPercent, artworkColors],
   )
+
+  if (playbackMode === PlaybackMode.RADIO)
+    return null
 
   return (
     <Context value={contextValue}>

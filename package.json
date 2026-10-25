@@ -28,7 +28,10 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "clean": "turbo run clean && rm -rf node_modules",
-    "mobile": "pnpm --filter mobile",
+    "mobile": "pnpm --filter @flow/mobile",
+    "www": "pnpm --filter @flow/www",
+    "api": "pnpm --filter @flow/api",
+    "db": "pnpm --filter @flow/database",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "prepare": "husky",
@@ -53,8 +56,15 @@
     "typescript": "^5.9.2"
   },
   "pnpm": {
+    "packageExtensions": {
+      "nativewind@4": {
+        "dependencies": {
+          "postcss": "8.5.6"
+        }
+      }
+    },
     "patchedDependencies": {
-      "react-native-track-player": "patches/react-native-track-player.patch"
+      "react-native-permissions@5.5.1": "patches/react-native-permissions@5.5.1.patch"
     }
   },
   "lint-staged": {

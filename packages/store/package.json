@@ -8,14 +8,23 @@
     "./utils/*": "./src/utils/*.ts"
   },
   "scripts": {
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@ai-sdk/deepseek": "3.0.9",
     "@flow/shared": "workspace:*",
+    "@nodefinity/react-native-music-library": "0.10.1",
+    "ai": "7.0.26",
     "immer": "10.1.1",
+    "react-native-mmkv": "^3.3.3",
+    "zod": "4.4.3",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@flow/config": "workspace:*"
+    "@flow/config": "workspace:*",
+    "react": "*",
+    "react-native": "0.83.10",
+    "vitest": "4.1.5"
   }
 }

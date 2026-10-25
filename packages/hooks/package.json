@@ -11,10 +11,14 @@
   "dependencies": {
     "@flow/shared": "workspace:*",
     "@flow/store": "workspace:*",
+    "expo-localization": "~55.0.19",
     "i18next": "^25.4.2",
+    "react": "19.2.6",
     "react-i18next": "^15.7.3"
   },
   "devDependencies": {
-    "@flow/config": "workspace:*"
+    "@flow/config": "workspace:*",
+    "@types/react": "~19.2.14",
+    "react-native": "0.83.10"
   }
 }

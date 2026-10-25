@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Flow dot-matrix wordmark</title>
+  <desc id="desc">A Flow wordmark with solid geometric letters and a dotted radio-matrix o.</desc>
+  <defs>
+    <pattern id="dot-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="6" cy="6" r="4.2" fill="#101010" />
+    </pattern>
+    <mask id="letter-o-mask" maskUnits="userSpaceOnUse">
+      <rect width="1200" height="360" fill="#000000" />
+      <circle cx="478" cy="180" r="108" fill="#ffffff" />
+      <circle cx="478" cy="180" r="48" fill="#000000" />
+    </mask>
+  </defs>
+
+  <g fill="none">
+    <g fill="#101010">
+      <rect x="72" y="62" width="58" height="236" rx="29" />
+      <rect x="72" y="62" width="184" height="58" rx="29" />
+      <rect x="72" y="154" width="154" height="58" rx="29" />
+
+      <rect x="292" y="62" width="58" height="236" rx="29" />
+    </g>
+
+    <rect x="358" y="60" width="240" height="240" fill="url(#dot-grid)" mask="url(#letter-o-mask)" />
+
+    <g aria-hidden="true">
+      <circle cx="434" cy="178" r="5.4" fill="#5ee0ad" />
+      <circle cx="454" cy="178" r="5.4" fill="#5ee0ad" />
+      <circle cx="474" cy="178" r="5.4" fill="#5ee0ad" />
+      <circle cx="494" cy="178" r="5.4" fill="#ff6254" />
+      <circle cx="514" cy="178" r="5.4" fill="#5ee0ad" />
+      <circle cx="534" cy="178" r="5.4" fill="#5ee0ad" />
+    </g>
+
+    <path
+      d="M658 142 L714 296 L784 176 L852 296 L922 176 L988 296"
+      stroke="#101010"
+      stroke-width="58"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+
+    <g aria-hidden="true">
+      <circle cx="258" cy="270" r="8" fill="#5ee0ad" />
+      <circle cx="1016" cy="270" r="8" fill="#ff6254" />
+      <circle cx="1048" cy="270" r="8" fill="#5ee0ad" />
+    </g>
+  </g>
+</svg>

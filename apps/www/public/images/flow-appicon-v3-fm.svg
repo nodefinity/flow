@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Flow FM app icon</title>
+  <desc id="desc">A cream app icon with a dot-matrix FM monogram for Flow.</desc>
+  <defs>
+    <pattern id="icon-bg-dot-v3" width="44" height="44" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="3.4" fill="#16c7df" opacity="0.14" />
+    </pattern>
+    <pattern id="icon-letter-dot-v3" width="35" height="35" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="9.6" fill="#101010" />
+    </pattern>
+    <mask id="fm-mask-v3" maskUnits="userSpaceOnUse">
+      <rect width="1024" height="1024" fill="#000000" />
+
+      <rect x="212" y="218" width="86" height="604" rx="43" fill="#ffffff" />
+      <rect x="212" y="218" width="302" height="86" rx="43" fill="#ffffff" />
+      <rect x="212" y="462" width="246" height="86" rx="43" fill="#ffffff" />
+
+      <path
+        d="M526 808 V526 C526 420 638 420 638 542 V808 M638 542 C638 420 764 420 764 542 V808"
+        stroke="#ffffff"
+        stroke-width="88"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </mask>
+  </defs>
+
+  <rect width="1024" height="1024" rx="220" fill="#fffaf1" />
+  <rect width="1024" height="1024" rx="220" fill="url(#icon-bg-dot-v3)" />
+  <rect x="116" y="116" width="792" height="792" rx="184" fill="#fffdf7" opacity="0.74" />
+  <rect x="152" y="150" width="724" height="724" fill="url(#icon-letter-dot-v3)" mask="url(#fm-mask-v3)" />
+
+  <g aria-hidden="true">
+    <circle cx="526" cy="522" r="14" fill="#5ee0ad" />
+    <circle cx="582" cy="522" r="14" fill="#5ee0ad" />
+    <circle cx="638" cy="522" r="14" fill="#5ee0ad" />
+    <circle cx="694" cy="522" r="14" fill="#5ee0ad" />
+  </g>
+</svg>

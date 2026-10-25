@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Flow app icon flowing W</title>
+  <desc id="desc">A warm cream Flow app icon with a flowing dot-matrix W mark.</desc>
+  <defs>
+    <pattern id="w-bg-dot-v5" width="44" height="44" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="3.2" fill="#16c7df" opacity="0.13" />
+    </pattern>
+    <pattern id="w-letter-dot-v5" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="9.4" fill="#101010" />
+    </pattern>
+    <mask id="w-flow-mask-v5" maskUnits="userSpaceOnUse">
+      <rect width="1024" height="1024" fill="#000000" />
+      <path
+        d="M160 394 C222 778 338 792 412 468 C462 250 574 250 628 468 C706 792 818 778 864 394"
+        fill="none"
+        stroke="#ffffff"
+        stroke-width="126"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </mask>
+  </defs>
+
+  <rect width="1024" height="1024" rx="220" fill="#fffaf1" />
+  <rect width="1024" height="1024" rx="220" fill="url(#w-bg-dot-v5)" />
+  <rect x="110" y="118" width="804" height="788" rx="184" fill="#fffdf7" opacity="0.72" />
+  <rect x="96" y="158" width="848" height="724" fill="url(#w-letter-dot-v5)" mask="url(#w-flow-mask-v5)" />
+
+  <g aria-hidden="true">
+    <circle cx="468" cy="510" r="14" fill="#5ee0ad" />
+    <circle cx="512" cy="510" r="14" fill="#5ee0ad" />
+    <circle cx="556" cy="510" r="14" fill="#5ee0ad" />
+  </g>
+</svg>

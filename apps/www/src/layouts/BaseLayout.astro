@@ -1,0 +1,49 @@
+---
+import SiteFooter from '../components/SiteFooter.astro'
+import SiteHeader from '../components/SiteHeader.astro'
+import { defaultLanguage, landingCopy, type Language } from '../i18n/landing'
+import '../styles/global.css'
+
+interface Props {
+  title: string
+  description: string
+  bodyClass?: string
+  language?: Language
+}
+
+const {
+  title,
+  description,
+  bodyClass = '',
+  language = defaultLanguage,
+} = Astro.props
+
+const copy = landingCopy[language]
+---
+
+<!doctype html>
+<html lang={copy.meta.htmlLang} data-locale={language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f1e7" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/images/flow-landing-hero-radio-tuner-v5.png" />
+    <link rel="icon" type="image/svg+xml" href="/images/flow-appicon-v6-wordmark-w.svg" />
+    <link rel="alternate icon" type="image/png" href="/images/flow-appicon-v6-wordmark-w.png" />
+    <link rel="apple-touch-icon" href="/images/flow-appicon-v6-wordmark-w.png" />
+    <title>{title}</title>
+  </head>
+  <body class={bodyClass}>
+    <SiteHeader copy={copy.header} />
+    <slot />
+    <SiteFooter copy={copy.footer} />
+    <script>
+      import '../scripts/siteLocale'
+      import '../scripts/siteAnimations'
+    </script>
+  </body>
+</html>

@@ -1,4 +1,25 @@
 export default {
+  ai: {
+    title: 'AI 配置',
+    token: 'API Token',
+    configured: '已配置',
+    notConfigured: '未配置',
+    unavailable: '读取失败',
+    placeholder: '输入 DeepSeek API Token',
+    replacePlaceholder: '输入新的 Token 以替换',
+    description: 'Token 仅保存在本设备的系统安全存储中。保存仅代表本地配置成功，不代表已验证 API 连接。',
+    showToken: '显示 Token',
+    hideToken: '隐藏 Token',
+    saving: '正在保存…',
+    saved: 'Token 已安全保存。',
+    cleared: 'Token 已清除。',
+    loadError: '无法读取安全存储，请重试。',
+    saveError: '操作失败，未保存的输入已保留，请重试。',
+    retry: '重试',
+    clear: '清除 Token',
+    clearTitle: '清除 API Token？',
+    clearDescription: '清除后，需要重新配置 Token 才能使用 AI 功能。',
+  },
   appearance: {
     title: '外观',
     theme: {

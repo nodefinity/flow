@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "flow",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nodefinity.flow",
@@ -19,13 +18,16 @@
       }
     },
     "android": {
+      "softwareKeyboardLayoutMode": "resize",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "package": "com.nodefinity.flow",
       "permissions": [
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.POST_NOTIFICATIONS",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.READ_MEDIA_AUDIO"
       ],
@@ -51,10 +53,22 @@
         "react-native-permissions",
         {
           "iosPermissions": [
-            "NSAppleMusicUsageDescription"
+            "MediaLibrary"
           ]
         }
-      ]
+      ],
+      [
+        "expo-audio",
+        {
+          "enableBackgroundPlayback": true
+        }
+      ],
+      "expo-image",
+      "expo-localization",
+      "expo-web-browser",
+      "expo-font",
+      "expo-secure-store",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true

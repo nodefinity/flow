@@ -1,0 +1,131 @@
+---
+import { defaultLanguage, landingCopy, type WaitlistFormCopy } from '../i18n/landing'
+
+interface Props {
+  copy?: WaitlistFormCopy
+}
+
+const { copy = landingCopy[defaultLanguage].form } = Astro.props
+
+const waitlistEndpoint = import.meta.env.PUBLIC_WAITLIST_API_URL
+  ?? (import.meta.env.DEV ? 'http://localhost:8787/waitlist' : '/waitlist')
+
+const feedbackUrl = import.meta.env.PUBLIC_FEEDBACK_URL
+  ?? 'https://github.com/nodefinity/flow/issues/new?title=Flow%20feedback&body=What%20did%20you%20think%20about%20Flow%3F%0A%0AWhat%20felt%20unclear%20or%20useful%3F'
+---
+
+<form
+  class="waitlist-form"
+  data-waitlist-form
+  data-endpoint={waitlistEndpoint}
+  data-message-unavailable={copy.messages.unavailable}
+  data-message-pending={copy.messages.pending}
+  data-message-success={copy.messages.success}
+  data-message-error={copy.messages.error}
+  data-i18n-message-unavailable="form.messages.unavailable"
+  data-i18n-message-pending="form.messages.pending"
+  data-i18n-message-success="form.messages.success"
+  data-i18n-message-error="form.messages.error"
+  data-reveal
+>
+  <div class="form-intro">
+    <span data-i18n="form.eyebrow">{copy.eyebrow}</span>
+    <strong data-i18n="form.title">{copy.title}</strong>
+  </div>
+
+  <label for="email" data-i18n="form.emailLabel">{copy.emailLabel}</label>
+  <input
+    id="email"
+    name="email"
+    type="email"
+    placeholder={copy.emailPlaceholder}
+    data-i18n-placeholder="form.emailPlaceholder"
+    autocomplete="email"
+    required
+  />
+
+  <label for="platform" data-i18n="form.platformLabel">{copy.platformLabel}</label>
+  <select id="platform" name="platform">
+    <option value="ios" data-i18n="form.platformOptions.ios">{copy.platformOptions.ios}</option>
+    <option value="android" data-i18n="form.platformOptions.android">{copy.platformOptions.android}</option>
+    <option value="both" data-i18n="form.platformOptions.both">{copy.platformOptions.both}</option>
+  </select>
+
+  <input type="hidden" name="source" value="survey" />
+  <button type="submit" data-i18n="form.submit">{copy.submit}</button>
+  <a class="feedback-button" href={feedbackUrl} target="_blank" rel="noreferrer" data-i18n="form.feedback">{copy.feedback}</a>
+  <p class="form-status" data-waitlist-status role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  const forms = document.querySelectorAll('[data-waitlist-form]')
+
+  for (const form of forms) {
+    if (!(form instanceof HTMLFormElement) || form.dataset.waitlistBound === 'true')
+      continue
+
+    form.dataset.waitlistBound = 'true'
+
+    const setStatus = (state, fallbackMessage) => {
+      const status = form.querySelector('[data-waitlist-status]')
+
+      if (!(status instanceof HTMLElement))
+        return false
+
+      const messageKey = `message${state.charAt(0).toUpperCase()}${state.slice(1)}`
+      status.textContent = form.dataset[messageKey] ?? fallbackMessage
+      form.dataset.waitlistState = state
+      form.dispatchEvent(new CustomEvent('flow:waitlist-status', {
+        bubbles: true,
+        detail: { state },
+      }))
+
+      return true
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault()
+
+      const endpoint = form.dataset.endpoint
+      const submitButton = form.querySelector('button[type="submit"]')
+
+      if (!endpoint) {
+        setStatus('unavailable', 'Submission is unavailable right now. Please try again later.')
+        return
+      }
+
+      if (submitButton instanceof HTMLButtonElement)
+        submitButton.disabled = true
+
+      setStatus('pending', 'Submitting...')
+
+      try {
+        const formData = new FormData(form)
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.get('email'),
+            platform: formData.get('platform'),
+            source: formData.get('source'),
+          }),
+        })
+
+        if (!response.ok)
+          throw new Error('submit_failed')
+
+        form.reset()
+        setStatus('success', 'Received. We will contact you when research access opens.')
+      }
+      catch {
+        setStatus('error', 'Submission failed. Please check your email or try again later.')
+      }
+      finally {
+        if (submitButton instanceof HTMLButtonElement)
+          submitButton.disabled = false
+      }
+    })
+  }
+</script>
