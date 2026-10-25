@@ -2,17 +2,20 @@ import type { Channel, ChatMessage } from '@flow/shared'
 import type { ComponentProps } from 'react'
 import type { ListRenderItemInfo } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons'
-import { formatDuration, HostVoice } from '@flow/shared'
-import { onSegmentEnd, onSegmentStart, PlaybackMode, useChatTimelineStore, useDisplayTrack, usePlaybackStore, usePlayerStore } from '@flow/store'
+import { formatDuration, HostVoice, useTranslation } from '@flow/shared'
+import { onSegmentEnd, onSegmentStart, PlaybackMode, TextChatErrorCode, useChatTimelineStore, useDisplayTrack, usePlaybackStore, usePlayerStore } from '@flow/store'
+import { DrawerActions } from '@react-navigation/native'
 import { Image } from 'expo-image'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useNavigation, useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { FlatList, Pressable, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native'
+import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native'
 import { KeyboardAvoidingView } from 'react-native-keyboard-controller'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useColors } from '@/hooks/useColors'
 import { programmeManager } from '@/modules/radio/programmeManager'
+import { useRadioChat } from '@/modules/radio/use-radio-chat'
 
 const DEFAULT_CHANNEL: Channel = {
   id: 0,
@@ -120,6 +123,10 @@ function Artwork({
 
 export default function RadioScreen() {
   const colors = useColors()
+  const navigation = useNavigation()
+  const router = useRouter()
+  const { t, i18n } = useTranslation()
+  const { inputText, setInputText, isSending, errorCode, streamingReply, submit, retry } = useRadioChat(i18n.language)
   const insets = useSafeAreaInsets()
   const { width } = useWindowDimensions()
   const displayTrack = useDisplayTrack()
@@ -128,10 +135,7 @@ export default function RadioScreen() {
 
   const messages = useChatTimelineStore(state => state.messages)
   const appendMessage = useChatTimelineStore(state => state.appendMessage)
-  const clearTimeline = useChatTimelineStore(state => state.clearTimeline)
 
-  const [inputText, setInputText] = useState('')
-  const [hasStarted, setHasStarted] = useState(false)
   const [isComposerFocused, setIsComposerFocused] = useState(false)
   const listRef = useRef<FlatList<ChatMessage>>(null)
   const inputRef = useRef<TextInput>(null)
@@ -160,15 +164,6 @@ export default function RadioScreen() {
     return onSegmentEnd((segment, index) => programmeManager.onSegmentEnd(segment, index))
   }, [])
 
-  useEffect(() => {
-    if (hasStarted)
-      return
-
-    clearTimeline()
-    void programmeManager.loadChannel(DEFAULT_CHANNEL)
-    setHasStarted(true)
-  }, [clearTimeline, hasStarted])
-
   const trackTitle = displayTrack?.title || '正在准备今晚的节目'
   const duration = displayTrack?.duration ?? 0
   const playbackProgress = duration > 0 ? Math.min(position / duration, 1) : 0
@@ -182,18 +177,6 @@ export default function RadioScreen() {
     const { pause, play } = usePlayerStore.getState()
     isPlaying ? pause() : play()
   }, [isPlaying])
-
-  const submitInstruction = useCallback((text: string) => {
-    const normalizedText = text.trim()
-    if (!normalizedText)
-      return
-
-    appendMessage({ type: 'user-turn', text: normalizedText, timestamp: Date.now() })
-    appendMessage({ type: 'host-turn', text: '收到，我会从接下来的节目开始调整。', timestamp: Date.now() + 1 })
-    setInputText('')
-
-    void programmeManager.handleIntervention({ kind: 'free-instruction', text: normalizedText })
-  }, [appendMessage])
 
   const renderMessage = useCallback(({ item }: ListRenderItemInfo<ChatMessage>) => {
     if (item.type === 'now-playing') {
@@ -274,6 +257,13 @@ export default function RadioScreen() {
             ]}
           >
             <View style={styles.playerSummary}>
+              <IconButton
+                accessibilityLabel={t('navigation.openMenu')}
+                colors={colors}
+                icon="menu-outline"
+                onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+                size={36}
+              />
               <Artwork artwork={displayTrack?.artwork} colors={colors} compact size={58} />
               <View style={styles.playerCopy}>
                 <Text style={[styles.nowPlayingLabel, { color: colors.primary }]}>正在播放</Text>
@@ -312,9 +302,41 @@ export default function RadioScreen() {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={messages.length === 0 ? styles.emptyTimeline : styles.timelineContent}
               ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
+              ListFooterComponent={(
+                <View style={styles.chatFeedback}>
+                  {streamingReply !== '' && (
+                    <View style={styles.turnRow}>
+                      <View style={[styles.chatBubble, { backgroundColor: colors.secondary }]}>
+                        <Text style={[styles.turnText, { color: colors.foreground }]}>{streamingReply}</Text>
+                      </View>
+                    </View>
+                  )}
+                  {isSending && (
+                    <View accessibilityLiveRegion="polite" style={styles.sendingRow}>
+                      <ActivityIndicator size="small" color={colors.primary} />
+                      <Text style={{ color: colors.mutedForeground }}>{t('home.chat.sending')}</Text>
+                    </View>
+                  )}
+                  {errorCode && (
+                    <View accessibilityLiveRegion="polite" style={styles.chatFeedback}>
+                      <Text style={[styles.turnText, { color: colors.foreground }]}>{t(`home.chat.errors.${errorCode}`)}</Text>
+                      <View style={styles.sendingRow}>
+                        <Pressable accessibilityRole="button" onPress={() => router.navigate('/setting')} style={styles.feedbackButton}>
+                          <Text style={{ color: colors.primary }}>{t('home.chat.configure')}</Text>
+                        </Pressable>
+                        {errorCode !== TextChatErrorCode.MISSING_TOKEN && (
+                          <Pressable accessibilityRole="button" onPress={retry} style={styles.feedbackButton}>
+                            <Text style={{ color: colors.primary }}>{t('home.chat.retry')}</Text>
+                          </Pressable>
+                        )}
+                      </View>
+                    </View>
+                  )}
+                </View>
+              )}
               onContentSizeChange={() => {
                 if (messages.length > 0)
-                  listRef.current?.scrollToEnd({ animated: true })
+                  listRef.current?.scrollToEnd({ animated: streamingReply === '' })
               }}
             />
           </View>
@@ -336,11 +358,13 @@ export default function RadioScreen() {
             <TextInput
               ref={inputRef}
               value={inputText}
+              editable={!isSending}
+              maxLength={2000}
               accessibilityLabel="输入你想听的内容"
               onBlur={() => setIsComposerFocused(false)}
               onChangeText={setInputText}
               onFocus={() => setIsComposerFocused(true)}
-              onSubmitEditing={() => submitInstruction(inputText)}
+              onSubmitEditing={submit}
               placeholder="想听什么，直接说…"
               placeholderTextColor={colors.mutedForeground}
               returnKeyType="send"
@@ -349,12 +373,14 @@ export default function RadioScreen() {
             />
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel={inputText.trim() ? '发送' : '开始输入'}
+              accessibilityLabel={t(isSending ? 'home.chat.sending' : 'home.chat.send')}
+              accessibilityState={{ disabled: isSending }}
+              disabled={isSending}
               hitSlop={4}
-              onPress={() => inputText.trim() ? submitInstruction(inputText) : inputRef.current?.focus()}
-              style={({ pressed }) => [styles.sendButton, { backgroundColor: colors.primary, opacity: pressed ? 0.72 : 1 }]}
+              onPress={() => inputText.trim() ? submit() : inputRef.current?.focus()}
+              style={({ pressed }) => [styles.sendButton, { backgroundColor: colors.primary, opacity: isSending ? 0.45 : pressed ? 0.72 : 1 }]}
             >
-              <Ionicons name={inputText.trim() ? 'arrow-up' : 'mic-outline'} size={19} color={colors.primaryForeground} />
+              <Ionicons name="arrow-up" size={19} color={colors.primaryForeground} />
             </Pressable>
           </View>
         </View>
@@ -387,6 +413,9 @@ const styles = StyleSheet.create({
   timeText: { fontSize: 8, fontWeight: '600', fontVariant: ['tabular-nums'] },
   iconButton: { borderWidth: StyleSheet.hairlineWidth, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
   chatPanel: { flex: 1, minHeight: 0, paddingHorizontal: 18, paddingTop: 10 },
+  chatFeedback: { gap: 8, paddingTop: 8 },
+  sendingRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  feedbackButton: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 8 },
   timelineContent: { paddingTop: 8, paddingBottom: 18 },
   emptyTimeline: { flexGrow: 1 },
   timelineTrack: { minHeight: 48, paddingHorizontal: 10, borderRadius: 16, flexDirection: 'row', alignItems: 'center', gap: 9 },

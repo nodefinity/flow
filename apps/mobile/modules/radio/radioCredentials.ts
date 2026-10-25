@@ -21,11 +21,15 @@ const secureStoreOptions: SecureStore.SecureStoreOptions = {
 
 export async function getRadioCredentials(): Promise<RadioCredentials> {
   const [deepSeekApiKey, ttsApiKey] = await Promise.all([
-    SecureStore.getItemAsync(RadioCredentialKey.DEEPSEEK_API_KEY, secureStoreOptions),
+    getDeepSeekApiKey(),
     SecureStore.getItemAsync(RadioCredentialKey.TTS_API_KEY, secureStoreOptions),
   ])
 
   return { deepSeekApiKey, ttsApiKey }
+}
+
+export async function getDeepSeekApiKey(): Promise<string | null> {
+  return SecureStore.getItemAsync(RadioCredentialKey.DEEPSEEK_API_KEY, secureStoreOptions)
 }
 
 export async function setDeepSeekApiKey(apiKey: string): Promise<void> {

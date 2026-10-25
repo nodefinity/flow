@@ -2,6 +2,7 @@ export default {
   // 主导航
   home: '首页',
   setting: '设置',
+  openMenu: '打开侧边栏',
 
   // Tab 导航
   suggested: '推荐',

@@ -2,6 +2,7 @@ import { Language, Theme, useTranslation } from '@flow/shared'
 import { useSettingStore } from '@flow/store'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useColors } from '@/hooks/useColors'
+import { AiTokenSetting } from '@/modules/setting/ai-token-setting'
 import { SettingSelector } from '@/modules/setting/SettingSelector'
 import { TrackScanButton } from '@/modules/setting/TrackScanButton'
 
@@ -13,7 +14,11 @@ export default function SettingScreen() {
   const updateSetting = useSettingStore.use.updateSetting()
 
   return (
-    <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+    <ScrollView style={styles.scroll} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag" automaticallyAdjustKeyboardInsets>
+      <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <Text style={[styles.sectionTitle, { color: colors.mutedForeground }]}>{t('setting.ai.title')}</Text>
+        <AiTokenSetting />
+      </View>
       <View style={[styles.section, { backgroundColor: colors.card, borderColor: colors.border }]}>
         <Text style={[styles.sectionTitle, { color: colors.mutedForeground }]}>
           {t('setting.appearance.title')}

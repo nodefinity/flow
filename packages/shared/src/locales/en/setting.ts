@@ -1,4 +1,25 @@
 export default {
+  ai: {
+    title: 'AI Configuration',
+    token: 'API Token',
+    configured: 'Configured',
+    notConfigured: 'Not configured',
+    unavailable: 'Unavailable',
+    placeholder: 'Enter your DeepSeek API token',
+    replacePlaceholder: 'Enter a new token to replace it',
+    description: 'Your token stays in secure storage on this device. Saving confirms local storage only, not an API connection test.',
+    showToken: 'Show token',
+    hideToken: 'Hide token',
+    saving: 'Saving…',
+    saved: 'Token saved securely.',
+    cleared: 'Token cleared.',
+    loadError: 'Could not read secure storage. Please retry.',
+    saveError: 'The operation failed. Your unsaved input has been kept. Please retry.',
+    retry: 'Retry',
+    clear: 'Clear token',
+    clearTitle: 'Clear API token?',
+    clearDescription: 'You will need to configure a token again to use AI features.',
+  },
   appearance: {
     title: 'Appearance',
     theme: {
