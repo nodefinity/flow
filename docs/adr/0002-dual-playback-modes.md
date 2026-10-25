@@ -22,6 +22,6 @@ The Player supports two playback modes that coexist — only one is active at a 
 - A `playbackMode: 'radio' | 'classic'` discriminator is added to the player state.
 - `loadProgramme()` switches to radio mode and stops any classic playback.
 - `playTrack()` / `playQueue()` switches to classic mode and stops any radio playback.
-- The Player Controller layer is mode-agnostic — it plays an ordered list of audio items regardless of source.
+- The Player Store is mode-aware, but the mobile audio engine is mode-agnostic — it plays the active audio source exposed by the Store regardless of whether it came from a Classic Queue or a Radio Programme.
 - UI must reflect the active mode (e.g. hide queue controls in radio mode, hide chat timeline in classic mode).
 - Domain language: "Queue" is scoped to Classic mode; "Programme" is scoped to Radio mode. Neither term replaces the other.
